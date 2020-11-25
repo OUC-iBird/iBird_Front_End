@@ -2,7 +2,7 @@
 <el-container>
   <el-aside width="50%">
     <el-image
-    :src="src" 
+    :src="src"
     style="width: 90%; height: 380px;"
     >
 
@@ -10,7 +10,7 @@
     </el-aside>
   <el-main>
     <h1> iBird </h1>
-    
+
     <el-form ref="login_form" :model="login_form" label-width="40px" label-position="left">
         <el-form-item label="姓名">
           <el-input
@@ -20,10 +20,10 @@
           />
         </el-form-item>
         <el-form-item label="密码">
-          <el-input 
-          placeholder="请输入密码" 
-          prefix-icon="el-icon-lock" 
-          v-model="login_form.password" 
+          <el-input
+          placeholder="请输入密码"
+          prefix-icon="el-icon-lock"
+          v-model="login_form.password"
           show-password />
         </el-form-item>
           <el-button
@@ -34,7 +34,7 @@
           登录
           </el-button>
 
-          <el-link 
+          <el-link
           icon="el-icon-edit"
           href="/register">
             注册
