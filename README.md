@@ -24,3 +24,40 @@ npm run build --report
 # install element-ui
 npm i element-ui -S
 ```
+
+## 项目组织
+
+所有页面的相关代码写在 src 文件夹下
+
+- static: 静态文件，如图片，抽空搬到 assets 里最好
+- styles: .scss 文件，如果需要的话
+- router: 项目路由
+- assets: 放图片，字体之类的
+- api: 前端接口函数
+- utils: 组件 js，遵循 Vue 全局组件的写法，可以方便 api 内的函数调用
+- views: 前端页面的代码
+- components: 前端组件
+
+现已完成顶部导航栏的初步UI（功能未绑定），使用方法:
+
+```vue
+<template>
+    <div class="navbar">
+    <ibird-nav />
+    </div>
+</template>
+
+<script>
+import NavBar from '../components/navbar'  
+export default {
+    components: {
+        "ibird-nav": NavBar
+    },
+    data(){
+        return{
+
+        }
+    },
+}
+</script>
+```

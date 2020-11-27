@@ -14,6 +14,16 @@ export default new Router({
       path: '/register',
       name: 'Register',
       component: () => import('@/views/Register')
+    },
+    {
+      path: '/home',
+      name: 'Home',
+      component: () => import('@/views/HomePage')
+    },
+    {
+      path: '/identify',
+      name: "Identification",
+      component: () => import('@/views/BirdIdentify')
     }
   ]
 })
