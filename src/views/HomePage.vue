@@ -5,16 +5,16 @@
 </template>
 
 <script>
-import NavBar from '../components/navbar'  
+import NavBar from '../components/navbar'
 export default {
-    components: {
-        "ibird-nav": NavBar
-    },
-    data(){
-        return{
+  components: {
+    'ibird-nav': NavBar
+  },
+  data () {
+    return {
 
-        }
-    },
+    }
+  }
 }
 </script>
 

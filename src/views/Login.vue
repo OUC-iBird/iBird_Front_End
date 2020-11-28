@@ -46,15 +46,15 @@
 
 <script>
 export default {
-  data() {
-      return {
-        src: '../static/img/background.jpg',
-        login_form: {
-          password: "",
-          username: ""
-        }
+  data () {
+    return {
+      src: '../static/img/background.jpg',
+      login_form: {
+        password: '',
+        username: ''
       }
-    },
+    }
+  },
   methods: {
     onSubmit () {
       console.log('submit!')

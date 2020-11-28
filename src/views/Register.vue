@@ -2,17 +2,17 @@
 <el-container>
   <el-aside width="50%">
     <el-image
-    :src="src" 
+    :src="src"
     style="width: 100%; height: 380px;"
     >
     </el-image>
   </el-aside>
   <el-main class="form-card">
     <h1> iBird </h1>
-    <el-form 
+    <el-form
       :model="registerForm"
-      status-icon 
-      :rules="rules" 
+      status-icon
+      :rules="rules"
       ref="registerForm"
       label-width="100px">
       <el-form-item label="用户名" prop="checkName">
@@ -23,7 +23,7 @@
         show-word-limit>
         </el-input>
       </el-form-item>
-      
+
       <el-form-item label="邮箱">
         <el-input
         v-model="registerForm.email"
@@ -31,21 +31,21 @@
         >
         </el-input>
       </el-form-item>
-      
+
       <el-form-item label="密码" prop="pass">
-        <el-input 
+        <el-input
         type="password"
         prefix-icon="el-icon-lock"
-        v-model="registerForm.pass" 
+        v-model="registerForm.pass"
         autocomplete="off"
         show-password
         >
         </el-input>
       </el-form-item>
       <el-form-item label="确认密码" prop="checkPass">
-        <el-input 
-        type="password" 
-        v-model="registerForm.checkPass" 
+        <el-input
+        type="password"
+        v-model="registerForm.checkPass"
         prefix-icon="el-icon-lock"
         autocomplete="off"
         show-password>
@@ -61,72 +61,71 @@
 </el-container>
 </template>
 
-
 <script>
-  export default {
-    data() {
-      var validatePass = (rule, value, callback) => {
-        if (value === '') {
-          callback(new Error('请输入密码'));
-        } else {
-          if (this.registerForm.checkPass !== '') {
-            this.$refs.registerForm.validateField('checkPass');
-          }
-          callback();
+export default {
+  data () {
+    var validatePass = (rule, value, callback) => {
+      if (value === '') {
+        callback(new Error('请输入密码'))
+      } else {
+        if (this.registerForm.checkPass !== '') {
+          this.$refs.registerForm.validateField('checkPass')
         }
-      };
-      var validatePass2 = (rule, value, callback) => {
-        if (value === '') {
-          callback(new Error('请再次输入密码'));
-        } else if (value !== this.registerForm.pass) {
-          callback(new Error('两次输入密码不一致!'));
-        } else {
-          callback();
-        }
-      };
-      var validateName = (rule, value, callback) => {
-        if (value === ''){
-          callback(new Error("请输入用户名"));
-        }
-      };
-      return {
-        src: '../static/img/background.jpg',
-        registerForm: {
-          pass: '',
-          checkPass: '',
-          username: '',
-          email: '',
-        },
-        rules: {
-          checkName: [
-            { validator: validateName, trigger: 'blur' }
-          ],
-          pass: [
-            { validator: validatePass, trigger: 'blur' }
-          ],
-          checkPass: [
-            { validator: validatePass2, trigger: 'blur' }
-          ],
-        },
-      };
-    },
-    methods: {
-      // 提交
-      submitForm(formName) {
-        this.$refs[formName].validate((valid) => {
-          if (valid) {
-            alert('submit!');
-          } else {
-            console.log('error submit!!');
-            return false;
-          }
-        });
-      },
-      resetForm(formName) {
-        this.$refs[formName].resetFields();
+        callback()
       }
     }
+    var validatePass2 = (rule, value, callback) => {
+      if (value === '') {
+        callback(new Error('请再次输入密码'))
+      } else if (value !== this.registerForm.pass) {
+        callback(new Error('两次输入密码不一致!'))
+      } else {
+        callback()
+      }
+    }
+    var validateName = (rule, value, callback) => {
+      if (value === '') {
+        callback(new Error('请输入用户名'))
+      }
+    }
+    return {
+      src: '../static/img/background.jpg',
+      registerForm: {
+        pass: '',
+        checkPass: '',
+        username: '',
+        email: ''
+      },
+      rules: {
+        checkName: [
+          { validator: validateName, trigger: 'blur' }
+        ],
+        pass: [
+          { validator: validatePass, trigger: 'blur' }
+        ],
+        checkPass: [
+          { validator: validatePass2, trigger: 'blur' }
+        ]
+      }
+    }
+  },
+  methods: {
+    // 提交
+    submitForm (formName) {
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          alert('submit!')
+        } else {
+          console.log('error submit!!')
+          return false
+        }
+      })
+    },
+    resetForm (formName) {
+      this.$refs[formName].resetFields()
+    }
   }
+}
 </script>
 
 <style scoped>

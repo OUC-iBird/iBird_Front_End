@@ -10,15 +10,15 @@
       :show-file-list="false"
       :on-success="handleAvatarSuccess"
       :before-upload="beforeAvatarUpload">
-      
+
       <i class="el-icon-plus bird-uploader-icon"></i>
     </el-upload>
     <div class="el-upload__tip" slot="tip">只能上传jpg/png文件，且不超过5MB</div>
       <div class="description-container">
         <div v-if="imageUrl" class="bird-description">
-          <el-image 
+          <el-image
           fit="contain"
-          :src="imageUrl" 
+          :src="imageUrl"
           class="bird">
           </el-image>
           <div class="text-description">
@@ -35,53 +35,52 @@
         </div>
       </div>
     </div>
-    
-</template>
 
+</template>
 
 <script>
 import NavBar from '../components/navbar'
 import { MessageBox, Message } from 'element-ui'
 export default {
-    components: {
-        "ibird-nav": NavBar
-    },
-    data() {
-      return {
-        imageUrl: '',
-        param: {
-           "usage": "p",
-        },
-        default_img: "../static/img/4444.jpg"
-      };
-    },
-    methods: {
-      handleAvatarSuccess(res, file) {
-        //TODO:这里应该把域名抽出来
-        this.imageUrl = "https://weparallelines.top" + res.data.path
-        Message({
-            message: res.msg,
-            type: 'success',
-            duration: 5 * 1000
-        })
-        // this.imageUrl = URL.createObjectURL(file.raw);
+  components: {
+    'ibird-nav': NavBar
+  },
+  data () {
+    return {
+      imageUrl: '',
+      param: {
+        'usage': 'p'
       },
-      beforeAvatarUpload(file) {
-        const isJPG = (file.type === 'image/jpeg' || file.type === 'image/png' || file.type === 'image/jpg');
-        const isLt5M = file.size / 1024 / 1024 < 5;
-
-        if (!isJPG) {
-          this.$message.error('上传头像图片只能是 JPG 格式!');
-        }
-        if (!isLt5M) {
-          this.$message.error('上传头像图片大小不能超过 5MB!');
-        }
-        return isJPG && isLt5M;
-      },
-      handlePreview(file) {
-        console.log(file);
-      }
+      default_img: '../static/img/4444.jpg'
     }
+  },
+  methods: {
+    handleAvatarSuccess (res, file) {
+      // TODO:这里应该把域名抽出来
+      this.imageUrl = 'https://weparallelines.top' + res.data.path
+      Message({
+        message: res.msg,
+        type: 'success',
+        duration: 5 * 1000
+      })
+      // this.imageUrl = URL.createObjectURL(file.raw);
+    },
+    beforeAvatarUpload (file) {
+      const isJPG = (file.type === 'image/jpeg' || file.type === 'image/png' || file.type === 'image/jpg')
+      const isLt5M = file.size / 1024 / 1024 < 5
+
+      if (!isJPG) {
+        this.$message.error('上传头像图片只能是 JPG 格式!')
+      }
+      if (!isLt5M) {
+        this.$message.error('上传头像图片大小不能超过 5MB!')
+      }
+      return isJPG && isLt5M
+    },
+    handlePreview (file) {
+      console.log(file)
+    }
+  }
 }
 </script>
 
