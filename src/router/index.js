@@ -24,6 +24,16 @@ export default new Router({
       path: '/identify',
       name: "Identification",
       component: () => import('@/views/BirdIdentify')
+    },
+    {
+      path: '/center',
+      name: "UserCenter",
+      component: () => import('@/views/PersonalCenter')
+    },
+    {
+      path: "/test",
+      name: "Test",
+      component: () => import('@/components/MomentsCard')
     }
   ]
 })

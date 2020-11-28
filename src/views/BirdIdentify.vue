@@ -1,5 +1,5 @@
 <template>
-    <div class="navbar">
+    <div class="content">
     <ibird-nav />
     <el-upload
       class="bird-uploader"
@@ -7,7 +7,7 @@
       name="img"
       :data="param"
       :on-preview="handlePreview"
-      :show-file-list="false"
+      show-file-list="false"
       :on-success="handleAvatarSuccess"
       :before-upload="beforeAvatarUpload">
 
