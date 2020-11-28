@@ -40,7 +40,8 @@
 
 
 <script>
-import NavBar from '../components/navbar'  
+import NavBar from '../components/navbar'
+import { MessageBox, Message } from 'element-ui'
 export default {
     components: {
         "ibird-nav": NavBar
@@ -56,7 +57,14 @@ export default {
     },
     methods: {
       handleAvatarSuccess(res, file) {
-        this.imageUrl = URL.createObjectURL(file.raw);
+        //TODO:这里应该把域名抽出来
+        this.imageUrl = "https://weparallelines.top" + res.data.path
+        Message({
+            message: res.msg,
+            type: 'success',
+            duration: 5 * 1000
+        })
+        // this.imageUrl = URL.createObjectURL(file.raw);
       },
       beforeAvatarUpload(file) {
         const isJPG = (file.type === 'image/jpeg' || file.type === 'image/png' || file.type === 'image/jpg');

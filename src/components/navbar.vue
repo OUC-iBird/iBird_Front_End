@@ -9,10 +9,14 @@
       <el-image :src="logo"
       style="width: 120px; height: 50px"></el-image>
   </el-menu-item>
-  <el-menu-item index="2" style="float:right">
-      <el-avatar :size="40" src="../static/img/avatar_default.png" @error="errorHandler">
-      </el-avatar>
-  </el-menu-item>
+  <el-submenu index="2" style="float:right">
+      <template slot="title">
+        <el-avatar :size="40" src="../static/img/avatar_default.png" @error="errorHandler">
+        </el-avatar>
+      </template>
+      <el-menu-item index="2-1" class="submenu">个人中心</el-menu-item>
+      <el-menu-item index="2-2" class="submenu">发布动态</el-menu-item>
+  </el-submenu>
   <el-menu-item index="3" style="float:right">
       <span class="RedTextColor">+   发布</span>
   </el-menu-item>
@@ -61,4 +65,14 @@
     border-radius: 30px;
     height: 18px;
 }
+
+.submenu {
+  text-align: center;
+  display: block;
+}
+
+.el-munu--popup {
+  width: 100px;
+}
+
 </style>
