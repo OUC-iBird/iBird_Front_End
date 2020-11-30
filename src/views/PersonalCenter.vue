@@ -29,7 +29,12 @@
         个人信息
         <div class="personal-moments">
           <el-row v-for="i in count">
-            <el-col :span="24"><ibird-moments class="moment-card"/></el-col>
+            <el-col :span="24">
+              <ibird-moments
+                class="moment-card"
+                username="组件传参测试"
+                moment="还行"
+              /></el-col>
           </el-row>
         </div>
       </el-tab-pane>

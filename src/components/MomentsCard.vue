@@ -5,15 +5,25 @@
     <el-avatar :size="50" :src="avatar"></el-avatar>
     <span class="span-name">{{username}}</span><br>
     <span class="span-time">{{ptime}}</span>
+    <div v-if="location_visible" class="location">
+      <i class="el-icon-location-information"></i>
+      <i>{{location}}</i>
+    </div>
   </el-header>
   <el-main class="record-text">{{moment}}</el-main>
-  <el-image
+  <el-footer height="150px">
+    <el-image
       style="width: 200px; height: 150px"
       fit="contain"
       class="record-img"
       :src="thumbnail_img"
       :preview-src-list="preview_img">
-  </el-image>
+    </el-image>
+    <div v-if="thumb.thumb_visible" class="thumb">
+      <i class="el-icon-caret-top">{{thumb.thumb_num}}</i>
+    </div>
+  </el-footer>
+
 
 
 </el-container>
@@ -23,14 +33,61 @@
 // 个人动态的组件
 export default {
   name: 'MomentsCard',
-  data() {
-    return {
-      username: "Ctwo",
-      avatar: "../static/img/avatar_default",
-      ptime: "1分钟前",
-      thumbnail_img: "../static/img/moments_test.jpg",
-      preview_img: "../static/img/moments_test.jpg",
-      moment: "前端好难啊啊啊啊啊啊啊啊啊...",
+  // data() {
+  //   return {
+  //     username: "Ctwo",
+  //     avatar: "../static/img/avatar_default",
+  //     ptime: "1分钟前",
+  //     thumbnail_img: "../static/img/moments_test.jpg",
+  //     preview_img: ["../static/img/moments_test.jpg"],
+  //     moment: "前端好难啊啊啊啊啊啊啊啊啊...",
+  //   }
+  // },
+
+  props: {
+    username: {
+      type: String,
+      default: "Ctwo"
+    },
+    avatar: {
+      type: String,
+      default: "../static/img/avatar_default",
+    },
+    ptime: {
+      type: String,
+      default: "1分钟前",
+    },
+    thumbnail_img: {
+      type: String,
+      default: "../static/img/moments_test.jpg",
+    },
+    preview_img: {
+      type: Array,
+      default: () => {
+        return ["../static/img/moments_test.jpg"]
+      }
+    },
+    moment: {
+      type: String,
+      default: "前端好难啊啊啊啊啊啊啊啊啊..."
+    },
+    location: {
+      type: String,
+      default: "青岛-崂山区"
+    },
+    location_visible: {
+      type: Boolean,
+      default: true
+    },
+    thumb: {
+      type: Object,
+      default: ()=>{
+        return {
+          thumb_num: 0,
+          thumb_visible: true,
+          thumb_status: true,
+        }
+      }
     }
   }
 }
@@ -72,6 +129,17 @@ export default {
   padding-bottom: 0;
 }
 .record-img {
-  padding-left: 20px;
+}
+
+.location {
+  margin-top: -20px;
+  float: right;
+}
+.thumb{
+  float: right;
+}
+.thumb > i{
+  margin-top: 120px;
+  font-size: 20px;
 }
 </style>
