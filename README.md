@@ -64,57 +64,60 @@ export default {
 
 - 增加了个人动态卡片的子组件，使用方法（有问题提issue）:
 
-```vue
-/*
-    username: {
+```
+# 这里是参数的类型和具体的含义
+    username: {  # 将要显示的用户名
       type: String,
       default: "Ctwo"
     },
-    avatar: {
+    avatar: {  # 头像
       type: String,
       default: "../static/img/avatar_default",
     },
-    ptime: {
+    ptime: { # 时间
       type: String,
       default: "1分钟前",
     },
-    thumbnail_img: {
+    thumbnail_img: {  # 发的图片的缩略图
       type: String,
       default: "../static/img/moments_test.jpg",
     },
-    preview_img: {
+    preview_img: {  # 发的图片的查看大图
       type: Array,
       default: () => {
         return ["../static/img/moments_test.jpg"]
       }
     },
-    moment: {
+    moment: {  # 分享内容
       type: String,
       default: "前端好难啊啊啊啊啊啊啊啊啊..."
     },
-    location: {
+    location: {  # 地点
       type: String,
       default: "青岛-崂山区"
     },
-    location_visible: {
+    location_visible: {  # 是否显示地点
       type: Boolean,
       default: true
     },
-    thumb: {
+    thumb: {  # 点赞
       type: Object,
       default: ()=>{
         return {
-          thumb_num: 0,
-          thumb_visible: true,
-          thumb_status: true,
+          thumb_num: 0,  # 点赞次数
+          thumb_visible: true,  # 是否可见
+          thumb_status: true,  # 赞（不赞是false）
         }
       }
     }
-*/
+
+```
+
+```vue
 <template>
     <div>
     <ibird-moments
-     username:"yourname",
+     username: "yourname",
      ......
      />
     </div>

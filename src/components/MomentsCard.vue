@@ -20,7 +20,8 @@
       :preview-src-list="preview_img">
     </el-image>
     <div v-if="thumb.thumb_visible" class="thumb">
-      <i class="el-icon-caret-top">{{thumb.thumb_num}}</i>
+      <i @click="handleThumbup" v-bind:class="icon_class"></i>
+      <span>{{thumb.thumb_num}}</span>
     </div>
   </el-footer>
 
@@ -33,17 +34,36 @@
 // 个人动态的组件
 export default {
   name: 'MomentsCard',
-  // data() {
-  //   return {
-  //     username: "Ctwo",
-  //     avatar: "../static/img/avatar_default",
-  //     ptime: "1分钟前",
-  //     thumbnail_img: "../static/img/moments_test.jpg",
-  //     preview_img: ["../static/img/moments_test.jpg"],
-  //     moment: "前端好难啊啊啊啊啊啊啊啊啊...",
-  //   }
-  // },
+  data() {
+    return {
+      icon_class:{
+        "iconfont": true,
+        "icon-like-fill" : true,
+        "icon-like": false,
+      }
+    }
+  },
+  methods:{
+    handleThumbup(){
+      if(this.thumb.thumb_status){
+        this.thumb.thumb_status = false;
+        this.icon_class['icon-like'] = true;
+        this.icon_class['icon-like-fill'] = false;
+      }
+      else{
+        this.thumb.thumb_status = true;
+        this.icon_class['icon-like'] = false;
+        this.icon_class['icon-like-fill'] = true;
+      }
 
+      console.log("点赞");
+    },
+    handleCancelThumbup(){
+      this.thumb.thumb_status = false;
+
+      console.log("取消点赞");
+    }
+  },
   props: {
     username: {
       type: String,
@@ -89,18 +109,35 @@ export default {
         }
       }
     }
+  },
+  mounted () {
+    if (this.thumb.thumb_status){
+
   }
+}
+
 }
 </script>
 
 <style scoped>
+
+@import "//at.alicdn.com/t/font_2033785_bfjbg96cpjm.css";
+
+.iconfont{
+  font-family:"iconfont" !important;
+  font-size:30px;font-style:normal;
+  -webkit-font-smoothing: antialiased;
+  -webkit-text-stroke-width: 0.2px;
+  -moz-osx-font-smoothing: grayscale;
+  cursor: pointer;
+}
+
+
 .card-border {
   box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);
   width: 80%;
   text-align: left;
 }
-
-
 
 .card-border .user-msg{
   margin-top: 15px;
@@ -137,9 +174,12 @@ export default {
 }
 .thumb{
   float: right;
+  top: 70%;
+  position: relative;
 }
-.thumb > i{
-  margin-top: 120px;
-  font-size: 20px;
+.thumb > span{
+  font-size: 24px;
 }
+
+
 </style>
