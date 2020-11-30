@@ -38,7 +38,7 @@ npm i element-ui -S
 - views: 前端页面的代码
 - components: 前端组件
 
-现已完成顶部导航栏的初步UI（功能未绑定），使用方法:
+- 现已完成顶部导航栏的初步UI（功能未绑定），使用方法:
 
 ```vue
 <template>
@@ -48,7 +48,7 @@ npm i element-ui -S
 </template>
 
 <script>
-import NavBar from '../components/navbar'  
+import NavBar from '../components/navbar'
 export default {
     components: {
         "ibird-nav": NavBar
@@ -58,6 +58,73 @@ export default {
 
         }
     },
+}
+</script>
+```
+
+- 增加了个人动态卡片的子组件，使用方法（有问题提issue）:
+
+```vue
+/*
+    username: {
+      type: String,
+      default: "Ctwo"
+    },
+    avatar: {
+      type: String,
+      default: "../static/img/avatar_default",
+    },
+    ptime: {
+      type: String,
+      default: "1分钟前",
+    },
+    thumbnail_img: {
+      type: String,
+      default: "../static/img/moments_test.jpg",
+    },
+    preview_img: {
+      type: Array,
+      default: () => {
+        return ["../static/img/moments_test.jpg"]
+      }
+    },
+    moment: {
+      type: String,
+      default: "前端好难啊啊啊啊啊啊啊啊啊..."
+    },
+    location: {
+      type: String,
+      default: "青岛-崂山区"
+    },
+    location_visible: {
+      type: Boolean,
+      default: true
+    },
+    thumb: {
+      type: Object,
+      default: ()=>{
+        return {
+          thumb_num: 0,
+          thumb_visible: true,
+          thumb_status: true,
+        }
+      }
+    }
+*/
+<template>
+    <div>
+    <ibird-moments
+     username:"yourname",
+     ......
+     />
+    </div>
+</template>
+<script>
+import MomentsCard from '../components/MomentsCard'
+export default {
+  components: {
+    'ibird-moments': MomentsCard,
+  },
 }
 </script>
 ```
