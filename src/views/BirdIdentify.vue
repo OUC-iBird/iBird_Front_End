@@ -105,8 +105,11 @@ export default {
 }
 </script>
 
-<style>
-  .bird-uploader .el-upload {
+<style scoped>
+  .content {
+    text-align: center;
+  }
+  .bird-uploader {
     top: 20px;
     border: 1px dashed #000000;
     border-radius: 6px;
@@ -115,10 +118,11 @@ export default {
     overflow: hidden;
     width: 600px;
     height: 250px;
+    display: inline-block;
   }
-  .bird-uploader .el-upload:hover {
-    border-color: #6424cc;
-  }
+  /*.bird-uploader :hover {*/
+  /*  border-color: #6424cc;*/
+  /*}*/
   .bird-uploader-icon {
     font-size: 78px;
     color: #8c939d;

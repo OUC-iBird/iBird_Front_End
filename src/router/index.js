@@ -6,6 +6,13 @@ export default new Router({
   mode: 'history',
   routes: [
     {
+      path: '/',
+      redirect: '/identify',
+      meta: {
+        title: "IBird"
+      }
+    },
+    {
       path: '/login',
       name: 'Login',
       component: () => import('@/views/Login')
@@ -30,10 +37,5 @@ export default new Router({
       name: "UserCenter",
       component: () => import('@/views/PersonalCenter')
     },
-    {
-      path: "/test",
-      name: "Test",
-      component: () => import('@/components/MomentsCard')
-    }
   ]
 })
