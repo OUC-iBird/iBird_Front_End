@@ -65,7 +65,9 @@ export default {
   },
   methods: {
     handleAvatarSuccess (res, file) {
-      this.imageUrl = 'https://weparallelines.top' + res.data.path
+      this.imageUrl = URL.createObjectURL(file.raw);
+      // this.imageUrl = 'https://weparallelines.top' + res.data.path
+
       Message({
         message: res.msg,
         type: 'success',
@@ -82,7 +84,7 @@ export default {
         this.text_para_class.idf_waiting = false;
         this.tips = "识别完成"
       })
-      // this.imageUrl = URL.createObjectURL(file.raw);
+
     },
     beforeAvatarUpload (file) {
       const isJPG = (file.type === 'image/jpeg' || file.type === 'image/png' || file.type === 'image/jpg')
