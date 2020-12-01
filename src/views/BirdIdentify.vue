@@ -7,7 +7,7 @@
       name="img"
       :data="param"
       :on-preview="handlePreview"
-      show-file-list="false"
+      :show-file-list="list_status"
       :on-success="handleAvatarSuccess"
       :before-upload="beforeAvatarUpload">
 
@@ -22,13 +22,13 @@
           class="bird">
           </el-image>
           <div class="text-description">
-              <span class="text-header">识别结果</span>
-              <div class="text-para">
-                <el-row>
-                <el-col :span="12">
-                    <div class="grid-content bg-purple">名称</div></el-col>
-                <el-col :span="12">
-                    <div class="grid-content bg-purple-light">麻雀</div></el-col>
+              <span class="text-header">{{tips}}</span>
+              <div class="text-para" v-bind:class="text_para_class">
+                <el-row v-for="i in 5" class="row">
+                <el-col :span="16">
+                    <div class="grid-content bg-purple">{{result[i-1][0]}}</div></el-col>
+                <el-col :span="8">
+                    <div class="grid-content bg-purple-light">{{result[i-1][2] | toPercent(2)}}</div></el-col>
                 </el-row>
             </div>
           </div>
@@ -41,6 +41,8 @@
 <script>
 import NavBar from '../components/navbar'
 import { MessageBox, Message } from 'element-ui'
+import { test, identify_result } from '../api/identify-result'
+
 export default {
   components: {
     'ibird-nav': NavBar
@@ -51,17 +53,34 @@ export default {
       param: {
         'usage': 'p'
       },
-      default_img: '../static/img/4444.jpg'
+      default_img: '../static/img/4444.jpg',
+      list_status: false,
+      result: [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
+      tips: "正在识别....",
+      text_para_class : {
+        idf_waiting: true,
+        idf_finish: false,
+      }
     }
   },
   methods: {
     handleAvatarSuccess (res, file) {
-      // TODO:这里应该把域名抽出来
       this.imageUrl = 'https://weparallelines.top' + res.data.path
       Message({
         message: res.msg,
         type: 'success',
         duration: 5 * 1000
+      })
+      this.tips = "识别中";
+      this.text_para_class.idf_finish = false;
+      this.text_para_class.idf_waiting = true;
+      identify_result({
+        path: res.data.path
+      }).then((response)=>{
+        this.result = response.data.data.result;
+        this.text_para_class.idf_finish = true;
+        this.text_para_class.idf_waiting = false;
+        this.tips = "识别完成"
       })
       // this.imageUrl = URL.createObjectURL(file.raw);
     },
@@ -70,17 +89,17 @@ export default {
       const isLt5M = file.size / 1024 / 1024 < 5
 
       if (!isJPG) {
-        this.$message.error('上传头像图片只能是 JPG 格式!')
+        this.$message.error('上传图片只能是 JPG 格式!')
       }
       if (!isLt5M) {
-        this.$message.error('上传头像图片大小不能超过 5MB!')
+        this.$message.error('上传图片大小不能超过 5MB!')
       }
       return isJPG && isLt5M
     },
     handlePreview (file) {
       console.log(file)
     }
-  }
+  },
 }
 </script>
 
@@ -131,21 +150,27 @@ export default {
   }
   .text-description {
       float: left;
-      width: 54%;
+      width: 57%;
       margin-left: 2%;
       margin-right: 2%;
   }
   .text-description .text-header{
-      height: 50px;
+      height: 37px;
       display: inline-block;
       line-height: 50px;
   }
-
   .text-description .text-para {
       border:2px dashed #000000;
-      height: 160px;;
+      height: 180px;
   }
   .text-description .text-para .el-row{
       top: 20px;
   }
+  .idf_waiting{
+    display: none;
+  }
+  .text-para .row {
+    height: 30px;
+  }
+
 </style>
