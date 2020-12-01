@@ -1,12 +1,17 @@
 <template>
   <div id="app">
-    <router-view/>
+    <div style="min-height:75%; padding-bottom:50px;">
+      <router-view/>
+    </div>
+    <ibird-footer/>
   </div>
 </template>
 
 <script>
+import IbirdFooter from "./components/footer";
 export default {
-  name: 'App'
+  name: 'App',
+  components: {IbirdFooter}
 }
 </script>
 
@@ -19,7 +24,8 @@ body{
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: #2c3e50;
-  margin-top: 20px;
+  /*color: #2c3e50;*/
+  /*margin-top: 20px;*/
+  height: 100%;
 }
 </style>
