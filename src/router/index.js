@@ -48,6 +48,11 @@ export default new Router({
       component: () => import('@/views/404')
     },
     {
+      path: '/publish',
+      name: "Publish",
+      component: () => import('@/views/Publish')
+    },
+    {
       path: "*",
       redirect: "/404"
     }
