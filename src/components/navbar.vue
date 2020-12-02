@@ -23,7 +23,7 @@
   <el-menu-item index="4" style="float:right">MAP</el-menu-item>
   <el-menu-item index="5" style="float:right">动态</el-menu-item>
   <el-menu-item index="6" style="float:right">识别</el-menu-item>
-  
+
 </el-menu>
 </template>
 
@@ -41,7 +41,7 @@
         logo: "../static/img/logo.png"
       };
     },
-    
+
     methods: {
       handleSelect(key, keyPath) {
         if(key === 3){
@@ -55,7 +55,7 @@
   }
 </script>
 
-<style>
+<style scoped>
 .RedTextColor {
     background-color:rgb(255, 126, 126) !important;
     color: #ffffff;

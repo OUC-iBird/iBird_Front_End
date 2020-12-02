@@ -1,23 +1,22 @@
 <template>
   <div id="app">
-    <div style="min-height:75%; padding-bottom:50px;">
+    <div>
       <router-view/>
     </div>
-    <ibird-footer/>
+
   </div>
 </template>
 
 <script>
-import IbirdFooter from "./components/footer";
 export default {
   name: 'App',
-  components: {IbirdFooter}
 }
 </script>
 
 <style>
 body{
   margin: 0;
+  padding: 0;
 }
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;

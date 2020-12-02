@@ -13,43 +13,188 @@
 
       <i class="el-icon-plus bird-uploader-icon"></i>
     </el-upload>
-    <div class="el-upload__tip" slot="tip">只能上传jpg/png文件，且不超过5MB</div>
-      <div class="description-container">
-        <div v-if="imageUrl" class="bird-description">
+    <div class="el-upload__tip" slot="tip">只能上传jpg/png文件，且不超过5MB </div>
+    <div class="description-container" v-bind:class="text_para_class">
+        <div v-if="imageUrl" class="bird-img">
           <el-image
           fit="contain"
           :src="imageUrl"
           class="bird">
           </el-image>
-          <div class="text-description">
-              <span class="text-header">{{tips}}</span>
-              <div class="text-para" v-bind:class="text_para_class">
-                <el-row v-for="i in 5" class="row">
-                <el-col :span="16">
-                    <div class="grid-content bg-purple">{{result[i-1][0]}}</div></el-col>
-                <el-col :span="8">
-                    <div class="grid-content bg-purple-light">{{result[i-1][2] | toPercent(2)}}</div></el-col>
-                </el-row>
-            </div>
-          </div>
         </div>
+      <el-row :gutter="12" class="card">
+        <el-col :span="14">
+          <el-popover
+            placement="right"
+            title="标题"
+            width="400px"
+            trigger="manual"
+            content="这是一段内容,这是一段内容,这是一段内容,这是一段内容。"
+            v-model="v1">
+            <div slot="reference"
+                 class="card-trigger"
+                 @click="v1 = !v1"
+                 @mouseenter="v1 = true"
+                 @mouseleave="v1 = false">
+              <el-card shadow="always"
+                       class="bird-card">
+                <el-image
+                  :src="birds_img[0]"
+                  fit="contain"
+                  class="example">
+                </el-image>
+                <span class="bird-name">{{birds_name[0]}}</span>
+                <i class="reliable-number">{{birds_reliable[0]|toPercent}}</i>
+              </el-card>
+            </div>
+          </el-popover>
+
+        </el-col>
+      </el-row>
+
+      <el-row :gutter="12" class="card">
+        <el-col :span="14">
+          <el-popover
+            placement="right"
+            title="标题"
+            width="400px"
+            trigger="manual"
+            content="这是一段内容,这是一段内容,这是一段内容,这是一段内容。"
+            v-model="v2">
+            <div slot="reference"
+                 class="card-trigger"
+                 @click="v2 = !v2"
+                 @mouseenter="v2 = true"
+                 @mouseleave="v2 = false">
+              <el-card shadow="always"
+                       class="bird-card">
+                <el-image
+                  :src="birds_img[1]"
+                  fit="contain"
+                  class="example">
+                </el-image>
+                <span class="bird-name">{{birds_name[1]}}</span>
+                <i class="reliable-number">{{birds_reliable[1]|toPercent}}</i>
+              </el-card>
+            </div>
+          </el-popover>
+
+        </el-col>
+      </el-row>
+
+      <el-row :gutter="12" class="card">
+        <el-col :span="14">
+          <el-popover
+            placement="right"
+            title="标题"
+            width="400px"
+            trigger="manual"
+            content="这是一段内容,这是一段内容,这是一段内容,这是一段内容。"
+            v-model="v3">
+            <div slot="reference"
+                 class="card-trigger"
+                 @click="v3 = !v3"
+                 @mouseenter="v3 = true"
+                 @mouseleave="v3 = false">
+              <el-card shadow="always"
+                       class="bird-card">
+                <el-image
+                  :src="birds_img[2]"
+                  fit="contain"
+                  class="example">
+                </el-image>
+                <span class="bird-name">{{birds_name[2]}}</span>
+                <i class="reliable-number">{{birds_reliable[2]|toPercent}}</i>
+              </el-card>
+            </div>
+          </el-popover>
+
+        </el-col>
+      </el-row>
+
+      <el-row :gutter="12" class="card">
+        <el-col :span="14">
+          <el-popover
+            placement="right"
+            title="标题"
+            width="400px"
+            trigger="manual"
+            content="这是一段内容,这是一段内容,这是一段内容,这是一段内容。"
+            v-model="v4">
+            <div slot="reference"
+                 class="card-trigger"
+                 @click="v4 = !v4"
+                 @mouseenter="v4 = true"
+                 @mouseleave="v4 = false">
+              <el-card shadow="always"
+                       class="bird-card">
+                <el-image
+                  :src="birds_img[3]"
+                  fit="contain"
+                  class="example">
+                </el-image>
+                <span class="bird-name">{{birds_name[3]}}</span>
+                <i class="reliable-number">{{birds_reliable[3]|toPercent}}</i>
+              </el-card>
+            </div>
+          </el-popover>
+
+        </el-col>
+      </el-row>
+
+      <el-row :gutter="12" class="card">
+        <el-col :span="14">
+          <el-popover
+            class="popover"
+            placement="right"
+            title="标题"
+            width="400px"
+            style="height: 300px"
+            trigger="manual"
+            content="这是一段内容,这是一段内容,这是一段内容,这是一段内容。"
+            v-model="v5">
+            <div slot="reference"
+                 class="card-trigger"
+                 @click="v5 = !v5"
+                 @mouseenter="v5 = true"
+                 @mouseleave="v5 = false">
+              <el-card shadow="always"
+                       class="bird-card">
+                <el-image
+                  :src="birds_img[4]"
+                  fit="contain"
+                  class="example">
+                </el-image>
+                <span class="bird-name">{{birds_name[4]}}</span>
+                <i class="reliable-number">{{birds_reliable[4]|toPercent}}</i>
+              </el-card>
+            </div>
+          </el-popover>
+
+        </el-col>
+      </el-row>
+
       </div>
+    <ibird-footer />
     </div>
+
 
 </template>
 
 <script>
 import NavBar from '../components/navbar'
+import Footer from '../components/footer'
 import { MessageBox, Message } from 'element-ui'
 import { test, identify_result } from '../api/identify-result'
 
 export default {
   components: {
-    'ibird-nav': NavBar
+    'ibird-nav': NavBar,
+    'ibird-footer': Footer
   },
   data () {
     return {
-      imageUrl: '',
+      imageUrl: '1',
       param: {
         'usage': 'p'
       },
@@ -58,9 +203,23 @@ export default {
       result: [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
       tips: "正在识别....",
       text_para_class : {
-        idf_waiting: true,
-        idf_finish: false,
-      }
+        idf_waiting: false,
+        idf_finish: true,
+      },
+      birds_img: [
+        "https://weparallelines.top//birds/1.jpg",
+        "https://weparallelines.top//birds/2.jpg",
+        "https://weparallelines.top//birds/3.jpg",
+        "https://weparallelines.top//birds/4.jpg",
+        "https://weparallelines.top//birds/5.jpg"
+      ],
+      v1: false,
+      v2: false,
+      v3: false,
+      v4: false,
+      v5: false,
+      birds_name : ["麻雀", "麻雀", "麻雀", "麻雀", "麻雀"],
+      birds_reliable: ["0.00", "0.00", "0.00", "0.00", "0.00"],
     }
   },
   methods: {
@@ -83,6 +242,8 @@ export default {
         this.text_para_class.idf_finish = true;
         this.text_para_class.idf_waiting = false;
         this.tips = "识别完成"
+      }).catch(()=>{
+        this.tips = "识别错误";
       })
 
     },
@@ -102,6 +263,9 @@ export default {
       console.log(file)
     }
   },
+  mounted () {
+    this.v1 = true;
+  }
 }
 </script>
 
@@ -116,29 +280,18 @@ export default {
     cursor: pointer;
     position: relative;
     overflow: hidden;
-    width: 600px;
+    width: 50%;
     height: 250px;
     display: inline-block;
   }
-  /*.bird-uploader :hover {*/
-  /*  border-color: #6424cc;*/
-  /*}*/
   .bird-uploader-icon {
     font-size: 78px;
     color: #8c939d;
-    width: 178px;
     height: 178px;
     line-height: 250px;
     text-align: center;
   }
-  .bird-description{
-      margin-top: 50px;
-
-  }
-  .bird-description .bird {
-    margin-top: 20px;
-    margin-bottom: 20px;
-    margin-left: 5%;
+  .bird-img .bird {
     width: 200px;
     height: 200px;
     float: left;
@@ -147,36 +300,55 @@ export default {
       position: relative;
       top: 20px;
   }
-  .bird-description {
-      width: 600px;
+  .bird-img {
+      margin-top: 50px;
       border: ridge;
       border-color: skyblue;
       position: relative;
       display: inline-block;
   }
-  .text-description {
-      float: left;
-      width: 57%;
-      margin-left: 2%;
-      margin-right: 2%;
-  }
-  .text-description .text-header{
-      height: 37px;
-      display: inline-block;
-      line-height: 50px;
-  }
-  .text-description .text-para {
-      border:2px dashed #000000;
-      height: 180px;
-  }
-  .text-description .text-para .el-row{
-      top: 20px;
+  .description-container{
+    display: inline-block;
+    width: 70%;
   }
   .idf_waiting{
     display: none;
   }
-  .text-para .row {
-    height: 30px;
+  .example {
+    float: left;
+    width: 100px;
+    height: 100px;
+  }
+  .expander-arrow {
+    cursor: default;
+    float: right;
+    margin-left: 10px;
+  }
+  .bird-card {
+    height: 140px;
+  }
+  .card-trigger {
+    height: 100%;
+    width: 100%;
   }
 
+  .bird-name {
+    margin-top: 45px;
+    font-size: 30px;
+    height: 40px;
+    top: 50px;
+    display: inline-block;
+  }
+  .reliable-number {
+    font-size: 25px;
+    float: right;
+  }
+
+  .card {
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
+  .popover{
+    height: 290px;
+  }
 </style>

@@ -37,5 +37,19 @@ export default new Router({
       name: "UserCenter",
       component: () => import('@/views/PersonalCenter')
     },
+    {
+      path: "/test",
+      name: "test",
+      component: () => import('@/views/test')
+    },
+    {
+      path: "/404",
+      name: "NotFound",
+      component: () => import('@/views/404')
+    },
+    {
+      path: "*",
+      redirect: "/404"
+    }
   ]
 })
