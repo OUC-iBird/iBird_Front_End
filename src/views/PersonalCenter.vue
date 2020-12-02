@@ -48,9 +48,9 @@
             infinite-scroll-disabled="disabled"
           >
             <el-row v-for="i in count">
-              <el-col :span="8"><el-image :src="url_1" fit="fill" class="gallery"></el-image></el-col>
-              <el-col :span="8"><el-image :src="url_2" fit="fill" class="gallery"></el-image></el-col>
-              <el-col :span="8"><el-image :src="url_3" fit="fill" class="gallery"></el-image></el-col>
+              <el-col :span="8"><el-image :src="url_1" fit="contain" class="gallery"></el-image></el-col>
+              <el-col :span="8"><el-image :src="url_2" fit="contain" class="gallery"></el-image></el-col>
+              <el-col :span="8"><el-image :src="url_3" fit="contain" class="gallery"></el-image></el-col>
             </el-row>
 <!--            <li v-for="i in count" class="list-item" style="height: 20px">{{ i }}</li>-->
           </ul>
@@ -147,7 +147,7 @@ export default {
 .infinite-list {
   overflow-x:hidden;
   overflow-y:scroll;
-  height: 360px;
+  height: 450px;
 }
 
 .personal-moments {

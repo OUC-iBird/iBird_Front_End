@@ -37,5 +37,10 @@ export default new Router({
       name: "UserCenter",
       component: () => import('@/views/PersonalCenter')
     },
+    {
+      path: '/publish',
+      name: "Publish",
+      component: () => import('@/views/Publish')
+    },
   ]
 })
