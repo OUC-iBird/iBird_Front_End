@@ -27,6 +27,10 @@ npm i element-ui -S
 # install axios
 npm install axios
 npm install --save axios vue-axios
+
+# install a map components power by baidu-map
+npm i --save vue-baidu-map
+
 ```
 
 ## 项目组织

@@ -51,11 +51,6 @@ export default new Router({
       }
     },
     {
-      path: "/test",
-      name: "test",
-      component: () => import('@/views/test'),
-    },
-    {
       path: "/404",
       name: "NotFound",
       component: () => import('@/views/404'),
@@ -69,6 +64,14 @@ export default new Router({
       component: () => import('@/views/Publish'),
       meta: {
         title: "发布"
+      }
+    },
+    {
+      path: '/map',
+      name: "Map",
+      component: () => import('@/views/Map'),
+      meta:{
+        title: "地图"
       }
     },
     {
