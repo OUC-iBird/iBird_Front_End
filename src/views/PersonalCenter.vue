@@ -148,11 +148,13 @@ export default {
   overflow-x:hidden;
   overflow-y:scroll;
   height: 450px;
+  margin-bottom: 100px;
 }
 
 .personal-moments {
   height: 360px;
   overflow-y: scroll;
+  margin-bottom: 100px;
 }
 
 .gallery {
