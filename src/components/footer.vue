@@ -1,7 +1,10 @@
 <template>
   <div class="footer" :style="{'position': pos}">
-      <a class="fotter-a" href="https://beian.miit.gov.cn" target="_blank">鲁ICP备2020045573号-1</a>
-      <span class="fotter-text">@ITStudio 2002-2020 All Right Reserved</span>
+    <a class="fotter-a" href="https://beian.miit.gov.cn" target="_blank">鲁ICP备2020045573号-1</a>
+    <span class="fotter-text">@ITStudio 2002-2020 All Right Reserved</span>
+    <span class="fotter-source">
+      <a target="_blank" href="https://icons8.com/icons/set/top-view-bird">Top View Bird icon</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a>
+    </span>
   </div>
 </template>
 
@@ -53,8 +56,8 @@ export default {
 
 <style scoped>
 .footer {
-  margin-top: 20px;
-  background: #555555;
+  margin-top: 140px;
+  background: #5e5d5d;
   color: #bfbfbf;
   width: 100%;
   bottom: 0;
@@ -70,6 +73,13 @@ export default {
 }
 
 .fotter-text {
+  line-height: 20px;
+  margin-top: 10px;
+  padding-right: 20px;
+  float: right;
+}
+
+.fotter-source{
   line-height: 20px;
   margin-top: 10px;
   padding-right: 20px;

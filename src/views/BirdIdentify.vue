@@ -18,13 +18,14 @@
       <div class="description-container" v-bind:class="text_para_class">
         <div v-if="imageUrl" class="bird-img">
           <el-image
-          fit="contain"
-          :src="imageUrl"
-          class="bird">
+            fit="contain"
+            :src="imageUrl"
+            class="bird">
           </el-image>
+          <div>{{tips}}</div>
         </div>
-        <div>{{tips}}</div>
-      <el-row :gutter="12" v-bind:class="card_control">
+      <div class="container">
+        <el-row :gutter="12" v-bind:class="card_control">
         <el-col :span="14">
           <el-popover
             placement="right"
@@ -174,7 +175,7 @@
 
         </el-col>
       </el-row>
-
+      </div>
       </div>
 
     </div>
@@ -235,20 +236,21 @@ export default {
       Message({
         message: res.msg,
         type: 'success',
-        duration: 5 * 1000
+        duration: 1000
       })
       this.tips = "识别中";
       this.text_para_class.idf_finish = true;
       this.text_para_class.idf_waiting = false;
+      this.pos = "relative";
       identify_result({
         path: res.data.path
       }).then((response)=>{
-        this.pos = "relative";
+
         this.result = response.data.data.result;
         for (let one=0; one<this.result.length; one++){
-          this.birds_img[one] = "https://weparallelines.top//birds/" + String(this.result[one][1]) + ".jpg";
-          this.birds_name[one] = this.result[one][0];
-          this.birds_reliable[one] = this.result[one][2]
+          this.birds_img[one] = "https://weparallelines.top/birds/" + String(this.result[one].id) + ".jpg";
+          this.birds_name[one] = this.result[one].label;
+          this.birds_reliable[one] = this.result[one].probability;
         }
         this.tips = "识别完成"
         this.card_control.card_visible = true;
@@ -261,7 +263,11 @@ export default {
     beforeAvatarUpload (file) {
       const isJPG = (file.type === 'image/jpeg' || file.type === 'image/png' || file.type === 'image/jpg')
       const isLt5M = file.size / 1024 / 1024 < 5
-
+      this.card_control.card_invisible = true;
+      this.card_control.card_visible = false;
+      this.pos = "absolute"
+      this.text_para_class.idf_waiting = true;
+      this.text_para_class.idf_finish = false;
       if (!isJPG) {
         this.$message.error('上传图片只能是 JPG 格式!')
       }
@@ -281,7 +287,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
   .content {
     text-align: center;
   }
@@ -303,7 +309,7 @@ export default {
     text-align: center;
   }
   .bird-img .bird {
-    width: 400px;
+    width: 300px;
     height: 400px;
     float: left;
   }
@@ -313,8 +319,8 @@ export default {
   }
   .bird-img {
       margin-top: 50px;
-      border: ridge;
-      border-color: skyblue;
+      /*border: ridge;*/
+      /*border-color: skyblue;*/
       position: relative;
       display: inline-block;
   }
@@ -322,6 +328,11 @@ export default {
     display: inline-block;
     width: 70%;
   }
+
+  .container {
+    margin-left: 100px;
+  }
+
   .idf_waiting{
     display: none;
   }
@@ -359,11 +370,14 @@ export default {
     margin-top: 10px;
     margin-bottom: 10px;
   }
-  .el-popover{
-    height: 300px;
-  }
 
   .card_invisible {
     display: none;
   }
+</style>
+
+<style>
+.el-popover{
+  height: 300px;
+}
 </style>

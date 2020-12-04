@@ -8,49 +8,68 @@ export default new Router({
     {
       path: '/',
       redirect: '/identify',
-      meta: {
-        title: "IBird"
-      }
+
     },
     {
       path: '/login',
       name: 'Login',
-      component: () => import('@/views/Login')
+      component: () => import('@/views/Login'),
+      meta: {
+        title: "登录"
+      }
     },
     {
       path: '/register',
       name: 'Register',
-      component: () => import('@/views/Register')
+      component: () => import('@/views/Register'),
+      meta: {
+        title: "注册"
+      }
     },
     {
       path: '/home',
       name: 'Home',
-      component: () => import('@/views/HomePage')
+      component: () => import('@/views/HomePage'),
+      meta: {
+        title: "主页"
+      }
     },
     {
       path: '/identify',
       name: "Identification",
-      component: () => import('@/views/BirdIdentify')
+      component: () => import('@/views/BirdIdentify'),
+      meta: {
+        title: "iBird"
+      }
     },
     {
       path: '/center',
       name: "UserCenter",
-      component: () => import('@/views/PersonalCenter')
+      component: () => import('@/views/PersonalCenter'),
+      meta: {
+        title: "个人中心"
+      }
     },
     {
       path: "/test",
       name: "test",
-      component: () => import('@/views/test')
+      component: () => import('@/views/test'),
     },
     {
       path: "/404",
       name: "NotFound",
-      component: () => import('@/views/404')
+      component: () => import('@/views/404'),
+      meta: {
+        title: "404"
+      }
     },
     {
       path: '/publish',
       name: "Publish",
-      component: () => import('@/views/Publish')
+      component: () => import('@/views/Publish'),
+      meta: {
+        title: "发布"
+      }
     },
     {
       path: "*",
