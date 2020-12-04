@@ -1,4 +1,5 @@
 <template>
+  <div>
     <div class="content">
     <ibird-nav />
     <el-upload
@@ -14,7 +15,7 @@
       <i class="el-icon-plus bird-uploader-icon"></i>
     </el-upload>
     <div class="el-upload__tip" slot="tip">只能上传jpg/png文件，且不超过5MB </div>
-    <div class="description-container" v-bind:class="text_para_class">
+      <div class="description-container" v-bind:class="text_para_class">
         <div v-if="imageUrl" class="bird-img">
           <el-image
           fit="contain"
@@ -22,7 +23,8 @@
           class="bird">
           </el-image>
         </div>
-      <el-row :gutter="12" class="card">
+        <div>{{tips}}</div>
+      <el-row :gutter="12" v-bind:class="card_control">
         <el-col :span="14">
           <el-popover
             placement="right"
@@ -52,7 +54,7 @@
         </el-col>
       </el-row>
 
-      <el-row :gutter="12" class="card">
+      <el-row :gutter="12" v-bind:class="card_control">
         <el-col :span="14">
           <el-popover
             placement="right"
@@ -82,7 +84,7 @@
         </el-col>
       </el-row>
 
-      <el-row :gutter="12" class="card">
+      <el-row :gutter="12" v-bind:class="card_control">
         <el-col :span="14">
           <el-popover
             placement="right"
@@ -112,7 +114,7 @@
         </el-col>
       </el-row>
 
-      <el-row :gutter="12" class="card">
+      <el-row :gutter="12" v-bind:class="card_control">
         <el-col :span="14">
           <el-popover
             placement="right"
@@ -142,10 +144,9 @@
         </el-col>
       </el-row>
 
-      <el-row :gutter="12" class="card">
+      <el-row :gutter="12" v-bind:class="card_control">
         <el-col :span="14">
           <el-popover
-            class="popover"
             placement="right"
             title="标题"
             width="400px"
@@ -175,10 +176,10 @@
       </el-row>
 
       </div>
-    <ibird-footer />
+
     </div>
-
-
+    <ibird-footer :pos=pos />
+  </div>
 </template>
 
 <script>
@@ -194,32 +195,36 @@ export default {
   },
   data () {
     return {
-      imageUrl: '1',
+      imageUrl: '',
       param: {
         'usage': 'p'
       },
-      default_img: '../static/img/4444.jpg',
       list_status: false,
       result: [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]],
       tips: "正在识别....",
       text_para_class : {
-        idf_waiting: false,
-        idf_finish: true,
+        idf_waiting: true,
+        idf_finish: false,
+      },
+      card_control: {
+        card_visible: false,
+        card_invisible: true,
       },
       birds_img: [
-        "https://weparallelines.top//birds/1.jpg",
-        "https://weparallelines.top//birds/2.jpg",
-        "https://weparallelines.top//birds/3.jpg",
-        "https://weparallelines.top//birds/4.jpg",
-        "https://weparallelines.top//birds/5.jpg"
+        "",
+        "",
+        "",
+        "",
+        ""
       ],
       v1: false,
       v2: false,
       v3: false,
       v4: false,
       v5: false,
-      birds_name : ["麻雀", "麻雀", "麻雀", "麻雀", "麻雀"],
+      birds_name : ["", "", "", "", ""],
       birds_reliable: ["0.00", "0.00", "0.00", "0.00", "0.00"],
+      pos: "absolute"
     }
   },
   methods: {
@@ -233,15 +238,21 @@ export default {
         duration: 5 * 1000
       })
       this.tips = "识别中";
-      this.text_para_class.idf_finish = false;
-      this.text_para_class.idf_waiting = true;
+      this.text_para_class.idf_finish = true;
+      this.text_para_class.idf_waiting = false;
       identify_result({
         path: res.data.path
       }).then((response)=>{
+        this.pos = "relative";
         this.result = response.data.data.result;
-        this.text_para_class.idf_finish = true;
-        this.text_para_class.idf_waiting = false;
+        for (let one=0; one<this.result.length; one++){
+          this.birds_img[one] = "https://weparallelines.top//birds/" + String(this.result[one][1]) + ".jpg";
+          this.birds_name[one] = this.result[one][0];
+          this.birds_reliable[one] = this.result[one][2]
+        }
         this.tips = "识别完成"
+        this.card_control.card_visible = true;
+        this.card_control.card_invisible = false;
       }).catch(()=>{
         this.tips = "识别错误";
       })
@@ -264,12 +275,13 @@ export default {
     }
   },
   mounted () {
-    this.v1 = true;
-  }
+    this.v1 = false;
+  },
+  computed: {}
 }
 </script>
 
-<style scoped>
+<style>
   .content {
     text-align: center;
   }
@@ -277,7 +289,6 @@ export default {
     top: 20px;
     border: 1px dashed #000000;
     border-radius: 6px;
-    cursor: pointer;
     position: relative;
     overflow: hidden;
     width: 50%;
@@ -292,8 +303,8 @@ export default {
     text-align: center;
   }
   .bird-img .bird {
-    width: 200px;
-    height: 200px;
+    width: 400px;
+    height: 400px;
     float: left;
   }
   .el-upload__tip {
@@ -344,11 +355,15 @@ export default {
     float: right;
   }
 
-  .card {
+  .card_visible {
     margin-top: 10px;
     margin-bottom: 10px;
   }
-  .popover{
-    height: 290px;
+  .el-popover{
+    height: 300px;
+  }
+
+  .card_invisible {
+    display: none;
   }
 </style>
