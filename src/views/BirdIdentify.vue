@@ -1,5 +1,6 @@
 <template>
   <div>
+    <ibird-nav />
     <div class="content">
     <el-upload
       class="bird-uploader"

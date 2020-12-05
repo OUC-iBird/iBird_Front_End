@@ -1,5 +1,6 @@
 <template xmlns:el-col="http://www.w3.org/1999/html">
   <div class="content">
+    <ibird-nav />
     <div class="all">
       <el-container class="top">
         <el-main class="left">
@@ -85,7 +86,7 @@ export default {
     return {
       src1 : "../static/img/map.jpg",
       src2 : "../static/img/phone.png",
-      src3 : "../static/img/icon.gif",
+      src3 : "../static/img/icon.png",
       count: [1,2,3,4,5,6,7,8,9,0],
       loading: false,
       // 默认显示条数
@@ -222,7 +223,7 @@ export default {
 /*背景层*/
 #popLayer {
   display: none;
-  background-color: #b38fe5;
+  background-color: #a7a4ac;
   position: fixed;
   top: 0;
   right: 0;

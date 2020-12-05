@@ -1,5 +1,6 @@
 <template>
   <div>
+    <ibird-nav />
     <div class="map-container">
       <baidu-map class="map" center="北京" :style="{'height': getClientHeight}">
         <bm-navigation anchor="BMAP_ANCHOR_TOP_RIGHT"></bm-navigation>

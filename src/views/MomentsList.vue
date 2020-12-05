@@ -1,5 +1,6 @@
 <template>
   <div>
+    <ibird-nav />
     <div class="box">
       <div class="xuxian1"></div>
       <div class="text">全部动态</div>

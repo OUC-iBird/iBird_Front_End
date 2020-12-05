@@ -1,5 +1,6 @@
 <template>
   <div class="content">
+    <ibird-nav />
     <div class="center-banner">
       <el-image
         :src="src"
