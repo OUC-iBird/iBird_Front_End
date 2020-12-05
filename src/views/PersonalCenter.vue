@@ -5,14 +5,14 @@
     </div>
     <div class="center-banner">
       <el-image
-      :src="src"
-      fill="fill"
-      class="banner-img">
+        :src="src"
+        fill="fill"
+        class="banner-img">
 
       </el-image>
     </div>
     <div class="avatar-img">
-      <el-avatar :size="250" :src="avatarUrl">
+      <el-avatar :size="130" :src="avatarUrl" style="border: 2px solid #ffffff;">
       </el-avatar>
     </div>
     <div class="user-name">
@@ -25,7 +25,12 @@
     >
 
       <el-tab-pane class="card">
-        <span slot="label"><i class="el-icon-bell"></i>个人动态</span>
+
+        <span slot="label"><el-image class="icon-img"
+                                     :src="src1"
+                                     fill="fill"
+        >
+        </el-image><p class="tip">个人动态</p></span>
         个人信息
         <div class="personal-moments">
           <el-row v-for="i in count">
@@ -39,7 +44,12 @@
         </div>
       </el-tab-pane>
       <el-tab-pane class="card">
-        <span slot="label"><i class="el-icon-camera"></i>个人相册</span>
+        <span slot="label"><el-image class="icon-img"
+                                     :src="src2"
+                                     fill="fill"
+                                     style="height: 14px;width: 14px;"
+        >
+        </el-image><p class="tip">个人相册</p></span>
         个人相册
         <div class="infinite-list">
           <ul
@@ -52,7 +62,7 @@
               <el-col :span="8"><el-image :src="url_2" fit="contain" class="gallery"></el-image></el-col>
               <el-col :span="8"><el-image :src="url_3" fit="contain" class="gallery"></el-image></el-col>
             </el-row>
-<!--            <li v-for="i in count" class="list-item" style="height: 20px">{{ i }}</li>-->
+            <!--            <li v-for="i in count" class="list-item" style="height: 20px">{{ i }}</li>-->
           </ul>
           <p v-if="loading">加载中...</p>
           <p v-if="noMore">没有更多了</p>
@@ -73,8 +83,10 @@ export default {
   },
   data() {
     return {
-      src : "../static/img/banner.jpg",
-      avatarUrl: "../static/img/avatar_test.png",
+      src : "../static/img/banner.png",
+      src1: "../static/img/bell.png",
+      src2: "../static/img/camera.png",
+      avatarUrl: "../static/img/profile.jpg",
       count: 10,
       loading: false
     }
@@ -124,24 +136,17 @@ export default {
 }
 
 .banner-img {
-  width: 100%;
+  width: 76%;
   margin-top: 20px;
 }
 
-.el-icon-bell {
-  width: 30px;
-}
-
-.el-icon-camera {
-  width: 30px;
-}
 
 .avatar-img {
   position: relative;
   margin-top: -100px;
 }
 .user-name > span {
-  font-size: 30px;
+  font-size: 28px;
 }
 
 .infinite-list {
@@ -164,5 +169,16 @@ export default {
 
 .moment-card {
   margin-top: 20px;
+}
+
+.tip{
+  display: inline-block;
+  vertical-align: middle;
+}
+.icon-img{
+  vertical-align: middle;
+  height: 16px;
+  width: 16px;
+  margin-right: 5px;
 }
 </style>

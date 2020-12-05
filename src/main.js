@@ -8,7 +8,9 @@ import ElementUI from 'element-ui'
 import axios from 'axios'
 import VueAxios from 'vue-axios'
 import 'element-ui/lib/theme-chalk/index.css'
-
+// 引入swiper插件
+import 'swiper/swiper-bundle.min.css'
+import 'swiper/swiper-bundle.min.js'
 //main.js中引入并注册
 import filters from "./utils/filters"
 import BaiduMap from 'vue-baidu-map'
