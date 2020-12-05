@@ -19,7 +19,7 @@
       :src="thumbnail_img"
       :preview-src-list="preview_img">
     </el-image>
-    <div v-if="thumb.thumb_visible" class="thumb">
+    <div v-if="thumb.thumb_visible" class="thumb" v-bind:class="{'thumbup':thumb.thumb_status}">
       <i @click="handleThumbup" v-bind:class="icon_class"></i>
       <span>{{thumb.thumb_num}}</span>
     </div>
@@ -176,10 +176,13 @@ export default {
   float: right;
   top: 70%;
   position: relative;
+  color: #898989;
 }
 .thumb > span{
   font-size: 24px;
 }
-
+.thumbup{
+  color: #fd8282;
+}
 
 </style>
