@@ -178,7 +178,7 @@
       </div>
 
     </div>
-    <ibird-footer :pos=pos />
+<!--    <ibird-footer :pos=pos />-->
   </div>
 </template>
 

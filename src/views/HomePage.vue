@@ -54,6 +54,7 @@
         <button v-if="loading" @click="more" class="load-button" >查看更多 ∨</button>
         <p v-if="noMore" style="color: #555555;font-size: 14px;margin-top:30px;margin-bottom: 50px;">没有更多数据啦(^_^)</p >
       </div>
+    <ibird-footer pos="relative"/>
 
     <!-- 弹出框 -->
     <div id="popLayer"></div>
@@ -72,11 +73,13 @@
 <script>
 import NavBar from '../components/navbar'
 import MomentsCard from '../components/MomentsCard'
+import Footer from '../components/footer'
 
 export default {
   components: {
     'ibird-nav': NavBar,
     'ibird-moments': MomentsCard,
+    'ibird-footer': Footer
   },
   data () {
     return {
