@@ -75,6 +75,14 @@ export default new Router({
       }
     },
     {
+      path: '/moments',
+      name: "MomentsList",
+      component: () => import('@/views/MomentsList'),
+      meta:{
+        title: "动态列表"
+      }
+    },
+    {
       path: "*",
       redirect: "/404"
     }
