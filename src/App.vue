@@ -1,15 +1,15 @@
 <template>
   <div id="app">
-    <div>
-      <router-view/>
-    </div>
-
+    <ibird-nav/>
+    <router-view/>
   </div>
 </template>
 
 <script>
+import IbirdNav from "./components/navbar";
 export default {
   name: 'App',
+  components: {IbirdNav},
 }
 </script>
 

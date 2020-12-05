@@ -1,10 +1,5 @@
 <template xmlns:el-col="http://www.w3.org/1999/html">
   <div class="content">
-
-    <div class="navbar">
-      <ibird-nav />
-    </div>
-
     <div class="all">
       <el-container class="top">
         <el-main class="left">

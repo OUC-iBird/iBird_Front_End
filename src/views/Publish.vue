@@ -1,6 +1,5 @@
 <template>
   <div>
-    <ibird-nav/>
     <el-container style="padding-left: 15% ;padding-right: 15%">
       <el-main>
         <div class="moment-image">

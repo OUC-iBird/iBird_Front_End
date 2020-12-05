@@ -1,6 +1,5 @@
 <template>
   <div>
-    <ibird-nav/>
     <el-container>
       <el-aside width="50%">
         <el-image

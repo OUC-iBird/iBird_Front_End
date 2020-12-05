@@ -1,8 +1,5 @@
 <template>
   <div class="content">
-    <div class="header">
-      <ibird-nav />
-    </div>
     <div class="center-banner">
       <el-image
         :src="src"

@@ -1,7 +1,6 @@
 <template>
   <div>
     <div class="content">
-    <ibird-nav />
     <el-upload
       class="bird-uploader"
       action="https://weparallelines.top/api/upload"
