@@ -1,17 +1,17 @@
 <template>
-  <div>
-    <el-container>
-      <el-aside width="50%">
-        <el-image
-          :src="src"
-          style="width: 90%; height: 380px; float: left"
+  <div >
+    <div class="background" :style="backgroundImg">
+    </div>
+    <div class="front">
+    <el-container >
+      <el-main class="form-card" >
+        <el-image class="logo-img"
+                  :src="src"
+                  fill="fill"
         >
         </el-image>
-      </el-aside>
-      <el-main class="form-card">
-        <h1> iBird </h1>
-        <el-form :model="loginForm" status-icon :rules="rules" ref="loginForm" label-width="15%">
-          <el-form-item label="用户名" prop="username">
+        <el-form :model="loginForm" status-icon :rules="rules" ref="loginForm" >
+          <el-form-item  prop="username">
             <el-input
               placeholder="请输入用户名"
               prefix-icon="el-icon-user"
@@ -19,7 +19,7 @@
               v-model="loginForm.username"
             />
           </el-form-item>
-          <el-form-item label="密码" prop="password">
+          <el-form-item  prop="password">
             <el-input
               type="password"
               placeholder="请输入密码"
@@ -31,30 +31,27 @@
           </el-form-item>
           <el-button
             :loading="false"
-            class="login-btn"
             type="primary"
             @click="submitForm('loginForm')"
           >
             登录
           </el-button>
-
-          <el-link
-            icon="el-icon-edit"
-            href="/register">
-            注册
+          <span class="tip">还没有注册？</span>
+          <el-link href="/register" style="color: #ffffff;">
+            点击此处
           </el-link>
         </el-form>
       </el-main>
     </el-container>
+    </div>
   </div>
 </template>
 
 <script>
-import NavBar from "../components/navbar";
 
 export default {
   components: {
-    "ibird-nav": NavBar
+
   },
   data() {
     var validatePass = (rule, value, callback) => {
@@ -72,7 +69,12 @@ export default {
       }
     };
     return {
-      src: '../static/img/background.jpg',
+      src : "../static/img/logo.png",
+      backgroundImg:{
+        backgroundImage:"url("+require("@/assets/bg.jpg")+")",
+        backgroundRepeat: "no-repeat",
+        backgroundSize: "100% 100%",
+      },
       loginForm: {
         password: '',
         username: ''
@@ -105,22 +107,57 @@ export default {
 </script>
 
 <style scoped>
+.background{
+  width:100%;
+  height:100%;
+  z-index:-1;
+  position: absolute;
+}
+.front{
+  z-index:1;
+  position: absolute;
+  margin-left: 500px;
+  margin-top: 80px;
+}
 .el-main {
-  /*height: 80%;*/
-  margin-top: 5%;
-  box-shadow: 2px 2px 4px rgba(0, 0, 0, .22), 0 0 6px rgba(0, 0, 0, .04);
-  margin-right: 100px;
+  height: 80%;
+  border:none;
+  border-radius:5px;
+  box-shadow: 0 0 0 1px hsla(240,0%,100%,.3) inset,
+  0 .5em 1em rgba(0, 0, 0, 0.6);
+  background-color: rgba(100,100,100,.2);
 }
-
-.el-button {
-  float: left;
-  margin-left: 100px
+.el-button{
+  color:white;
+  border:none;
+  border-radius: 20px;
+  box-shadow: 0 0 0 1px hsla(240,0%,100%,.3) inset,
+  0 .5em 1em rgba(0, 0, 0, 0.6);
+  text-shadow: 0 1px 1px hsla(240,0%,100%,.5);
+  background-color: rgba(51,153,0,.4);
+  margin-top: 20px;
+  margin-bottom: 20px;
+  width: 100%;
+  display: block;
 }
-
-.el-link {
-  top: 10px;
+.tip{
   position: relative;
-
+  margin-bottom: 20px;
+  font-size: 12px;
+  color: #d5d2d2;
+  margin-left: 60px;
 }
-
+.el-link{
+  margin-bottom: 20px;
+  float: right;
+  display: block;
+  font-size: 12px;
+  top: 1.2px;
+  margin-right: 60px;
+}
+.logo-img{
+  width: 80px;
+  margin-bottom: 20px;
+  margin-top: 20px;
+}
 </style>
