@@ -5,9 +5,9 @@
       <div class="left">
         <div class="swiper-container">
         <swiper :options="swiperOption" ref="mySwiper">
-          <swiper-slide><el-image :src="img1"  fill="fill" /></swiper-slide>
-          <swiper-slide><el-image :src="img2"  fill="fill" /></swiper-slide>
-          <swiper-slide><el-image :src="img3"  fill="fill" /></swiper-slide>
+          <swiper-slide><img :src="img1"  style="width: 100%; height: auto;" /></swiper-slide>
+          <swiper-slide><img :src="img2"  style="width: 100%; height: auto;" /></swiper-slide>
+          <swiper-slide><img :src="img3"  style="width: 100%; height: auto;"  /></swiper-slide>
           <div class="swiper-pagination" slot="pagination"></div>
           <div class="swiper-button-prev" slot="button-prev"></div>
           <div class="swiper-button-next" slot="button-next"></div>
@@ -106,6 +106,8 @@ export default {
         slidesPerView: 1,//数量
         slidesPerGroup: 1,//分几组
         direction : 'horizontal',//设置水平还是垂直vertical
+        //不需要自动轮播时
+        //autoplay: false,
         autoplay: {
           delay: 3000,//延迟时长
           stopOnLastSlide: false,
@@ -193,7 +195,7 @@ export default {
 }
 .swiper-container{
   height: 380px;
-  --swiper-pagination-color: #fd8282;/* 分页器颜色 */
+  --swiper-pagination-color: #f56c6c;/* 分页器颜色 */
   --swiper-navigation-color: #8d8b8b; /* 左右按钮颜色 */
   --swiper-navigation-size: 30px; /* 左右按钮大小 */
 }
