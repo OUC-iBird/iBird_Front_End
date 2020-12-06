@@ -1,26 +1,30 @@
 <template xmlns:el-col="http://www.w3.org/1999/html">
   <div class="content">
     <ibird-nav />
-    <div class="all">
-      <el-container class="top">
-        <el-main class="left">
-          <el-image
-            :src="src1"
-            fill="fill"
-          >
-          </el-image>
-        </el-main>
-        <el-aside width="240px" class="right">
-          <el-image class="phone-img"
-                    :src="src2"
-                    fill="fill"
-          >
-          </el-image>
-          <span class="label1">下载iBird APP</span>
-          <span class="label2">海量鸟类，一键识别</span>
-          <el-button type="danger" round v-on:click="popBox" >立即下载</el-button>
-        </el-aside>
-      </el-container>
+    <div class="top">
+      <div class="left">
+        <div class="swiper-container">
+        <swiper :options="swiperOption" ref="mySwiper">
+          <swiper-slide><el-image :src="img1"  fill="fill" /></swiper-slide>
+          <swiper-slide><el-image :src="img2"  fill="fill" /></swiper-slide>
+          <swiper-slide><el-image :src="img3"  fill="fill" /></swiper-slide>
+          <div class="swiper-pagination" slot="pagination"></div>
+          <div class="swiper-button-prev" slot="button-prev"></div>
+          <div class="swiper-button-next" slot="button-next"></div>
+       </swiper>
+      </div>
+      </div>
+
+      <div class="right">
+        <el-image class="phone-img"
+                  :src="src2"
+                  fill="fill"
+        >
+        </el-image>
+        <span class="label1">下载iBird APP</span>
+        <span class="label2">海量鸟类，一键识别</span>
+        <el-button type="danger" round v-on:click="popBox" >立即下载</el-button>
+      </div>
     </div>
 
     <div class="box">
@@ -30,33 +34,32 @@
     </div>
 
 
-      <div class="infinite-list-wrapper" style="overflow:auto">
-        <ul
-          class="list"
-          v-infinite-scroll="load"
-          infinite-scroll-disabled="disabled">
-      <el-row v-for="(i, index) in countData" v-if="index%2==0" :key="index">
-        <el-col   :span="10"  :offset="0" push="3">
-          <ibird-moments style="box-shadow: none; border: 0.1px solid #e0e0e0;"
-                         class="moment-card"
-                         username="组件传参测试"
-                         moment="还行"
-          />
-        </el-col>
-        <el-col   :span="10"  :offset="0" v-if="index+1<countData.length" push="2">
-          <ibird-moments style="box-shadow: none; border: 0.1px solid #e0e0e0;"
-                         class="moment-card"
-                         username="试一下"
-                         moment="原来如此"
-          />
-        </el-col>
-      </el-row>
-        </ul>
-        <button v-if="loading" @click="more" class="load-button" >查看更多 ∨</button>
-        <p v-if="noMore" style="color: #555555;font-size: 14px;margin-top:30px;margin-bottom: 50px;">没有更多数据啦(^_^)</p >
-      </div>
+    <div class="infinite-list-wrapper" style="overflow:auto">
+      <ul
+        class="list"
+        v-infinite-scroll="load"
+        infinite-scroll-disabled="disabled">
+        <el-row v-for="(i, index) in countData" v-if="index%2==0" :key="index">
+          <el-col   :span="10"  :offset="0" push="3">
+            <ibird-moments style="box-shadow: none; border: 0.1px solid #e0e0e0;"
+                           class="moment-card"
+                           username="组件传参测试"
+                           moment="还行"
+            />
+          </el-col>
+          <el-col   :span="10"  :offset="0" v-if="index+1<countData.length" push="2">
+            <ibird-moments style="box-shadow: none; border: 0.1px solid #e0e0e0;"
+                           class="moment-card"
+                           username="试一下"
+                           moment="原来如此"
+            />
+          </el-col>
+        </el-row>
+      </ul>
+      <button v-if="loading" @click="more" class="load-button" >查看更多 ∨</button>
+      <p v-if="noMore" style="color: #555555;font-size: 14px;margin-top:30px;margin-bottom: 50px;">没有更多数据啦(^_^)</p >
+    </div>
     <ibird-footer pos="relative"/>
-
     <!-- 弹出框 -->
     <div id="popLayer"></div>
     <div id="popBox">
@@ -73,27 +76,58 @@
 
 <script>
 import NavBar from '../components/navbar'
-import MomentsCard from '../components/MomentsCard'
 import Footer from '../components/footer'
+import MomentsCard from '../components/MomentsCard'
+// 引入插件
+import { swiper, swiperSlide } from "vue-awesome-swiper";
+import "swiper/css/swiper.css";
 
 export default {
   components: {
     'ibird-nav': NavBar,
+    'ibird-footer': Footer,
     'ibird-moments': MomentsCard,
-    'ibird-footer': Footer
+    swiper,
+    swiperSlide
   },
-  data () {
+  data() {
     return {
-      src1 : "../static/img/map.jpg",
+      img1 : "../static/img/img1.jpg",
+      img2 : "../static/img/img2.jpg",
+      img3 : "../static/img/img3.jpg",
       src2 : "../static/img/phone.png",
       src3 : "../static/img/icon.png",
       count: [1,2,3,4,5,6,7,8,9,0],
       loading: false,
       // 默认显示条数
-      cou: 4
-    }
+      cou: 4,
+      swiperOption: {
+        loop: true,
+        slidesPerView: 1,//数量
+        slidesPerGroup: 1,//分几组
+        direction : 'horizontal',//设置水平还是垂直vertical
+        autoplay: {
+          delay: 3000,//延迟时长
+          stopOnLastSlide: false,
+          disableOnInteraction: false
+        },
+        // 显示分页
+        pagination: {
+          el: ".swiper-pagination",
+          clickable: true //允许分页点击跳转
+        },
+        // 设置点击箭头
+        navigation: {
+          nextEl: ".swiper-button-next",
+          prevEl: ".swiper-button-prev",
+        }
+      }
+    };
   },
   computed: {
+    swiper() {
+      return this.$refs.mySwiper.swiper;
+    },
     noMore() {
       // 判断加载条数是否大于列表数据长度
       return this.cou > this.count.length;
@@ -114,7 +148,13 @@ export default {
         return data;
       }
 
-    },
+    }
+  },
+  mounted() {
+    // current swiper instance
+    // 然后你就可以使用当前上下文内的swiper对象去做你想做的事了
+    console.log("this is current swiper instance object", this.swiper);
+    // this.swiper.slideTo(3, 1000, false);
   },
   methods:{
     load() {
@@ -140,31 +180,33 @@ export default {
       popBox.style.display = "none";
       popLayer.style.display = "none";
     }
-
-
   }
-}
+};
 </script>
-
-<style>
-/* @import url("../styles/navbar.css"); */
-/*地图及其右侧*/
-.all{
-  margin-top: 30px;
-  height: 360px;
-  margin-left: 80px;
-  margin-right: 80px;
-}
+<style scoped >
 .top{
+  width: 100%;
   margin-top: 30px;
-  height: 360px;
-  margin-left: 80px;
-  margin-right: 80px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.swiper-container{
+  height: 380px;
+  --swiper-pagination-color: #fd8282;/* 分页器颜色 */
+  --swiper-navigation-color: #8d8b8b; /* 左右按钮颜色 */
+  --swiper-navigation-size: 30px; /* 左右按钮大小 */
+}
+.left,.right{
+  float: left;
+  height: 380px;
 }
 .left{
+  width: 700px;
   border: 1px solid #e0e0e0;
 }
 .right{
+  width: 240px;
   border: 1px solid #e0e0e0;
 }
 .phone-img{

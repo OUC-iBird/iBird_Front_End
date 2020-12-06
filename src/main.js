@@ -8,9 +8,11 @@ import ElementUI from 'element-ui'
 import axios from 'axios'
 import VueAxios from 'vue-axios'
 import 'element-ui/lib/theme-chalk/index.css'
-// 引入swiper插件
-import 'swiper/swiper-bundle.min.css'
-import 'swiper/swiper-bundle.min.js'
+
+// 引入swiper组件
+import VueAwesomeSwiper from 'vue-awesome-swiper'
+import 'swiper/css/swiper.css'
+
 //main.js中引入并注册
 import filters from "./utils/filters"
 import BaiduMap from 'vue-baidu-map'
@@ -19,6 +21,7 @@ Object.keys(filters).forEach(key => { //返回filters对象中属性名组成的
   Vue.filter(key, filters[key])
 })
 
+Vue.use(VueAwesomeSwiper, /* { default global options } */)
 Vue.use(ElementUI)
 Vue.use(VueAxios, axios)
 Vue.config.productionTip = false
