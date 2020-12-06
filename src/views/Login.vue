@@ -133,7 +133,6 @@ export default {
   border-radius: 20px;
   box-shadow: 0 0 0 1px hsla(240,0%,100%,.3) inset,
   0 .5em 1em rgba(0, 0, 0, 0.6);
-  text-shadow: 0 1px 1px hsla(240,0%,100%,.5);
   background-color: rgba(51,153,0,.4);
   margin-top: 20px;
   margin-bottom: 20px;
