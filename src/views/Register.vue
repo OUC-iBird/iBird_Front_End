@@ -1,22 +1,22 @@
 <template>
   <div>
+    <div class="background" :style="backgroundImg">
+    </div>
+    <div class="front">
     <el-container>
-      <el-aside width="50%">
-        <el-image
-          :src="src"
-          style="width: 90%; height: 380px; float: left"
+      <el-main class="form-card">
+        <el-image class="logo-img"
+                  :src="src"
+                  fill="fill"
         >
         </el-image>
-      </el-aside>
-      <el-main class="form-card">
-        <h1> iBird </h1>
         <el-form
           :model="registerForm"
           status-icon
           :rules="rules"
           ref="registerForm"
-          label-width="15%">
-          <el-form-item label="用户名" prop="username">
+          >
+          <el-form-item prop="username">
             <el-input
               v-model="registerForm.username"
               placeholder="请输入用户名"
@@ -26,7 +26,7 @@
             />
           </el-form-item>
 
-          <el-form-item label="邮箱" prop="email">
+          <el-form-item  prop="email">
             <el-input
               v-model="registerForm.email"
               placeholder="请输入邮箱地址"
@@ -34,7 +34,7 @@
             />
           </el-form-item>
 
-          <el-form-item label="密码" prop="password">
+          <el-form-item prop="password">
             <el-input
               type="password"
               placeholder="请输入密码"
@@ -44,7 +44,7 @@
               show-password
             />
           </el-form-item>
-          <el-form-item label="确认密码" prop="checkPass">
+          <el-form-item prop="checkPass">
             <el-input
               type="password"
               placeholder="请再次输入密码"
@@ -55,23 +55,21 @@
             />
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" @click="submitForm('registerForm')">提交</el-button>
-            <el-button @click="resetForm('registerForm')">重置</el-button>
+            <el-button class="reset" @click="resetForm('registerForm')">重置</el-button>
+            <el-button class="submit" type="primary" @click="submitForm('registerForm')">提交</el-button>
           </el-form-item>
 
         </el-form>
       </el-main>
     </el-container>
+    </div>
   </div>
 </template>
 
 
 <script>
-import NavBar from "../components/navbar";
-
 export default {
   components: {
-    "ibird-nav": NavBar
   },
   data() {
     var validatePass = (rule, value, callback) => {
@@ -113,12 +111,17 @@ export default {
       }
     };
     return {
-      src: '../static/img/background.jpg',
+      src : "../static/img/logo.png",
       registerForm: {
         username: '',
         password: '',
         checkPass: '',
         email: '',
+      },
+      backgroundImg:{
+        backgroundImage:"url("+require("@/assets/bg.jpg")+")",
+        backgroundRepeat: "no-repeat",
+        backgroundSize: "100% 100%",
       },
       rules: {
         username: [
@@ -157,9 +160,45 @@ export default {
 
 <style scoped>
 .el-main {
-  margin-top: 5%;
-  box-shadow: 2px 2px 4px rgba(0, 0, 0, .22), 0 0 6px rgba(0, 0, 0, .04);
-  margin-right: 100px;
-  /* height: 80%; */
+  height: 80%;
+  border:none;
+  border-radius:5px;
+  box-shadow: 0 0 0 1px hsla(240,0%,100%,.3) inset,
+  0 .5em 1em rgba(0, 0, 0, 0.6);
+  background-color: rgba(100,100,100,.2);
+}
+.background{
+  width:100%;
+  height:100%;
+  z-index:-1;
+  position: absolute;
+}
+.front{
+  z-index:1;
+  position: absolute;
+  margin-left: 500px;
+  margin-top: 60px;
+}
+.logo-img{
+  width: 80px;
+  margin-bottom: 20px;
+  margin-top: 20px;
+}
+.el-button{
+  color:white;
+  border:none;
+  border-radius: 20px;
+  box-shadow: 0 0 0 1px hsla(240,0%,100%,.3) inset,
+  0 .5em 1em rgba(0, 0, 0, 0.6);
+  margin-top: 10px;
+  margin-bottom: 10px;
+  width: 46%;
+  position: relative;
+}
+.reset{
+  background-color: rgba(27, 37, 49, 0.4);
+}
+.submit{
+  background-color: rgba(51,153,0,.4);
 }
 </style>>
