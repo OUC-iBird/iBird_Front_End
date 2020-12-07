@@ -214,7 +214,7 @@ export default {
 .phone-img{
   display: inline-block;
   height: auto;
-  max-width: 40%;
+  max-width: 38%;
   margin-top: 50px;
   margin-bottom: 20px;
 }
