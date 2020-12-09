@@ -20,3 +20,12 @@ export function test(data){
   })
 }
 
+export function img_upload(data){
+  return axios({
+    url: "https://weparallelines.top/api/upload",
+    method: 'post',
+    headers: {'Content-Type': 'multipart/form-data'},
+    data
+  })
+}
+

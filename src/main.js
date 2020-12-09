@@ -17,6 +17,7 @@ import VueDirectiveImagePreviewer from 'vue-directive-image-previewer'
 import 'vue-directive-image-previewer/dist/assets/style.css'
 //main.js中引入并注册
 import filters from "./utils/filters"
+import vueCropper from 'vue-cropper'
 import BaiduMap from 'vue-baidu-map'
 //全局方法 Vue.filter() 统一注册自定义过滤器
 Object.keys(filters).forEach(key => { //返回filters对象中属性名组成的数组
@@ -26,6 +27,7 @@ Vue.use(VueDirectiveImagePreviewer)
 Vue.use(VueAwesomeSwiper, /* { default global options } */)
 Vue.use(ElementUI)
 Vue.use(VueAxios, axios)
+Vue.use(vueCropper)
 Vue.config.productionTip = false
 
 Vue.use(BaiduMap, {
