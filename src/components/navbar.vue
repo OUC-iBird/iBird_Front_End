@@ -10,20 +10,50 @@
       <el-image :src="logo"
       style="width: 120px; height: 50px"></el-image>
   </el-menu-item>
-  <el-submenu index="2" style="float:right">
+  <el-submenu index="2" style="float:right" >
       <template slot="title">
         <el-avatar :size="40" :src=defaultAvatar fit="contain" @error="errorHandler">
         </el-avatar>
       </template>
-    <div v-if="login">
-      <el-menu-item index="2-1" class="submenu" route="center">个人中心</el-menu-item>
-      <el-menu-item index="2-2" class="submenu" route="publish">发布动态</el-menu-item>
+    <div v-if="login"  class="login-style" >
+      <div style="display: block">
+        <el-menu-item id="tid" index="2-1" class="submenu" route="center">
+          <el-image class="icon"
+                    :src="icon1"
+                    fill="fill"
+                    style="height: 15px;width: 15px;">
+          </el-image>个人中心</el-menu-item></div>
+      <div style="display: block">
+        <el-menu-item index="2-2" class="submenu" route="publish">
+          <el-image class="icon"
+                    :src="icon2"
+                    fill="fill"
+                    style="height: 15px;width: 15px;">
+          </el-image>发布动态</el-menu-item></div>
       <!--      待补充逻辑-->
-      <el-menu-item class="submenu" @click="logout()">注销</el-menu-item>
+      <div style="display: block" >
+        <el-menu-item class="submenu" @click="logout()">
+          <el-image class="icon"
+                    :src="icon3"
+                    fill="fill"
+                    style="height: 15px;width: 15px;">
+          </el-image>退出登陆</el-menu-item></div>
     </div>
-    <div v-else>
-      <el-menu-item index="2-3" class="submenu" route="login">登录</el-menu-item>
-      <el-menu-item index="2-4" class="submenu" route="register">注册</el-menu-item>
+    <div v-else class="login-style">
+      <div style="display: block">
+        <el-menu-item index="2-3" class="submenu" route="login">
+          <el-image class="icon"
+                    :src="icon4"
+                    fill="fill"
+                    style="height: 14px;width: 14px;">
+          </el-image>登录</el-menu-item></div>
+      <div style="display: block">
+        <el-menu-item index="2-4" class="submenu" route="register">
+          <el-image class="icon"
+                    :src="icon5"
+                    fill="fill"
+                    style="height: 14px;width: 14px;">
+          </el-image>注册</el-menu-item></div>
     </div>
   </el-submenu>
   <el-menu-item index="3" style="float:right" route="publish">
@@ -38,6 +68,8 @@
 
 
 <script>
+// 修改导航栏弹出框样式
+import "@/assets/css/el-menu.css"
   export default {
     name: "ibird-nav",
     // props: {
@@ -51,6 +83,11 @@
         avatar: '',
         defaultAvatar: '../static/img/avatar_default.png',
         login: true,
+        icon1: "../static/img/person.png",
+        icon2: "../static/img/sent.png",
+        icon3: "../static/img/login-out.png",
+        icon4: "../static/img/login.png",
+        icon5: "../static/img/regist.png",
       };
     },
 
@@ -83,14 +120,10 @@
     border-radius: 30px;
     height: 18px;
 }
-
-.submenu {
+.icon{
+  margin-right: 8px;
+}
+.login-style{
   text-align: center;
-  display: block;
 }
-
-.el-munu--popup {
-  width: 100px;
-}
-
 </style>
