@@ -13,14 +13,14 @@
         v-infinite-scroll="load"
         infinite-scroll-disabled="disabled">
         <el-row v-for="(i, index) in countData" v-if="index%2==0" :key="index">
-          <el-col :span="10" :offset="0" push="3">
+          <el-col :span="10" :offset="0" :push="3">
             <ibird-moments style="box-shadow: none; border: 0.1px solid #e0e0e0;"
                            class="moment-card"
                            username="组件传参测试"
                            moment="还行"
             />
           </el-col>
-          <el-col :span="10" :offset="0" v-if="index+1<countData.length" push="2">
+          <el-col :span="10" :offset="0" v-if="index+1<countData.length" :push="2">
             <ibird-moments style="box-shadow: none; border: 0.1px solid #e0e0e0;"
                            class="moment-card"
                            username="试一下"

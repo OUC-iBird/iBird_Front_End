@@ -2,7 +2,7 @@
 <el-container class="card-border">
 
   <el-header class="user-msg">
-    <el-avatar :size="50" :src="avatar"></el-avatar>
+    <el-avatar :size="44" :src="avatar"></el-avatar>
     <span class="span-name">{{username}}</span><br>
     <span class="span-time">{{ptime}}</span>
     <div v-if="location_visible" class="location">
@@ -10,11 +10,10 @@
       <i>{{location}}</i>
     </div>
   </el-header>
-  <el-main class="record-text">{{moment}}</el-main>
-  <el-footer height="150px">
+  <div class="record-text">{{moment}}</div>
+  <el-footer height="170px">
     <el-image
-      style="width: 200px; height: 150px"
-      fit="contain"
+      style="width: 165px; height: 165px"
       class="record-img"
       :src="thumbnail_img"
       :preview-src-list="preview_img">
@@ -79,12 +78,12 @@ export default {
     },
     thumbnail_img: {
       type: String,
-      default: "../static/img/moments_test.jpg",
+      default: "../static/img/gallery_3.jpg",
     },
     preview_img: {
       type: Array,
       default: () => {
-        return ["../static/img/moments_test.jpg"]
+        return ["../static/img/gallery_3.jpg"]
       }
     },
     moment: {
@@ -112,7 +111,6 @@ export default {
   },
   mounted () {
     if (this.thumb.thumb_status){
-
   }
 }
 
@@ -134,11 +132,11 @@ export default {
 
 
 .card-border {
-  box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);
-  width: 80%;
+  box-shadow: none;
+  border: 0.1px solid #e0e0e0;
+  width: 82%;
   text-align: left;
 }
-
 .card-border .user-msg{
   margin-top: 15px;
   position: relative;
@@ -151,30 +149,39 @@ export default {
 
 .user-msg .span-name {
   position: relative;
-  font-size: 20px;
+  font-size: 16px;
   margin-left: 10px;
+  font-family: '宋体';
+  color: #444444;
+  font-weight: bold;
+  top: 3px;
 }
 .user-msg .span-time {
   position: relative;
   color:#8c939d;
   margin-left: 10px;
-  top: 4px;
-  font-size: 10px;
-
+  top: 3px;
+  font-size: 12px;
 }
 .record-text {
-  padding-bottom: 0;
+  margin-left: 25px;
+  font-size: 12px;
+  color: #444444;
+  margin-bottom: 10px;
+}
+.el-footer{
+  margin-bottom: 18px;
 }
 .record-img {
+  border-radius: 10px;
 }
-
 .location {
   margin-top: -20px;
   float: right;
 }
 .thumb{
   float: right;
-  top: 70%;
+  top: 85%;
   position: relative;
   color: #898989;
 }
