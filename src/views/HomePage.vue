@@ -40,14 +40,13 @@
         v-infinite-scroll="load"
         infinite-scroll-disabled="disabled">
         <el-row v-for="(i, index) in countData" v-if="index%2==0" :key="index">
-          <el-col   :span="10"  :offset="0" push="3">
-            <ibird-moments style="box-shadow: none; border: 0.1px solid #e0e0e0;"
-                           class="moment-card"
+          <el-col   :span="10"  :offset="0" :push="3">
+            <ibird-moments class="moment-card"
                            username="组件传参测试"
                            moment="还行"
             />
           </el-col>
-          <el-col   :span="10"  :offset="0" v-if="index+1<countData.length" push="2">
+          <el-col   :span="10"  :offset="0" v-if="index+1<countData.length" :push="2">
             <ibird-moments style="box-shadow: none; border: 0.1px solid #e0e0e0;"
                            class="moment-card"
                            username="试一下"
@@ -92,8 +91,8 @@ export default {
   },
   data() {
     return {
-      img1 : "../static/img/img1.jpg",
-      img2 : "../static/img/img2.jpg",
+      img1 : "../static/img/img2.jpg",
+      img2 : "../static/img/img1.jpg",
       img3 : "../static/img/img3.jpg",
       src2 : "../static/img/phone.png",
       src3 : "../static/img/icon.png",
@@ -188,7 +187,7 @@ export default {
 <style scoped >
 .top{
   width: 100%;
-  margin-top: 30px;
+  margin-top: 25px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -196,8 +195,8 @@ export default {
 .swiper-container{
   height: 380px;
   --swiper-pagination-color: #f56c6c;/* 分页器颜色 */
-  --swiper-navigation-color: #8d8b8b; /* 左右按钮颜色 */
-  --swiper-navigation-size: 30px; /* 左右按钮大小 */
+  --swiper-navigation-color: #fefefe; /* 左右按钮颜色 */
+  --swiper-navigation-size: 20px; /* 左右按钮大小 */
 }
 .left,.right{
   float: left;
@@ -232,6 +231,24 @@ export default {
   font-size: 13px;
   font-family: 'Adobe 黑体 Std';
 
+}
+.swiper-container .swiper-button-prev, .swiper-button-next{
+  display: none;
+  background-color:  rgba(36, 33, 33, 0.6);
+  width: 35px;
+  height: 46px;
+  vertical-align: middle;
+  line-height: 46px;
+}
+.swiper-container:hover .swiper-button-prev{
+  display: block;
+  border-radius: 0px 10px 10px 0px;
+  left: 0!important;
+}
+.swiper-container:hover .swiper-button-next{
+  display: block;
+  border-radius: 10px 0px 0px 10px;
+  right: 0!important;
 }
 /*中间过渡线*/
 .box{
