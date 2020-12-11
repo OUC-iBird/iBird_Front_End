@@ -23,23 +23,19 @@
     >
 
       <el-tab-pane>
-
         <span slot="label"><el-image class="icon-img"
                                      :src="src1"
                                      fill="fill"
         >
         </el-image><p class="tip">个人动态</p></span>
-        个人信息
-        <div class="personal-moments">
-          <el-row v-for="i in count">
-            <el-col :span="24">
-              <ibird-moments
-                class="moment-card"
-                username="组件传参测试"
-                moment="还行"
-              /></el-col>
-          </el-row>
-        </div>
+        <el-row v-for="i in count" class="card1-item">
+          <el-col :span="24" :push="5">
+            <ibird-moments style="width: 75%;"
+                           class="moment-card"
+                           username="组件传参测试"
+                           moment="还行"
+            /></el-col>
+        </el-row>
       </el-tab-pane>
       <el-tab-pane class="card2">
         <span slot="label"><el-image class="icon-img"
@@ -48,21 +44,21 @@
                                      style="height: 14px;width: 14px;"
         >
         </el-image><p class="tip">个人相册</p></span>
-        <div class="title"><p class="title-text">PHOTO GALLERY</p><div class="hengxian"></div></div>
+        <div class="title"><p class="title-text">PHOTO GALLERY</p></div>
         <div class="gallery">
-        <el-scrollbar style="height: 100%;">
-        <ul>
-            <div class="home">
-              <div class="bannerArr">
-                <div class="img-item" v-for="(item,index) in banners" >
-                  <img v-image-preview class="img" :src="item.imgUrl"/>
+          <el-scrollbar style="height: 100%;" ref="gcScrollbar" class="table_device">
+            <ul>
+              <div class="home">
+                <div class="bannerArr">
+                  <div class="img-item" v-for="(item,index) in banners" >
+                    <img v-image-preview class="img" :src="item.imgUrl"/>
+                  </div>
                 </div>
               </div>
-            </div>
-          <!--            <li v-for="i in count" class="list-item" style="height: 20px">{{ i }}</li>-->
-          </ul>
+              <!--            <li v-for="i in count" class="list-item" style="height: 20px">{{ i }}</li>-->
+            </ul>
           </el-scrollbar>
-          </div>
+        </div>
       </el-tab-pane>
     </el-tabs>
   </div>
@@ -73,15 +69,11 @@
 import NavBar from '../components/navbar'
 import MomentsCard from '../components/MomentsCard'
 // 引入插件
-import { swiper, swiperSlide } from "vue-awesome-swiper";
-import "swiper/css/swiper.css";
 import "@/assets/css/scrollbar.css"
 export default {
   components: {
     'ibird-nav': NavBar,
-    'ibird-moments': MomentsCard,
-    swiper,
-    swiperSlide
+    'ibird-moments': MomentsCard
   },
   data() {
     return {
@@ -107,26 +99,9 @@ export default {
       avatarUrl: "../static/img/profile.jpg",
       count: 10,
       loading: false,
-      swiperOption: {
-        loop: true,
-        slidesPerView: 3,
-        slidesPerColumn: 3,
-        slidesPerColumnFill:'row',
-        spaceBetween: 0.1, //轮播图之间的间距
-        direction: 'horizontal',//设置垂直vertical
-        //不需要自动轮播时
-        autoplay: false,
-        // 如果需要滚动条
-        scrollbar: {
-          el: '.swiper-scrollbar',
-        },
-      }
     }
   },
   computed: {
-    swiper() {
-      return this.$refs.mySwiper.swiper;
-    },
     noMore () {
       return this.count >= 20
     },
@@ -135,10 +110,7 @@ export default {
     },
   },
   mounted() {
-    // current swiper instance
-    // 然后你就可以使用当前上下文内的swiper对象去做你想做的事了
-    console.log("this is current swiper instance object", this.swiper);
-    // this.swiper.slideTo(3, 1000, false);
+
   },
   // 这里到时候联网
   methods: {
@@ -154,42 +126,47 @@ export default {
 </script>
 
 <style scoped>
+.card-selector{
+
+}
+.card1-item{
+  position: relative;
+}
 .card2{
-  width: 81%;
+  width: 580px;
   float: right;
 }
 .title{
-  width: 100%;
+  border:none;
+  border-radius:5px;
+  box-shadow: 0 0 0 1px hsla(240,0%,100%,.3) inset,
+  0 .5em 1em rgba(0, 0, 0, 0.6);
+  background-color: rgba(100,100,100,.2);
+  width: 580px;
   position: relative;
-  background-color: black;
+  background-color: #ca917d;
   font-family: 'Algerian';
   font-size: 22px;
   display: table;
   color: #f1eeee;
   height: 100%;
+  border-bottom: 1px solid #f1eeee;
 }
 .title-text{
   vertical-align: center;
   margin-right: 330px;
 }
-.hengxian{
-  border:0.8px solid #7e7c7c;
-  width: 90%;
-  background-color: black;
-  position: absolute;
-  left: 50%;
-  transform: translate(-50%,-50%);
-}
-.gallery{
+.gallery {
+  width: 580px;
   height: 400px;
   margin-bottom: 100px;
-  background-color: black;
+  background-color: #ca917d;
 }
 .home {
-  width: 100%;
+  width: 500px;
   height: 100%;
   position: relative;
-  background-color: black;
+  background-color: rgba(53, 52, 54, 0.5);
 }
 .bannerArr{
   width: 100%;
@@ -201,7 +178,14 @@ export default {
   width: 160px;
   height: 160px;
   padding: 5px;
+  margin: 3px;
   box-sizing: border-box;
+
+  border:none;
+  border-radius:5px;
+  box-shadow: 0 0 0 1px hsla(240,0%,100%,.3) inset,
+  0 .5em 1em rgba(0, 0, 0, 0.6);
+  background-color: rgba(100,100,100,.2);
 }
 .img{
   width: 100%;
@@ -227,12 +211,6 @@ export default {
 .user-name > span {
   font-size: 28px;
 }
-.personal-moments {
-  height: 360px;
-  overflow-y: scroll;
-  margin-bottom: 100px;
-}
-
 .moment-card {
   margin-top: 20px;
 }

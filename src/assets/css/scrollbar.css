@@ -1,3 +1,6 @@
 .el-scrollbar__wrap {
   overflow-x: hidden;
 }
+.table_device .el-scrollbar__thumb {
+  background-color: #f3f4f6;
+}
