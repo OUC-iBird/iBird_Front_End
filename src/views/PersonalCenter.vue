@@ -23,11 +23,13 @@
     >
 
       <el-tab-pane>
+
         <span slot="label"><el-image class="icon-img"
                                      :src="src1"
                                      fill="fill"
         >
         </el-image><p class="tip">个人动态</p></span>
+        <div class="card1">
         <el-row v-for="i in count" class="card1-item">
           <el-col :span="24" :push="5">
             <ibird-moments style="width: 75%;"
@@ -36,6 +38,7 @@
                            moment="还行"
             /></el-col>
         </el-row>
+        </div>
       </el-tab-pane>
       <el-tab-pane class="card2">
         <span slot="label"><el-image class="icon-img"
@@ -132,9 +135,13 @@ export default {
 .card1-item{
   position: relative;
 }
+.card1{
+  margin-bottom: 50px;
+}
 .card2{
   width: 580px;
   float: right;
+  margin-bottom: 0;
 }
 .title{
   border:none;
