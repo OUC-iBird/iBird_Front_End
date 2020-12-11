@@ -140,3 +140,6 @@ export default {
 }
 </script>
 ```
+
+* 增加了轮播图组件：3.1.3版本的vue-awesome-swiper，5.4.5版本的swiper
+* 增加了点击图片预览大图组件vue-directive-image-previewer
