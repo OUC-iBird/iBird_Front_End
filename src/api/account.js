@@ -63,21 +63,14 @@ export function change_avatar(){
 //检测登录状态（返回True可以继续执行功能）
 export function check_login(){
   get_status().then((response)=>{
-    if (response.data.code===20000){
-      if (response.data.data.login){
-        return true;
-      }
-      else{
-        this.$message.error('需要登录！');
-        return false;
-      }
+    if (response.data.code === 20000){
+      return !!response.data.data.login;
     }
     else {
-      this.$message.error('请求失败：'+response.data.msg);
+      console.log('请求失败：'+response.data.msg);
       return false;
     }
   }).catch((error)=>{
-    this.$message.error('请求失败！');
     console.log(error);
     return false;
   })

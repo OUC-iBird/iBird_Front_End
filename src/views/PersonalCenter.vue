@@ -14,7 +14,7 @@
       </el-avatar>
     </div>
     <div class="user-name">
-      <span>Ctwo</span>
+      <span>{{nickname}}</span>
     </div>
 
     <el-tabs
@@ -73,6 +73,7 @@ import NavBar from '../components/navbar'
 import MomentsCard from '../components/MomentsCard'
 // 引入插件
 import "@/assets/css/scrollbar.css"
+import {change_avatar, change_nickname, get_status} from "../api/account";
 export default {
   components: {
     'ibird-nav': NavBar,
@@ -100,6 +101,7 @@ export default {
       src1: "../static/img/bell.png",
       src2: "../static/img/camera.png",
       avatarUrl: "../static/img/profile.jpg",
+      nickname:'Ctwo',
       count: 10,
       loading: false,
     }
@@ -113,7 +115,7 @@ export default {
     },
   },
   mounted() {
-
+    this.getUserInfo();
   },
   // 这里到时候联网
   methods: {
@@ -123,6 +125,56 @@ export default {
         this.count += 2
         this.loading = false
       }, 2000)
+    },
+    getUserInfo(){
+      get_status().then((response)=>{
+        if (response.data.code === 20000){
+          //成功
+          if (response.data.data.login){
+            this.nickname = response.data.data.nickname;
+            this.avatarUrl = response.data.data.avatar;
+          }
+        }
+        else {
+          console.log('信息获取失败：'+response.data.msg);
+        }
+      }).catch((error)=>{
+        console.log(error);
+      })
+    },
+    changeAvatar(url){
+      change_avatar({
+        avatar: url,
+      }).then((response)=>{
+        if (response.data.code === 20000){
+          //成功
+          this.$message.success('头像修改成功！');
+          this.getUserInfo();
+        }
+        else {
+          this.$message.error('头像修改失败：'+response.data.msg);
+        }
+      }).catch((error)=>{
+        this.$message.error('请求时出错！');
+        console.log(error);
+      })
+    },
+    changeNickname(name){
+      change_nickname({
+        nickname: name,
+      }).then((response)=>{
+        if (response.data.code === 20000){
+          //成功
+          this.$message.success('昵称修改成功！');
+          this.getUserInfo();
+        }
+        else {
+          this.$message.error('昵称修改失败：'+response.data.msg);
+        }
+      }).catch((error)=>{
+        this.$message.error('请求时出错！');
+        console.log(error);
+      })
     },
   }
 }

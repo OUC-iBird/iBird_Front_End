@@ -123,7 +123,7 @@ export default {
     },
     getStatus(){
       get_status().then((response)=>{
-        if (response.data.code===20000){
+        if (response.data.code === 20000){
           //成功
           this.login = response.data.data.login;
           if (response.data.data.login){
@@ -133,15 +133,15 @@ export default {
           }
           else {
             this.username = '';
-            this.login = '';
+            this.nickname = '';
             this.avatar = this.defaultAvatar;
           }
         }
         else {
-          console.log('error!!');
+          console.log('信息获取失败：'+response.data.msg);
         }
-      }).catch(()=>{
-        console.log('error!!');
+      }).catch((error)=>{
+        console.log(error);
       })
     },
   }

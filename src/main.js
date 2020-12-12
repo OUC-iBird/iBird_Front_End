@@ -20,6 +20,7 @@ import filters from "./utils/filters"
 import vueCropper from 'vue-cropper'
 import BaiduMap from 'vue-baidu-map'
 import {check_login} from "./api/account";
+import moment from "moment";
 //全局方法 Vue.filter() 统一注册自定义过滤器
 Object.keys(filters).forEach(key => { //返回filters对象中属性名组成的数组
   Vue.filter(key, filters[key])
@@ -36,6 +37,8 @@ Vue.use(BaiduMap, {
   // ak: 'YOUR_APP_KEY'
   ak: 'iAOwdWSIIwxZ0Phgo70U87B9OQ8tj47A'
 })
+
+moment.locale('zh-CN'); //设置日期计算库语言
 
 router.beforeEach((to, from, next) => {
   /* 登录验证 */

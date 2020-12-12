@@ -31,6 +31,9 @@
 
 <script>
 // 个人动态的组件
+import {like_post} from "../api/post";
+import moment from "moment";
+
 export default {
   name: 'MomentsCard',
   data() {
@@ -44,22 +47,42 @@ export default {
   },
   methods:{
     handleThumbup(){
-      if(this.thumb.thumb_status){
-        this.thumb.thumb_status = false;
-        this.icon_class['icon-like'] = true;
-        this.icon_class['icon-like-fill'] = false;
+      // if(this.thumb.thumb_status){
+      //   this.thumb.thumb_status = false;
+      //   this.icon_class['icon-like'] = true;
+      //   this.icon_class['icon-like-fill'] = false;
+      //   console.log("取消点赞");
+      // }
+      // else{
+      //   this.thumb.thumb_status = true;
+      //   this.icon_class['icon-like'] = false;
+      //   this.icon_class['icon-like-fill'] = true;
+      //   console.log("点赞");
+      // }
+      if(!this.thumb.thumb_status){
+        like_post({
+          post_id: this.pid,
+        }).then((response)=>{
+          if (response.data.code === 20000){
+            //成功
+            this.thumb.thumb_status = true;
+            this.icon_class['icon-like'] = false;
+            this.icon_class['icon-like-fill'] = true;
+            this.$message.success('点赞成功！');
+          }
+          else {
+            this.$message.error('点赞失败：'+response.data.msg);
+          }
+        }).catch((error)=>{
+          this.$message.error('请求时出错！');
+          console.log(error);
+        })
       }
-      else{
-        this.thumb.thumb_status = true;
-        this.icon_class['icon-like'] = false;
-        this.icon_class['icon-like-fill'] = true;
-      }
-
-      console.log("点赞");
     },
     handleCancelThumbup(){
       this.thumb.thumb_status = false;
-
+      this.icon_class['icon-like'] = true;
+      this.icon_class['icon-like-fill'] = false;
       console.log("取消点赞");
     }
   },
@@ -75,6 +98,14 @@ export default {
     ptime: {
       type: String,
       default: "1分钟前",
+    },
+    createtime: {
+      type: String,
+      default: "2020-12-10 11:49:01",
+    },
+    pid: {
+      type: Number,
+      default: 2333,
     },
     thumbnail_img: {
       type: String,
@@ -104,16 +135,18 @@ export default {
         return {
           thumb_num: 0,
           thumb_visible: true,
-          thumb_status: true,
+          thumb_status: false,
         }
       }
     }
   },
   mounted () {
     if (this.thumb.thumb_status){
+      this.icon_class['icon-like'] = false;
+      this.icon_class['icon-like-fill'] = true;
+    }
+    this.ptime = moment(this.createtime).fromNow();
   }
-}
-
 }
 </script>
 
