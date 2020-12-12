@@ -47,7 +47,8 @@ export default new Router({
       name: "UserCenter",
       component: () => import('@/views/PersonalCenter'),
       meta: {
-        title: "个人中心"
+        title: "个人中心",
+        requireAuth: true
       }
     },
     {
@@ -63,7 +64,8 @@ export default new Router({
       name: "Publish",
       component: () => import('@/views/Publish'),
       meta: {
-        title: "发布"
+        title: "发布",
+        requireAuth: true
       }
     },
     {

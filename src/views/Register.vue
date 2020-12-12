@@ -2,8 +2,7 @@
   <div>
     <div class="background" :style="backgroundImg">
     </div>
-    <div class="front">
-    <el-container>
+    <el-container class="front">
       <el-main class="form-card">
         <el-image class="logo-img"
                   :src="src"
@@ -21,12 +20,12 @@
               v-model="registerForm.username"
               placeholder="请输入用户名"
               prefix-icon="el-icon-user"
-              maxlength="10"
+              maxlength="20"
               show-word-limit
             />
           </el-form-item>
 
-          <el-form-item  prop="email">
+          <el-form-item prop="email">
             <el-input
               v-model="registerForm.email"
               placeholder="请输入邮箱地址"
@@ -39,6 +38,7 @@
               type="password"
               placeholder="请输入密码"
               prefix-icon="el-icon-lock"
+              maxlength="20"
               v-model="registerForm.password"
               autocomplete="off"
               show-password
@@ -48,26 +48,26 @@
             <el-input
               type="password"
               placeholder="请再次输入密码"
+              maxlength="20"
               v-model="registerForm.checkPass"
               prefix-icon="el-icon-lock"
               autocomplete="off"
               show-password
             />
           </el-form-item>
-          <el-form-item>
             <el-button class="reset" @click="resetForm('registerForm')">重置</el-button>
             <el-button class="submit" type="primary" @click="submitForm('registerForm')">提交</el-button>
-          </el-form-item>
 
         </el-form>
       </el-main>
     </el-container>
-    </div>
   </div>
 </template>
 
 
 <script>
+import {register} from "../api/account";
+
 export default {
   components: {
   },
@@ -85,7 +85,7 @@ export default {
     var validatePass2 = (rule, value, callback) => {
       if (!value) {
         callback(new Error('请再次输入密码'));
-      } else if (value !== this.registerForm.pass) {
+      } else if (value !== this.registerForm.password) {
         callback(new Error('两次输入密码不一致!'));
       } else {
         callback();
@@ -144,9 +144,26 @@ export default {
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          alert('submit!');
+          register({
+            username: this.registerForm.username,
+            password: this.registerForm.password,
+            email: this.registerForm.email
+          }).then((response)=>{
+            if (response.data.code === 20000){
+              //成功并跳转到登录页
+              this.$message.success('注册成功！');
+              this.$router.push({path: '/login'});
+            }
+            else {
+              this.$message.error('注册失败：'+response.data.msg);
+            }
+          }).catch((error)=>{
+            this.$message.error('请求时出错！');
+            console.log(error);
+          })
         } else {
           console.log('error submit!!');
+          this.$message.error('提交时出错！');
           return false;
         }
       });
@@ -166,6 +183,8 @@ export default {
   box-shadow: 0 0 0 1px hsla(240,0%,100%,.3) inset,
   0 .5em 1em rgba(0, 0, 0, 0.6);
   background-color: rgba(100,100,100,.2);
+  position:relative;
+  left:-50%;
 }
 .background{
   width:100%;
@@ -175,9 +194,10 @@ export default {
 }
 .front{
   z-index:1;
-  position: absolute;
-  margin-left: 500px;
-  margin-top: 60px;
+  float:left;
+  position:relative;
+  left:50%;
+  padding-top: 80px;
 }
 .logo-img{
   width: 80px;

@@ -2,8 +2,7 @@
   <div >
     <div class="background" :style="backgroundImg">
     </div>
-    <div class="front">
-    <el-container >
+    <el-container class="front">
       <el-main class="form-card" >
         <el-image class="logo-img"
                   :src="src"
@@ -15,7 +14,7 @@
             <el-input
               placeholder="请输入用户名"
               prefix-icon="el-icon-user"
-              maxlength="10"
+              maxlength="20"
               v-model="loginForm.username"
             />
           </el-form-item>
@@ -23,6 +22,7 @@
             <el-input
               type="password"
               placeholder="请输入密码"
+              maxlength="20"
               prefix-icon="el-icon-lock"
               v-model="loginForm.password"
               autocomplete="off"
@@ -43,12 +43,12 @@
         </el-form>
       </el-main>
     </el-container>
-    </div>
   </div>
 </template>
 
 <script>
-
+import { login } from '../api/account'
+import {get_bird_info} from "../api/identify-result";
 export default {
   components: {
 
@@ -95,9 +95,32 @@ export default {
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          alert('submit!');
+          login({
+            username: this.loginForm.username,
+            password: this.loginForm.password
+          }).then((response)=>{
+            if (response.data.code === 20000){
+              //成功并保存登录状态
+              // this.$store.commit('SET_TOKEN', response.data.token);
+              // this.$store.commit('GET_USER', response.data.user);
+              this.$message.success('登录成功！');
+              let redirect = decodeURIComponent(this.$route.query.redirect || '/');
+              this.$router.push({
+                // path: redirect
+                // 重定向问题需要解决
+                path: '/'
+              })
+            }
+            else {
+              this.$message.error('登录失败：'+response.data.msg);
+            }
+          }).catch((error)=>{
+            this.$message.error('请求时出错！');
+            console.log(error);
+          })
         } else {
           console.log('error submit!!');
+          this.$message.error('提交时出错！');
           return false;
         }
       });
@@ -115,9 +138,10 @@ export default {
 }
 .front{
   z-index:1;
-  position: absolute;
-  margin-left: 500px;
-  margin-top: 80px;
+  float:left;
+  position:relative;
+  left:50%;
+  padding-top: 80px;
 }
 .el-main {
   height: 80%;
@@ -126,6 +150,8 @@ export default {
   box-shadow: 0 0 0 1px hsla(240,0%,100%,.3) inset,
   0 .5em 1em rgba(0, 0, 0, 0.6);
   background-color: rgba(100,100,100,.2);
+  position:relative;
+  left:-50%;
 }
 .el-button{
   color:white;

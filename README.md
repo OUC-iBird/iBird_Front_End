@@ -48,12 +48,11 @@ npm install --save vue-cropper
 - views: 前端页面的代码
 - components: 前端组件
 
-- 现已完成顶部导航栏的初步UI与路由（需要登录状态检测逻辑）。*使用方法（已过期）:*
+- 现已完成顶部导航栏的UI与路由。
 
 ```vue
 <template>
     <div class="navbar">
-<!--      已经将导航栏组件放到全局App.vue中，更方便路由，无需另行添加-->
     <ibird-nav />
     </div>
 </template>

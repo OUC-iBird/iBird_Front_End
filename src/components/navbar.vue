@@ -70,44 +70,82 @@
 <script>
 // 修改导航栏弹出框样式
 import "@/assets/css/el-menu.css"
-  export default {
-    name: "ibird-nav",
-    // props: {
-    //     activeIndex2: '1',
-    //     logo: "../static/img/logo.png"
-    // },
-    data() {
-      return {
-        activeIndex2: '1',
-        logo: "../static/img/logo.png",
-        avatar: '',
-        defaultAvatar: '../static/img/avatar_default.png',
-        login: true,
-        icon1: "../static/img/person.png",
-        icon2: "../static/img/sent.png",
-        icon3: "../static/img/login-out.png",
-        icon4: "../static/img/login.png",
-        icon5: "../static/img/regist.png",
-      };
-    },
+import {get_status, logout} from "../api/account";
 
-    methods: {
-      handleSelect(key, keyPath) {
-        if(key === 3){
-        }
-        console.log(key, keyPath);
-      },
-      errorHandler() {
-        return true;
-      },
-      logout(){
-        this.$message({
-          message: '没做，下次一定',
-          type: 'warning'
-        });
+export default {
+  name: "ibird-nav",
+  // props: {
+  //     activeIndex2: '1',
+  //     logo: "../static/img/logo.png"
+  // },
+  data() {
+    return {
+      activeIndex2: '1',
+      logo: "../static/img/logo.png",
+      username: '',
+      nickname: '',
+      avatar: '',
+      defaultAvatar: '../static/img/avatar_default.png',
+      login: false,
+      icon1: "../static/img/person.png",
+      icon2: "../static/img/sent.png",
+      icon3: "../static/img/login-out.png",
+      icon4: "../static/img/login.png",
+      icon5: "../static/img/regist.png",
+    };
+  },
+  mounted() {
+    this.getStatus();
+  },
+  methods: {
+    handleSelect(key, keyPath) {
+      if(key === 3){
       }
-    }
+      console.log(key, keyPath);
+    },
+    errorHandler() {
+      return true;
+    },
+    logout(){
+      logout().then((response)=>{
+        if (response.data.code===20000){
+          //成功
+          // this.$store.commit('LOGOUT');
+          this.$message.success('注销成功！');
+        }
+        else {
+          this.$message.error('注销失败：'+response.data.msg);
+        }
+      }).catch((error)=>{
+        this.$message.error('请求时出错！');
+        console.log(error);
+      })
+    },
+    getStatus(){
+      get_status().then((response)=>{
+        if (response.data.code===20000){
+          //成功
+          this.login = response.data.data.login;
+          if (response.data.data.login){
+            this.username = response.data.data.username;
+            this.nickname = response.data.data.nickname;
+            this.avatar = response.data.data.avatar;
+          }
+          else {
+            this.username = '';
+            this.login = '';
+            this.avatar = this.defaultAvatar;
+          }
+        }
+        else {
+          console.log('error!!');
+        }
+      }).catch(()=>{
+        console.log('error!!');
+      })
+    },
   }
+}
 </script>
 
 <style scoped>

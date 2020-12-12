@@ -19,6 +19,7 @@ import 'vue-directive-image-previewer/dist/assets/style.css'
 import filters from "./utils/filters"
 import vueCropper from 'vue-cropper'
 import BaiduMap from 'vue-baidu-map'
+import {get_status} from "./api/account";
 //全局方法 Vue.filter() 统一注册自定义过滤器
 Object.keys(filters).forEach(key => { //返回filters对象中属性名组成的数组
   Vue.filter(key, filters[key])
@@ -37,11 +38,39 @@ Vue.use(BaiduMap, {
 })
 
 router.beforeEach((to, from, next) => {
+  /* 登录验证 */
+  if (to.meta.requireAuth) { // 判断该路由是否需要登录权限
+    get_status().then((response)=>{
+      if (response.data.code===20000){
+        if (response.data.data.login){
+          next()
+        }
+        else{
+          console.log('该页面需要登录')
+          next({
+            path: '/login',
+            query: {redirect: to.fullPath} // 将跳转的路由path作为参数，登录成功后跳转到该路由
+          })
+        }
+      }
+      else {
+        console.log('error!!');
+      }
+    }).catch((error)=>{
+      console.log(error);
+    })
+  } else {
+    next()
+  }
+})
+
+router.beforeResolve((to, from, next) => {
   /* 路由发生变化修改页面title */
+  /* 在beforeEach后被调用 */
   if (to.meta.title) {
     document.title = to.meta.title
   }
-  next()
+  next();
 })
 /* eslint-disable no-new */
 new Vue({
