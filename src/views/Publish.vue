@@ -65,6 +65,8 @@
 
 <script>
 import IbirdNav from "../components/navbar";
+import {give_post} from "../api/post";
+import {register} from "../api/account";
 
 export default {
   name: "Publish",
@@ -78,15 +80,6 @@ export default {
     }
   },
   props: {
-    username: {
-      type: String,
-    },
-    avatar: {
-      type: String,
-    },
-    ptime: {
-      type: String,
-    },
     thumbnail_img: {
       type: String,
     },
@@ -95,13 +88,6 @@ export default {
     },
     moment: {
       type: String,
-    },
-    location: {
-      type: String,
-    },
-    location_visible: {
-      type: Boolean,
-      default: false
     },
   },
   computed: {
@@ -142,7 +128,23 @@ export default {
       this.preview_img = [];
     },
     publishMoment: function () {
-      //发布动态
+      give_post({
+        path: this.thumbnail_img,
+        content: this.moment,
+      }).then((response)=>{
+        if (response.data.code === 20000){
+          //成功
+          this.$message.success('发布成功！');
+          this.deleteImage();
+          this.moment='';
+        }
+        else {
+          this.$message.error('发布失败：'+response.data.msg);
+        }
+      }).catch((error)=>{
+        this.$message.error('请求时出错！');
+        console.log(error);
+      })
     }
   }
 }

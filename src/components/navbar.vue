@@ -56,7 +56,7 @@
           </el-image>注册</el-menu-item></div>
     </div>
   </el-submenu>
-  <el-menu-item index="3" style="float:right" route="publish">
+  <el-menu-item index="3" style="float:right; border-bottom: 0" route="publish">
       <span class="RedTextColor">+   发布</span>
   </el-menu-item>
   <el-menu-item index="4" style="float:right" route="map">MAP</el-menu-item>
