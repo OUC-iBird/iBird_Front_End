@@ -12,24 +12,37 @@
         class="list"
         v-infinite-scroll="load"
         infinite-scroll-disabled="disabled">
-        <el-row v-for="(i, index) in countData" v-if="index%2==0" :key="index">
+        <el-row v-for="(i, index) in countData" v-if="index % 2 === 0" :key="index">
           <el-col :span="10" :offset="0" :push="3">
             <ibird-moments style="box-shadow: none; border: 0.1px solid #e0e0e0;"
                            class="moment-card"
-                           username="组件传参测试"
-                           moment="还行"
+                           v-bind:username=moments[index].username
+                           v-bind:moment=moments[index].content
+                           v-bind:avatar=moments[index].avatar
+                           v-bind:ptime=moments[index].create_time
+                           v-bind:pid=moments[index].post_id
+                           v-bind:location=moments[index].address
+                           v-bind:thumb=
+                             {thumb_num:moments[index].like,thumb_visible:true,thumb_status:moments[index].is_liked|false,}
             />
           </el-col>
           <el-col :span="10" :offset="0" v-if="index+1<countData.length" :push="2">
             <ibird-moments style="box-shadow: none; border: 0.1px solid #e0e0e0;"
                            class="moment-card"
-                           username="试一下"
-                           moment="原来如此"
+                           v-bind:username=moments[index+1].username
+                           v-bind:moment=moments[index+1].content
+                           v-bind:avatar=moments[index+1].avatar
+                           v-bind:ptime=moments[index+1].create_time
+                           v-bind:pid=moments[index+1].post_id
+                           v-bind:location=moments[index+1].address
+                           v-bind:thumb=
+                             {thumb_num:moments[index+1].like,thumb_visible:true,thumb_status:moments[index+1].is_liked|false,}
             />
           </el-col>
         </el-row>
       </ul>
-      <button v-if="loading" @click="more" class="load-button">查看更多 ∨</button>
+<!--      <button v-if="loading" @click="more" class="load-button">查看更多 ∨</button>-->
+      <p v-if="loading" style="color: #555555;font-size: 14px;margin-top:30px;margin-bottom: 50px;">加载中……</p>
       <p v-if="noMore" style="color: #555555;font-size: 14px;margin-top:30px;margin-bottom: 50px;">没有更多数据啦(^_^)</p>
     </div>
   </div>
@@ -38,6 +51,7 @@
 <script>
 import IbirdNav from "../components/navbar";
 import MomentsCard from "../components/MomentsCard";
+import {get_all_post} from "../api/post";
 
 export default {
   name: "MonentList",
@@ -47,16 +61,66 @@ export default {
   },
   data() {
     return {
-      count: [1, 2, 3, 4, 5, 6, 7, 8, 9, 0],
+      moments: [],
       loading: false,
       // 默认显示条数
-      cou: 4
+      cou: 4,
+      page: 1,
+      hasnext: true,
     }
+  },
+  mounted() {
+    // this.moments.push({
+    //   "username": "leo123",
+    //   "avatar": "avatar/default.jpg",
+    //   "content": "Hello World",
+    //   "create_time": "2020-12-10 11:49:01",
+    //   "address": "",
+    //   "like": 2333,
+    //   "post_id": 1,
+    //   "is_liked": false
+    // });this.moments.push({
+    //   "username": "testuser",
+    //   "avatar": "avatar/default.jpg",
+    //   "content": "摸了",
+    //   "create_time": "2020-12-10 11:49:01",
+    //   "address": "",
+    //   "like": 0,
+    //   "post_id": 1,
+    //   "is_liked": true
+    // });this.moments.push({
+    //   "username": "哈哈哈",
+    //   "avatar": "avatar/default.jpg",
+    //   "content": "哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈",
+    //   "create_time": "2020-12-10 11:49:01",
+    //   "address": "",
+    //   "like": 0,
+    //   "post_id": 1,
+    // });this.moments.push({
+    //   "username": "ibird",
+    //   "avatar": "avatar/default.jpg",
+    //   "content": "没人比我更懂鸟",
+    //   "create_time": "2020-12-10 11:49:01",
+    //   "address": "鸟鸟",
+    //   "like": 0,
+    //   "post_id": 1,
+    //   "is_liked": false
+    // });this.moments.push({
+    //   "username": "leo123",
+    //   "avatar": "avatar/default.jpg",
+    //   "content": "Hello World",
+    //   "create_time": "2020-12-10 11:49:01",
+    //   "address": "",
+    //   "like": 0,
+    //   "post_id": 1,
+    //   "is_liked": false
+    // });
   },
   computed: {
     noMore() {
       // 判断加载条数是否大于列表数据长度
-      return this.cou > this.count.length;
+      return !this.hasnext;
+      //return this.cou > this.moments.length;
     },
     disabled() {
       // 加载完成
@@ -65,25 +129,39 @@ export default {
     countData() {  // 计算属性使用切片生成新数组
       let data = [];
       // 大于四条，使用切片，返回新数组
-      if (this.count.length > 4) {
-        data = this.count.slice(0, this.cou);
+      if (this.moments.length > 4) {
+        data = this.moments.slice(0, this.cou);
         return data;
       } else {
         // 否则使用原来数组，不进行切片处理
-        data = this.count
+        data = this.moments
         return data;
       }
-
     },
   },
   methods: {
     load() {
-      this.loading = true;
-    },
-    more() {
-      // 每次点击加四条
-      this.cou += 4;
-      this.loading = false;
+      //下拉加载
+      if (!this.noMore){
+        this.loading = true
+        get_all_post(this.page).then((response)=>{
+          if (response.data.code === 20000){
+            //成功
+            this.moments = this.moments.concat(response.data.data.post);
+            this.cou += 4;
+            this.page++;
+            if (!response.data.data.hasnext) this.hasnext = false;
+          }
+          else {
+            this.$message.error('加载失败：'+response.data.msg);
+            this.hasnext = false;
+          }
+        }).catch((error)=>{
+          this.$message.error('请求时出错！');
+          console.log(error);
+        })
+        this.loading = false
+      }
     },
   },
 }
@@ -96,7 +174,9 @@ export default {
   justify-content: center;
   margin-top: 15px;
 }
-
+ul{
+  padding-left: 0;
+}
 .xuxian1 {
   margin-top: 30px;
   height: 1px;

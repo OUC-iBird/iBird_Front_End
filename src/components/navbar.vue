@@ -37,7 +37,7 @@
                     :src="icon3"
                     fill="fill"
                     style="height: 15px;width: 15px;">
-          </el-image>退出登陆</el-menu-item></div>
+          </el-image>退出登录</el-menu-item></div>
     </div>
     <div v-else class="login-style">
       <div style="display: block">
@@ -108,9 +108,9 @@ export default {
     },
     logout(){
       logout().then((response)=>{
-        if (response.data.code===20000){
+        if (response.data.code === 20000){
           //成功
-          // this.$store.commit('LOGOUT');
+          this.login = false;
           this.$message.success('注销成功！');
         }
         else {

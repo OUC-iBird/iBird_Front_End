@@ -1,7 +1,6 @@
-
 import axios from 'axios'
 import { MessageBox, Message } from 'element-ui'
-
+axios.defaults.withCredentials = true;
 // create an axios instance
 const service = axios.create({
 //   baseURL: process.env.VUE_APP_BASE_API, // url = base url + request url
@@ -24,7 +23,7 @@ service.interceptors.request.use(
     if (!config.params) {
         config.params = {};
     }
-    
+
   },
   error => {
     // do something with request error

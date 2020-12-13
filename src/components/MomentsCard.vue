@@ -4,7 +4,7 @@
   <el-header class="user-msg">
     <el-avatar :size="44" :src="avatar"></el-avatar>
     <span class="span-name">{{username}}</span><br>
-    <span class="span-time">{{ptime}}</span>
+    <span class="span-time">{{display_time}}</span>
     <div v-if="location_visible" class="location">
       <i class="el-icon-location-information"></i>
       <i>{{location}}</i>
@@ -42,7 +42,8 @@ export default {
         "iconfont": true,
         "icon-like-fill" : true,
         "icon-like": false,
-      }
+      },
+      display_time : '1分钟前',
     }
   },
   methods:{
@@ -97,10 +98,6 @@ export default {
     },
     ptime: {
       type: String,
-      default: "1分钟前",
-    },
-    createtime: {
-      type: String,
       default: "2020-12-10 11:49:01",
     },
     pid: {
@@ -125,10 +122,6 @@ export default {
       type: String,
       default: "青岛-崂山区"
     },
-    location_visible: {
-      type: Boolean,
-      default: true
-    },
     thumb: {
       type: Object,
       default: ()=>{
@@ -145,7 +138,12 @@ export default {
       this.icon_class['icon-like'] = false;
       this.icon_class['icon-like-fill'] = true;
     }
-    this.ptime = moment(this.createtime).fromNow();
+    this.display_time = moment(this.ptime).fromNow();
+  },
+  computed: {
+    location_visible(){
+      return this.location !== '';
+    }
   }
 }
 </script>
@@ -162,8 +160,9 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   cursor: pointer;
 }
-
-
+ul{
+  padding-left: 0;
+}
 .card-border {
   box-shadow: none;
   border: 0.1px solid #e0e0e0;

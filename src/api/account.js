@@ -1,8 +1,6 @@
 // 账户操作
 import request from '../utils/request'
 import axios from 'axios'
-import fa from "element-ui/src/locale/lang/fa";
-
 //登录
 export function login(data){
   return axios({

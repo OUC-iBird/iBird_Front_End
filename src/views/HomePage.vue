@@ -39,23 +39,37 @@
         class="list"
         v-infinite-scroll="load"
         infinite-scroll-disabled="disabled">
-        <el-row v-for="(i, index) in countData" v-if="index%2==0" :key="index">
-          <el-col   :span="10"  :offset="0" :push="3">
-            <ibird-moments class="moment-card"
-                           username="组件传参测试"
-                           moment="还行"
-            />
-          </el-col>
-          <el-col   :span="10"  :offset="0" v-if="index+1<countData.length" :push="2">
+        <el-row v-for="(i, index) in countData" v-if="index % 2 === 0" :key="index">
+          <el-col :span="10" :offset="0" :push="3">
             <ibird-moments style="box-shadow: none; border: 0.1px solid #e0e0e0;"
                            class="moment-card"
-                           username="试一下"
-                           moment="原来如此"
+                           v-bind:username=moments[index].username
+                           v-bind:moment=moments[index].content
+                           v-bind:avatar=moments[index].avatar
+                           v-bind:ptime=moments[index].create_time
+                           v-bind:pid=moments[index].post_id
+                           v-bind:location=moments[index].address
+                           v-bind:thumb=
+                             {thumb_num:moments[index].like,thumb_visible:true,thumb_status:moments[index].is_liked|false,}
+            />
+          </el-col>
+          <el-col :span="10" :offset="0" v-if="index+1<countData.length" :push="2">
+            <ibird-moments style="box-shadow: none; border: 0.1px solid #e0e0e0;"
+                           class="moment-card"
+                           v-bind:username=moments[index+1].username
+                           v-bind:moment=moments[index+1].content
+                           v-bind:avatar=moments[index+1].avatar
+                           v-bind:ptime=moments[index+1].create_time
+                           v-bind:pid=moments[index+1].post_id
+                           v-bind:location=moments[index+1].address
+                           v-bind:thumb=
+                             {thumb_num:moments[index+1].like,thumb_visible:true,thumb_status:moments[index+1].is_liked|false,}
             />
           </el-col>
         </el-row>
       </ul>
-      <button v-if="loading" @click="more" class="load-button" >查看更多 ∨</button>
+<!--      <button v-if="loading" @click="more" class="load-button" >查看更多 ∨</button>-->
+      <p v-if="loading" style="color: #555555;font-size: 14px;margin-top:30px;margin-bottom: 50px;">加载中……</p>
       <p v-if="noMore" style="color: #555555;font-size: 14px;margin-top:30px;margin-bottom: 50px;">没有更多数据啦(^_^)</p >
     </div>
     <ibird-footer pos="relative"/>
@@ -80,6 +94,7 @@ import MomentsCard from '../components/MomentsCard'
 // 引入插件
 import { swiper, swiperSlide } from "vue-awesome-swiper";
 import "swiper/css/swiper.css";
+import {get_hot_post} from "../api/post";
 
 export default {
   components: {
@@ -96,7 +111,7 @@ export default {
       img3 : "../static/img/img3.jpg",
       src2 : "../static/img/phone.png",
       src3 : "../static/img/icon.png",
-      count: [1,2,3,4,5,6,7,8,9,0],
+      moments: [],
       loading: false,
       // 默认显示条数
       cou: 4,
@@ -131,7 +146,7 @@ export default {
     },
     noMore() {
       // 判断加载条数是否大于列表数据长度
-      return this.cou > this.count.length;
+      return this.cou > this.moments.length;
     },
     disabled() {
       // 加载完成
@@ -140,12 +155,12 @@ export default {
     countData() {  // 计算属性使用切片生成新数组
       let data = [];
       // 大于四条，使用切片，返回新数组
-      if (this.count.length > 4) {
-        data = this.count.slice(0, this.cou);
+      if (this.moments.length > 4) {
+        data = this.moments.slice(0, this.cou);
         return data;
       } else {
         // 否则使用原来数组，不进行切片处理
-        data = this.count
+        data = this.moments
         return data;
       }
 
@@ -156,15 +171,26 @@ export default {
     // 然后你就可以使用当前上下文内的swiper对象去做你想做的事了
     console.log("this is current swiper instance object", this.swiper);
     // this.swiper.slideTo(3, 1000, false);
+    get_hot_post().then((response)=>{
+      if (response.data.code === 20000){
+        //成功
+        this.moments = this.moments.concat(response.data.data.post);
+      }
+      else {
+        this.$message.error('加载失败：'+response.data.msg);
+      }
+    }).catch((error)=>{
+      this.$message.error('请求时出错！');
+      console.log(error);
+    })
   },
   methods:{
     load() {
       this.loading = true;
-    },
-    more() {
-      // 每次点击加四条
-      this.cou += 4;
-      this.loading = false;
+      setTimeout(() => {
+        this.cou += 4;
+        this.loading = false
+      }, 1000)
     },
 
     /*点击弹出按钮*/

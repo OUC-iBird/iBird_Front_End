@@ -66,7 +66,6 @@
 <script>
 import IbirdNav from "../components/navbar";
 import {give_post} from "../api/post";
-import {register} from "../api/account";
 
 export default {
   name: "Publish",
@@ -76,7 +75,8 @@ export default {
       dialogVisible: false,
       default_img: '../static/img/4444.jpg',
       count: 10,
-      loading: false
+      loading: false,
+      hasnext: true,
     }
   },
   props: {

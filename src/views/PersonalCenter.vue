@@ -29,15 +29,28 @@
                                      fill="fill"
         >
         </el-image><p class="tip">个人动态</p></span>
-        <div class="card1">
-        <el-row v-for="i in count" class="card1-item">
-          <el-col :span="24" :push="5">
-            <ibird-moments style="width: 75%;"
-                           class="moment-card"
-                           username="组件传参测试"
-                           moment="还行"
-            /></el-col>
-        </el-row>
+        <div class="infinite-list-wrapper" style="overflow:auto">
+          <ul
+            class="list"
+            v-infinite-scroll="loadMoments"
+            infinite-scroll-disabled="moments_disabled">
+            <el-row v-for="(i,index) in moments_countData" :key="index" class="card1-item">
+              <el-col :span="20" :push="4">
+                <ibird-moments
+                               class="moment-card"
+                               v-bind:username=moments[index].username
+                               v-bind:moment=moments[index].content
+                               v-bind:avatar=moments[index].avatar
+                               v-bind:ptime=moments[index].create_time
+                               v-bind:pid=moments[index].post_id
+                               v-bind:location=moments[index].address
+                               v-bind:thumb=
+                                 {thumb_num:moments[index].like,thumb_visible:true,thumb_status:moments[index].is_liked|false,}
+                /></el-col>
+            </el-row>
+          </ul>
+          <p v-if="moments_loading" style="color: #555555;font-size: 14px;margin-top:30px;margin-bottom: 50px;">加载中……</p>
+          <p v-if="moments_noMore" style="color: #555555;font-size: 14px;margin-top:30px;margin-bottom: 50px;">没有更多数据啦(^_^)</p>
         </div>
       </el-tab-pane>
       <el-tab-pane class="card2">
@@ -74,6 +87,7 @@ import MomentsCard from '../components/MomentsCard'
 // 引入插件
 import "@/assets/css/scrollbar.css"
 import {change_avatar, change_nickname, get_status} from "../api/account";
+import {get_all_post, get_my_post} from "../api/post";
 export default {
   components: {
     'ibird-nav': NavBar,
@@ -102,29 +116,112 @@ export default {
       src2: "../static/img/camera.png",
       avatarUrl: "../static/img/profile.jpg",
       nickname:'Ctwo',
-      count: 10,
-      loading: false,
+      moments_cou: 4,
+      moments: [],
+      moments_page: 1,
+      moments_loading: false,
+      moments_hasnext: true,
     }
   },
   computed: {
-    noMore () {
-      return this.count >= 20
+    moments_noMore () {
+      //return this.moments_cou > this.moments.length
+      return !this.moments_hasnext;
     },
-    disabled(){
-      return this.noMore || this.loading
+    moments_disabled(){
+      return this.moments_noMore || this.moments_loading
+    },
+    moments_countData() {  // 计算属性使用切片生成新数组
+      let data = [];
+      console.log('countdata'+this.moments_cou)
+      console.log(this.moments.length)
+      // 大于x条，使用切片，返回新数组
+      if (this.moments.length > 4) {
+        data = this.moments.slice(0, this.moments_cou);
+        return data;
+      } else {
+        // 否则使用原来数组，不进行切片处理
+        data = this.moments
+        return data;
+      }
     },
   },
   mounted() {
     this.getUserInfo();
+    // this.moments.push({
+    //   "username": "leo123",
+    //   "avatar": "avatar/default.jpg",
+    //   "content": "Hello World",
+    //   "create_time": "2020-12-10 11:49:01",
+    //   "address": "",
+    //   "like": 2333,
+    //   "post_id": 1,
+    //   "is_liked": false
+    // });this.moments.push({
+    //   "username": "testuser",
+    //   "avatar": "avatar/default.jpg",
+    //   "content": "摸了",
+    //   "create_time": "2020-12-10 11:49:01",
+    //   "address": "",
+    //   "like": 0,
+    //   "post_id": 1,
+    //   "is_liked": true
+    // });this.moments.push({
+    //   "username": "哈哈哈",
+    //   "avatar": "avatar/default.jpg",
+    //   "content": "哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈",
+    //   "create_time": "2020-12-10 11:49:01",
+    //   "address": "",
+    //   "like": 0,
+    //   "post_id": 1,
+    // });this.moments.push({
+    //   "username": "ibird",
+    //   "avatar": "avatar/default.jpg",
+    //   "content": "没人比我更懂鸟",
+    //   "create_time": "2020-12-10 11:49:01",
+    //   "address": "鸟鸟",
+    //   "like": 0,
+    //   "post_id": 1,
+    //   "is_liked": false
+    // });this.moments.push({
+    //   "username": "leo123",
+    //   "avatar": "avatar/default.jpg",
+    //   "content": "Hello World",
+    //   "create_time": "2020-12-10 11:49:01",
+    //   "address": "",
+    //   "like": 0,
+    //   "post_id": 1,
+    //   "is_liked": false
+    // });
   },
-  // 这里到时候联网
   methods: {
-    load () {
-      this.loading = true
-      setTimeout(() => {
-        this.count += 2
-        this.loading = false
-      }, 2000)
+    loadMoments () {
+      // this.moments_loading = true
+      // setTimeout(() => {
+      //   console.log('loaddata'+this.moments_cou)
+      //   this.moments_cou += 4
+      //   this.moments_loading = false
+      // }, 2000)
+      if (!this.noMore){
+        this.moments_loading = true
+        get_my_post(this.moments_page).then((response)=>{
+          if (response.data.code === 20000){
+            //成功
+            this.moments = this.moments.concat(response.data.data.post);
+            this.cou += 4;
+            this.moments_page++;
+            if (!response.data.data.hasnext) this.moments_hasnext = false;
+          }
+          else {
+            this.$message.error('加载失败：'+response.data.msg);
+            this.moments_hasnext = false;
+          }
+        }).catch((error)=>{
+          this.$message.error('请求时出错！');
+          console.log(error);
+        })
+        this.moments_loading = false
+      }
     },
     getUserInfo(){
       get_status().then((response)=>{
@@ -181,8 +278,11 @@ export default {
 </script>
 
 <style scoped>
+ul{
+  padding-left: 0;
+}
 .card-selector{
-
+  padding-left: 8%;
 }
 .card1-item{
   position: relative;

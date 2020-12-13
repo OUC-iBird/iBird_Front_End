@@ -47,8 +47,8 @@
 </template>
 
 <script>
-import { login } from '../api/account'
-import {get_bird_info} from "../api/identify-result";
+import {login} from '../api/account'
+import axios from 'axios'
 export default {
   components: {
 
@@ -101,8 +101,6 @@ export default {
           }).then((response)=>{
             if (response.data.code === 20000){
               //成功并保存登录状态
-              // this.$store.commit('SET_TOKEN', response.data.token);
-              // this.$store.commit('GET_USER', response.data.user);
               this.$message.success('登录成功！');
               let redirect = decodeURIComponent(this.$route.query.redirect || '/');
               this.$router.push({
