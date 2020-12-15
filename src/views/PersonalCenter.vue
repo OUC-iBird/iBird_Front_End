@@ -37,15 +37,15 @@
             <el-row v-for="(i,index) in moments_countData" :key="index" class="card1-item">
               <el-col :span="20" :push="4">
                 <ibird-moments
-                               class="moment-card"
-                               v-bind:username=moments[index].username
-                               v-bind:moment=moments[index].content
-                               v-bind:avatar=moments[index].avatar
-                               v-bind:ptime=moments[index].create_time
-                               v-bind:pid=moments[index].post_id
-                               v-bind:location=moments[index].address
-                               v-bind:thumb=
-                                 {thumb_num:moments[index].like,thumb_visible:true,thumb_status:moments[index].is_liked|false,}
+                  class="moment-card"
+                  v-bind:username=moments[index].username
+                  v-bind:moment=moments[index].content
+                  v-bind:avatar=moments[index].avatar
+                  v-bind:ptime=moments[index].create_time
+                  v-bind:pid=moments[index].post_id
+                  v-bind:location=moments[index].address
+                  v-bind:thumb=
+                    {thumb_num:moments[index].like,thumb_visible:true,thumb_status:moments[index].is_liked|false,}
                 /></el-col>
             </el-row>
           </ul>
@@ -61,18 +61,25 @@
         >
         </el-image><p class="tip">个人相册</p></span>
         <div class="title"><p class="title-text">PHOTO GALLERY</p></div>
-        <div class="gallery">
+        <div class="gallery" style="height: 450px;">
           <el-scrollbar style="height: 100%;" ref="gcScrollbar" class="table_device">
-            <ul>
+            <ul
+              class="list"
+              v-infinite-scroll="load"
+              infinite-scroll-disabled="disabled"
+              style="padding: 0"
+            >
               <div class="home">
                 <div class="bannerArr">
-                  <div class="img-item" v-for="(item,index) in banners" >
-                    <img v-image-preview class="img" :src="item.imgUrl"/>
+                  <div class="img-item" v-for="(i,index) in moments_countData" :key="index" >
+                    <img v-image-preview class="img" :src="banners[index]"/>
                   </div>
                 </div>
               </div>
               <!--            <li v-for="i in count" class="list-item" style="height: 20px">{{ i }}</li>-->
             </ul>
+            <p v-if="loading">加载中...</p>
+            <p v-if="noMore">没有更多了</p>
           </el-scrollbar>
         </div>
       </el-tab-pane>
@@ -84,6 +91,7 @@
 <script>
 import NavBar from '../components/navbar'
 import MomentsCard from '../components/MomentsCard'
+import {get_my_gallery} from "../api/gallary"
 // 引入插件
 import "@/assets/css/scrollbar.css"
 import {change_avatar, change_nickname, get_status} from "../api/account";
@@ -95,22 +103,7 @@ export default {
   },
   data() {
     return {
-      banners: [
-        { imgUrl: 'static/img/gallery_1.jpeg' },
-        { imgUrl: 'static/img/gallery_2.png' },
-        { imgUrl: 'static/img/gallery_3.jpg' },
-        { imgUrl: 'static/img/gallery_3.jpg' },
-        { imgUrl: 'static/img/gallery_2.png' },
-        { imgUrl: 'static/img/gallery_1.jpeg' },
-        { imgUrl: 'static/img/gallery_1.jpeg' },
-        { imgUrl: 'static/img/gallery_2.png' },
-        { imgUrl: 'static/img/gallery_3.jpg' },
-        { imgUrl: 'static/img/gallery_2.png' },
-        { imgUrl: 'static/img/gallery_1.jpeg' },
-        { imgUrl: 'static/img/gallery_1.jpeg' },
-        { imgUrl: 'static/img/gallery_2.png' },
-        { imgUrl: 'static/img/gallery_3.jpg' }
-      ],
+      banners: [],
       src : "../static/img/banner.png",
       src1: "../static/img/bell.png",
       src2: "../static/img/camera.png",
@@ -121,9 +114,17 @@ export default {
       moments_page: 1,
       moments_loading: false,
       moments_hasnext: true,
+      loading: false,
     }
   },
   computed: {
+    noMore() {
+      return this.count >= 20
+    },
+    disabled() {
+      return this.noMore || this.loading
+    },
+
     moments_noMore () {
       //return this.moments_cou > this.moments.length
       return !this.moments_hasnext;
@@ -195,6 +196,13 @@ export default {
     // });
   },
   methods: {
+    load() {
+      this.loading = true
+      setTimeout(() => {
+        this.count += 2
+        this.loading = false
+      }, 2000)
+    },
     loadMoments () {
       // this.moments_loading = true
       // setTimeout(() => {
@@ -293,7 +301,6 @@ ul{
 .card2{
   width: 580px;
   float: right;
-  margin-bottom: 0;
 }
 .title{
   border:none;
@@ -322,6 +329,7 @@ ul{
   background-color: #ca917d;
 }
 .home {
+  margin-left: 42px;
   width: 500px;
   height: 100%;
   position: relative;
