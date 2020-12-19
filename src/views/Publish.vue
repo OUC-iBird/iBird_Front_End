@@ -127,7 +127,7 @@ export default {
             this.banners = this.moments.concat(response.data.data.post);
             this.gallary_cou += 4;
             this.gallary_page++;
-            if (!response.data.data.hasnext) this.gallary_hasnext = false;
+            if (!response.data.data.has_next) this.gallary_hasnext = false;
           }
           else {
             this.$message.error('加载失败：'+response.data.msg);

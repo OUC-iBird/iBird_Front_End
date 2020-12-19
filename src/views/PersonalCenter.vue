@@ -106,7 +106,7 @@ export default {
       infoloaded: false,
       avatarUrl: "",
       nickname:'Ctwo',
-      gallary_cou: 4,
+      gallary_cou: 12,
       gallary_page: 1,
       gallary_hasnext: true,
       moments_cou: 4,
@@ -128,7 +128,7 @@ export default {
     gallary_countData() {  // 计算属性使用切片生成新数组
       let data = [];
       // 大于x条，使用切片，返回新数组
-      if (this.banners.length > 4) {
+      if (this.banners.length > 12) {
         data = this.banners.slice(0, this.gallary_cou);
         return data;
       } else {
@@ -159,18 +159,22 @@ export default {
   },
   created() {
     this.getUserInfo();
+    this.load();
   },
   methods: {
     load() {
+      this.loading = true;
       if (!this.noMore){
-        this.loading = true;
         get_my_gallery(this.gallary_page).then((response)=>{
           if (response.data.code === 20000){
             //成功
-            this.banners = this.moments.concat(response.data.data.post);
-            this.gallary_cou += 4;
+            if (!this.gallary_hasnext) return
+            for (let i=0;i<response.data.data.count;i++){
+              this.banners.push('https://weparallelines.top'+response.data.data.photo[i]);
+            }
+            this.gallary_cou += 12;
             this.gallary_page++;
-            if (!response.data.data.hasnext) this.gallary_hasnext = false;
+            if (!response.data.data.has_next) this.gallary_hasnext = false;
           }
           else {
             this.$message.error('加载失败：'+response.data.msg);
@@ -180,25 +184,20 @@ export default {
           this.$message.error('请求时出错！');
           console.log(error);
         })
-        this.loading = false;
       }
+      this.loading = false;
     },
     loadMoments () {
-      // this.moments_loading = true
-      // setTimeout(() => {
-      //   console.log('loaddata'+this.moments_cou)
-      //   this.moments_cou += 4
-      //   this.moments_loading = false
-      // }, 2000)
       if (!this.moments_noMore){
         this.moments_loading = true;
         get_my_post(this.moments_page).then((response)=>{
           if (response.data.code === 20000){
             //成功
+            if (!this.moments_hasnext) return
             this.moments = this.moments.concat(response.data.data.post);
             this.moments_cou += 4;
             this.moments_page++;
-            if (!response.data.data.hasnext) this.moments_hasnext = false;
+            if (!response.data.data.has_next) this.moments_hasnext = false;
           }
           else {
             this.$message.error('加载失败：'+response.data.msg);
@@ -217,10 +216,10 @@ export default {
           //成功
           if (response.data.data.login){
             if (response.data.data.nickname === '')
-              this.nickname = response.data.data.nickname;
-            else
               this.nickname = response.data.data.username;
-            this.avatarUrl = response.data.data.avatar;
+            else
+              this.nickname = response.data.data.nickname;
+            this.avatarUrl = 'https://weparallelines.top' + response.data.data.avatar;
             this.infoloaded = true;
           }
         }
@@ -274,7 +273,7 @@ ul{
   padding-left: 0;
 }
 .card-selector{
-  padding-left: 8%;
+
 }
 .card1-item{
   position: relative;
