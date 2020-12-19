@@ -4,7 +4,7 @@ import axios from 'axios'
 // 获取上传的图片的鸟的信息和可信度
 export function identify_result(data){
   return axios({
-    url: 'https://weparallelines.top/api/prediction/predict',
+    url: '/api/prediction/predict',
     method: 'post',
     headers: {'Content-Type': 'application/json'},
     data
@@ -13,7 +13,7 @@ export function identify_result(data){
 
 export function test(data){
   return axios({
-    url: "https://weparallelines.top/api/test_post",
+    url: "/api/test_post",
     method: 'post',
     headers: {'Content-Type': 'application/json'},
     data
@@ -23,7 +23,7 @@ export function test(data){
 // 上传图片
 export function img_upload(data){
   return axios({
-    url: "https://weparallelines.top/api/upload",
+    url: "/api/upload",
     method: 'post',
     headers: {'Content-Type': 'multipart/form-data'},
     data
@@ -33,7 +33,7 @@ export function img_upload(data){
 // 根据识别报告序列号获取识别报告
 export function get_report(sequence){
   return axios({
-    url: 'https://weparallelines.top/api/prediction/get_report',
+    url: '/api/prediction/get_report',
     method: 'get',
     params: {
       sequence
@@ -44,7 +44,7 @@ export function get_report(sequence){
 // 获取指定编号的鸟的信息
 export function get_bird_info(bird_id){
   return axios({
-    url: 'https://weparallelines.top/api/prediction/get_bird_info',
+    url: '/api/prediction/get_bird_info',
     method: 'get',
     params: {
       bird_id

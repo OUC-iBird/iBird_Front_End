@@ -1,10 +1,12 @@
 // 账户操作
 import request from '../utils/request'
 import axios from 'axios'
+import {getAllCookie} from '../utils/cookie'
+
 //登录
 export function login(data){
   return axios({
-    url: 'https://weparallelines.top/api/account/login',
+    url: '/api/account/login',
     method: 'post',
     headers: {'Content-Type': 'application/json'},
     data
@@ -14,7 +16,7 @@ export function login(data){
 //注册
 export function register(data){
   return axios({
-    url: 'https://weparallelines.top/api/account/register',
+    url: '/api/account/register',
     method: 'post',
     headers: {'Content-Type': 'application/json'},
     data
@@ -24,7 +26,7 @@ export function register(data){
 //注销
 export function logout(){
   return axios({
-    url: 'https://weparallelines.top/api/account/logout',
+    url: '/api/account/logout',
     method: 'post',
     headers: {'Content-Type': 'application/json'},
   })
@@ -33,7 +35,7 @@ export function logout(){
 //获取状态
 export function get_status(){
   return axios({
-    url: 'https://weparallelines.top/api/account/status',
+    url: '/api/account/status',
     method: 'get',
   })
 }
@@ -41,7 +43,7 @@ export function get_status(){
 //修改昵称（要求登录）
 export function change_nickname(){
   return axios({
-    url: 'https://weparallelines.top/api/account/change_nickname',
+    url: '/api/account/change_nickname',
     method: 'post',
     headers: {'Content-Type': 'application/json'},
     data
@@ -51,7 +53,7 @@ export function change_nickname(){
 //修改头像（要求登录）
 export function change_avatar(){
   return axios({
-    url: 'https://weparallelines.top/api/account/change_avatar',
+    url: '/api/account/change_avatar',
     method: 'post',
     headers: {'Content-Type': 'application/json'},
     data
