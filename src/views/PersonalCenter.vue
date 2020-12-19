@@ -8,11 +8,11 @@
         class="banner-img">
       </el-image>
     </div>
-    <div class="avatar-img">
+    <div class="avatar-img" v-if="infoloaded">
       <el-avatar :size="130" :src="avatarUrl" style="border: 2px solid #ffffff;">
       </el-avatar>
     </div>
-    <div class="user-name">
+    <div class="user-name" v-if="infoloaded">
       <span>{{nickname}}</span>
     </div>
 
@@ -25,7 +25,7 @@
           <el-image class="icon-img"
                     :src="src1"
                     fill="fill"/>
-          <p class="tip">个人动态</p></span>
+          <span class="tip">个人动态</span></span>
         <div class="infinite-list-wrapper" style="overflow:auto">
           <ul
             class="list"
@@ -56,7 +56,7 @@
                     :src="src2"
                     fill="fill"
                     style="height: 14px;width: 14px;"/>
-          <p class="tip">个人相册</p></span>
+          <span class="tip">个人相册</span></span>
         <div class="title"><p class="title-text">PHOTO GALLERY</p></div>
         <div class="gallery" style="height: 450px;">
           <el-scrollbar style="height: 100%;" ref="gcScrollbar" class="table_device">
@@ -103,7 +103,8 @@ export default {
       src : "../static/img/banner.png",
       src1: "../static/img/bell.png",
       src2: "../static/img/camera.png",
-      avatarUrl: "../static/img/profile.jpg",
+      infoloaded: false,
+      avatarUrl: "",
       nickname:'Ctwo',
       gallary_cou: 4,
       gallary_page: 1,
@@ -156,59 +157,14 @@ export default {
       }
     },
   },
-  mounted() {
+  created() {
     this.getUserInfo();
-    // this.moments.push({
-    //   "username": "leo123",
-    //   "avatar": "avatar/default.jpg",
-    //   "content": "Hello World",
-    //   "create_time": "2020-12-10 11:49:01",
-    //   "address": "",
-    //   "like": 2333,
-    //   "post_id": 1,
-    //   "is_liked": false
-    // });this.moments.push({
-    //   "username": "testuser",
-    //   "avatar": "avatar/default.jpg",
-    //   "content": "摸了",
-    //   "create_time": "2020-12-10 11:49:01",
-    //   "address": "",
-    //   "like": 0,
-    //   "post_id": 1,
-    //   "is_liked": true
-    // });this.moments.push({
-    //   "username": "哈哈哈",
-    //   "avatar": "avatar/default.jpg",
-    //   "content": "哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈",
-    //   "create_time": "2020-12-10 11:49:01",
-    //   "address": "",
-    //   "like": 0,
-    //   "post_id": 1,
-    // });this.moments.push({
-    //   "username": "ibird",
-    //   "avatar": "avatar/default.jpg",
-    //   "content": "没人比我更懂鸟",
-    //   "create_time": "2020-12-10 11:49:01",
-    //   "address": "鸟鸟",
-    //   "like": 0,
-    //   "post_id": 1,
-    //   "is_liked": false
-    // });this.moments.push({
-    //   "username": "leo123",
-    //   "avatar": "avatar/default.jpg",
-    //   "content": "Hello World",
-    //   "create_time": "2020-12-10 11:49:01",
-    //   "address": "",
-    //   "like": 0,
-    //   "post_id": 1,
-    //   "is_liked": false
-    // });
   },
   methods: {
     load() {
       if (!this.noMore){
         this.loading = true;
-        get_my_post(this.gallary_page).then((response)=>{
+        get_my_gallery(this.gallary_page).then((response)=>{
           if (response.data.code === 20000){
             //成功
             this.banners = this.moments.concat(response.data.data.post);
@@ -260,8 +216,12 @@ export default {
         if (response.data.code === 20000){
           //成功
           if (response.data.data.login){
-            this.nickname = response.data.data.nickname;
+            if (response.data.data.nickname === '')
+              this.nickname = response.data.data.nickname;
+            else
+              this.nickname = response.data.data.username;
             this.avatarUrl = response.data.data.avatar;
+            this.infoloaded = true;
           }
         }
         else {

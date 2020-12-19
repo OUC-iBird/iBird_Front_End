@@ -18,9 +18,9 @@
       :src="thumbnail_img"
       :preview-src-list="preview_img">
     </el-image>
-    <div v-if="thumb.thumb_visible" class="thumb" v-bind:class="{'thumbup':thumb.thumb_status}">
+    <div v-if="thumb.thumb_visible" class="thumb" v-bind:class="{'thumbup':icon_class['icon-like-fill']}">
       <i @click="handleThumbup" v-bind:class="icon_class"></i>
-      <span>{{thumb.thumb_num}}</span>
+      <span>{{num}}</span>
     </div>
   </el-footer>
 
@@ -40,27 +40,16 @@ export default {
     return {
       icon_class:{
         "iconfont": true,
-        "icon-like-fill" : true,
-        "icon-like": false,
+        "icon-like-fill" : false,
+        "icon-like": true,
       },
-      display_time : '1分钟前',
+      display_time : '',
       displayavatar: '',
+      num: this.thumb.thumb_num,
     }
   },
   methods:{
     handleThumbup(){
-      // if(this.thumb.thumb_status){
-      //   this.thumb.thumb_status = false;
-      //   this.icon_class['icon-like'] = true;
-      //   this.icon_class['icon-like-fill'] = false;
-      //   console.log("取消点赞");
-      // }
-      // else{
-      //   this.thumb.thumb_status = true;
-      //   this.icon_class['icon-like'] = false;
-      //   this.icon_class['icon-like-fill'] = true;
-      //   console.log("点赞");
-      // }
       if(!this.thumb.thumb_status){
         like_post({
           post_id: this.pid,
@@ -70,6 +59,7 @@ export default {
             this.thumb.thumb_status = true;
             this.icon_class['icon-like'] = false;
             this.icon_class['icon-like-fill'] = true;
+            this.num++;
             this.$message.success('点赞成功！');
           }
           else {
@@ -80,6 +70,7 @@ export default {
           console.log(error);
         })
       }
+      else this.$message.error('此动态已点赞!')
     },
     handleCancelThumbup(){
       this.thumb.thumb_status = false;
@@ -95,7 +86,7 @@ export default {
     },
     avatar: {
       type: String,
-      default: "../static/img/avatar_default.png",
+      default: "",
     },
     ptime: {
       type: String,

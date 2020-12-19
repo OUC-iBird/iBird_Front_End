@@ -136,13 +136,14 @@ export default {
 }
 .front{
   z-index:1;
-  float:left;
+  width: 30%;
+  height: 100%;
   position:relative;
   left:50%;
   padding-top: 80px;
 }
 .el-main {
-  height: 80%;
+  height: 100%;
   border:none;
   border-radius:5px;
   box-shadow: 0 0 0 1px hsla(240,0%,100%,.3) inset,
@@ -168,7 +169,7 @@ export default {
   margin-bottom: 20px;
   font-size: 12px;
   color: #d5d2d2;
-  margin-left: 60px;
+  margin-left: 110px;
 }
 .el-link{
   margin-bottom: 20px;
@@ -176,7 +177,7 @@ export default {
   display: block;
   font-size: 12px;
   top: 1.2px;
-  margin-right: 60px;
+  margin-right: 110px;
 }
 .logo-img{
   width: 80px;
