@@ -292,7 +292,7 @@ ul{
 }
 .card2{
   width: 580px;
-  float: right;
+  display: inline-block;
 }
 .title{
   border:none;

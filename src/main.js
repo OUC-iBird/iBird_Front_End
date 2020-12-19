@@ -47,7 +47,7 @@ moment.locale('zh-CN'); //设置日期计算库语言
 // 设置跨域问题
 axios.defaults.withCredentials = true;
 axios.defaults.crossDomain = true;
-
+axios.defaults.timeout = 5000
 
 // Vue.prototype.$axios = axios;
 
