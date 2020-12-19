@@ -2,7 +2,7 @@
 <el-container class="card-border">
 
   <el-header class="user-msg">
-    <el-avatar :size="44" :src="avatar"></el-avatar>
+    <el-avatar :size="44" :src="displayavatar"></el-avatar>
     <span class="span-name">{{username}}</span><br>
     <span class="span-time">{{display_time}}</span>
     <div v-if="location_visible" class="location">
@@ -44,6 +44,7 @@ export default {
         "icon-like": false,
       },
       display_time : '1分钟前',
+      displayavatar: '',
     }
   },
   methods:{
@@ -94,7 +95,7 @@ export default {
     },
     avatar: {
       type: String,
-      default: "../static/img/avatar_default",
+      default: "../static/img/avatar_default.png",
     },
     ptime: {
       type: String,
@@ -139,6 +140,7 @@ export default {
       this.icon_class['icon-like-fill'] = true;
     }
     this.display_time = moment(this.ptime).fromNow();
+    this.displayavatar = 'https://weparallelines.top/'+this.avatar
   },
   computed: {
     location_visible(){
