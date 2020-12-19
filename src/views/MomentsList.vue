@@ -18,6 +18,7 @@
                            class="moment-card"
                            v-bind:username=moments[index].username
                            v-bind:moment=moments[index].content
+                           v-bind:thumbnail_img=moments[index].path
                            v-bind:avatar=moments[index].avatar
                            v-bind:ptime=moments[index].create_time
                            v-bind:pid=moments[index].post_id
@@ -31,6 +32,7 @@
                            class="moment-card"
                            v-bind:username=moments[index+1].username
                            v-bind:moment=moments[index+1].content
+                           v-bind:thumbnail_img=moments[index+1].path
                            v-bind:avatar=moments[index+1].avatar
                            v-bind:ptime=moments[index+1].create_time
                            v-bind:pid=moments[index+1].post_id
@@ -69,58 +71,9 @@ export default {
       hasnext: true,
     }
   },
-  mounted() {
-    // this.moments.push({
-    //   "username": "leo123",
-    //   "avatar": "avatar/default.jpg",
-    //   "content": "Hello World",
-    //   "create_time": "2020-12-10 11:49:01",
-    //   "address": "",
-    //   "like": 2333,
-    //   "post_id": 1,
-    //   "is_liked": false
-    // });this.moments.push({
-    //   "username": "testuser",
-    //   "avatar": "avatar/default.jpg",
-    //   "content": "摸了",
-    //   "create_time": "2020-12-10 11:49:01",
-    //   "address": "",
-    //   "like": 0,
-    //   "post_id": 1,
-    //   "is_liked": true
-    // });this.moments.push({
-    //   "username": "哈哈哈",
-    //   "avatar": "avatar/default.jpg",
-    //   "content": "哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈",
-    //   "create_time": "2020-12-10 11:49:01",
-    //   "address": "",
-    //   "like": 0,
-    //   "post_id": 1,
-    // });this.moments.push({
-    //   "username": "ibird",
-    //   "avatar": "avatar/default.jpg",
-    //   "content": "没人比我更懂鸟",
-    //   "create_time": "2020-12-10 11:49:01",
-    //   "address": "鸟鸟",
-    //   "like": 0,
-    //   "post_id": 1,
-    //   "is_liked": false
-    // });this.moments.push({
-    //   "username": "leo123",
-    //   "avatar": "avatar/default.jpg",
-    //   "content": "Hello World",
-    //   "create_time": "2020-12-10 11:49:01",
-    //   "address": "",
-    //   "like": 0,
-    //   "post_id": 1,
-    //   "is_liked": false
-    // });
-  },
   computed: {
     noMore() {
-      // 判断加载条数是否大于列表数据长度
       return !this.hasnext;
-      //return this.cou > this.moments.length;
     },
     disabled() {
       // 加载完成
@@ -147,10 +100,11 @@ export default {
         get_all_post(this.page).then((response)=>{
           if (response.data.code === 20000){
             //成功
+            if (!this.hasnext) return
             this.moments = this.moments.concat(response.data.data.post);
             this.cou += 4;
             this.page++;
-            if (!response.data.data.hasnext) this.hasnext = false;
+            if (!response.data.data.has_next) this.hasnext = false;
           }
           else {
             this.$message.error('加载失败：'+response.data.msg);

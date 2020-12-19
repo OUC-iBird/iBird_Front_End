@@ -23,7 +23,7 @@ import 'vue-directive-image-previewer/dist/assets/style.css'
 import filters from "./utils/filters"
 import vueCropper from 'vue-cropper'
 import BaiduMap from 'vue-baidu-map'
-import {check_login} from "./api/account";
+import {check_login, get_status} from "./api/account";
 import moment from "moment";
 //全局方法 Vue.filter() 统一注册自定义过滤器
 Object.keys(filters).forEach(key => { //返回filters对象中属性名组成的数组
@@ -54,15 +54,25 @@ axios.defaults.timeout = 5000
 router.beforeEach((to, from, next) => {
   /* 登录验证 */
   if (to.meta.requireAuth) { // 判断该路由是否需要登录权限
-    if (check_login()){
-      next();
-    } else{
-      console.log('该页面需要登录')
-      next({
-        path: '/login',
-        query: {redirect: to.fullPath} // 将跳转的路由path作为参数，登录成功后跳转到该路由
-      })
-    }
+    get_status().then((response)=>{
+      if (response.data.code === 20000){
+        if (response.data.data.login) next();
+        else {
+          console.log('该页面需要登录')
+          next({
+            path: '/login',
+            query: {redirect: to.fullPath} // 将跳转的路由path作为参数，登录成功后跳转到该路由
+          })
+        }
+      }
+      else {
+        console.log('请求失败：'+response.data.msg);
+        return false;
+      }
+    }).catch((error)=>{
+      console.log(error);
+      return false;
+    })
   } else {
     next()
   }
