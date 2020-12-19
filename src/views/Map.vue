@@ -70,8 +70,8 @@ export default {
     expandWindows(i){
       console.log(this.show);
       this.info_position = {
-        lng: this.positions[i].lng-0.003,
-        lat: this.positions[i].lat+0.005,
+        lng: this.positions[i].lng,
+        lat: this.positions[i].lat,
       }
       this.info_moment=this.information[i].content;
       this.info_address=this.information[i].address;

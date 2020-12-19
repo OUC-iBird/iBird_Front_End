@@ -250,7 +250,7 @@ export default {
         img: '', // 裁剪图片的地址
         info: true, // 裁剪框的大小信息
         outputSize: 1, // 裁剪生成图片的质量
-        outputType: 'jpeg', // 裁剪生成图片的格式
+        outputType: 'png', // 裁剪生成图片的格式
         canScale: false, // 图片是否允许滚轮缩放
         autoCrop: true, // 是否默认生成截图框
         autoCropWidth: 300, // 默认生成截图框宽度
@@ -273,6 +273,7 @@ export default {
     handleAvatarSuccess (res, file) {
     },
     beforeAvatarUpload (file) {
+      // const isJPG = 1;
       const isJPG = (file.type === 'image/jpeg' || file.type === 'image/png' || file.type === 'image/jpg')
       const isLt5M = file.size / 1024 / 1024 < 5
       this.card_control.card_invisible = true;
@@ -302,8 +303,8 @@ export default {
         let form = new FormData();
         let file = new window.File(
           [data],
-          "uploader.jpeg",
-          {type: "image/jpeg"}
+          "uploader.png",
+          {type: "image/png"}
           );
         console.log(file);
         form.append('img', file);
