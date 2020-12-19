@@ -15,6 +15,10 @@ import 'swiper/css/swiper.css'
 // 点击图片预览大图
 import VueDirectiveImagePreviewer from 'vue-directive-image-previewer'
 import 'vue-directive-image-previewer/dist/assets/style.css'
+
+
+
+
 //main.js中引入并注册
 import filters from "./utils/filters"
 import vueCropper from 'vue-cropper'
@@ -39,7 +43,14 @@ Vue.use(BaiduMap, {
 })
 
 moment.locale('zh-CN'); //设置日期计算库语言
+
+// 设置跨域问题
 axios.defaults.withCredentials = true;
+axios.defaults.crossDomain = true;
+
+
+// Vue.prototype.$axios = axios;
+
 router.beforeEach((to, from, next) => {
   /* 登录验证 */
   if (to.meta.requireAuth) { // 判断该路由是否需要登录权限

@@ -10,7 +10,15 @@ module.exports = {
     // Paths
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
-    proxyTable: {},
+    proxyTable: {
+      '/api': {  // 拦截转发路径
+        target: 'https://weparallelines.top',  // 代理目标
+        changeOrigin: true, //允许跨域
+        pathRewrite: {
+          '^/api': '/api'  // 重写
+        }
+      }
+    },
 
     // Various Dev Server settings
     host: 'localhost', // can be overwritten by process.env.HOST
@@ -73,5 +81,7 @@ module.exports = {
     // `npm run build --report`
     // Set to `true` or `false` to always turn it on or off
     bundleAnalyzerReport: process.env.npm_config_report
-  }
+  },
+  // host: "39.96.208.176",
+  // port: 443,
 }
