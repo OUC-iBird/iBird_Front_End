@@ -35,42 +35,35 @@
 
 
     <div class="infinite-list-wrapper" style="overflow:auto">
-      <ul
-        class="list"
-        v-infinite-scroll="load"
-        infinite-scroll-disabled="disabled">
-        <el-row v-for="(i, index) in countData" v-if="index % 2 === 0" :key="index">
-          <el-col :span="10" :offset="0" :push="3">
-            <ibird-moments style="box-shadow: none; border: 0.1px solid #e0e0e0;"
-                           class="moment-card"
-                           v-bind:username=moments[index].username
-                           v-bind:moment=moments[index].content
-                           v-bind:avatar=moments[index].avatar
-                           v-bind:ptime=moments[index].create_time
-                           v-bind:pid=moments[index].post_id
-                           v-bind:location=moments[index].address
-                           v-bind:thumb=
-                             {thumb_num:moments[index].like,thumb_visible:true,thumb_status:moments[index].is_liked|false,}
-            />
-          </el-col>
-          <el-col :span="10" :offset="0" v-if="index+1<countData.length" :push="2">
-            <ibird-moments style="box-shadow: none; border: 0.1px solid #e0e0e0;"
-                           class="moment-card"
-                           v-bind:username=moments[index+1].username
-                           v-bind:moment=moments[index+1].content
-                           v-bind:avatar=moments[index+1].avatar
-                           v-bind:ptime=moments[index+1].create_time
-                           v-bind:pid=moments[index+1].post_id
-                           v-bind:location=moments[index+1].address
-                           v-bind:thumb=
-                             {thumb_num:moments[index+1].like,thumb_visible:true,thumb_status:moments[index+1].is_liked|false,}
-            />
-          </el-col>
-        </el-row>
-      </ul>
-<!--      <button v-if="loading" @click="more" class="load-button" >查看更多 ∨</button>-->
-      <p v-if="loading" style="color: #555555;font-size: 14px;margin-top:30px;margin-bottom: 50px;">加载中……</p>
-      <p v-if="noMore" style="color: #555555;font-size: 14px;margin-top:30px;margin-bottom: 50px;">没有更多数据啦(^_^)</p >
+      <el-row v-for="(i, index) in moments" v-if="index % 2 === 0" :key="index">
+        <el-col :span="10" :offset="0" :push="3">
+          <ibird-moments style="box-shadow: none; border: 0.1px solid #e0e0e0;"
+                         class="moment-card"
+                         v-bind:username=moments[index].username
+                         v-bind:moment=moments[index].content
+                         v-bind:avatar=moments[index].avatar
+                         v-bind:ptime=moments[index].create_time
+                         v-bind:pid=moments[index].post_id
+                         v-bind:location=moments[index].address
+                         v-bind:thumb=
+                           {thumb_num:moments[index].like,thumb_visible:true,thumb_status:moments[index].is_liked|false,}
+          />
+        </el-col>
+        <el-col :span="10" :offset="0" v-if="index+1<moments.length" :push="2">
+          <ibird-moments style="box-shadow: none; border: 0.1px solid #e0e0e0;"
+                         class="moment-card"
+                         v-bind:username=moments[index+1].username
+                         v-bind:moment=moments[index+1].content
+                         v-bind:avatar=moments[index+1].avatar
+                         v-bind:ptime=moments[index+1].create_time
+                         v-bind:pid=moments[index+1].post_id
+                         v-bind:location=moments[index+1].address
+                         v-bind:thumb=
+                           {thumb_num:moments[index+1].like,thumb_visible:true,thumb_status:moments[index+1].is_liked|false,}
+          />
+        </el-col>
+      </el-row>
+      <button @click="toAllPosts" class="load-button" >查看全部</button>
     </div>
     <ibird-footer pos="relative"/>
     <!-- 弹出框 -->
@@ -144,27 +137,6 @@ export default {
     swiper() {
       return this.$refs.mySwiper.swiper;
     },
-    noMore() {
-      // 判断加载条数是否大于列表数据长度
-      return this.cou > this.moments.length;
-    },
-    disabled() {
-      // 加载完成
-      return this.loading || this.noMore;
-    },
-    countData() {  // 计算属性使用切片生成新数组
-      let data = [];
-      // 大于四条，使用切片，返回新数组
-      if (this.moments.length > 4) {
-        data = this.moments.slice(0, this.cou);
-        return data;
-      } else {
-        // 否则使用原来数组，不进行切片处理
-        data = this.moments
-        return data;
-      }
-
-    }
   },
   mounted() {
     // current swiper instance
@@ -175,6 +147,7 @@ export default {
       if (response.data.code === 20000){
         //成功
         this.moments = this.moments.concat(response.data.data.post);
+        console.log(this.moments)
       }
       else {
         this.$message.error('加载失败：'+response.data.msg);
@@ -185,14 +158,6 @@ export default {
     })
   },
   methods:{
-    load() {
-      this.loading = true;
-      setTimeout(() => {
-        this.cou += 4;
-        this.loading = false
-      }, 1000)
-    },
-
     /*点击弹出按钮*/
     popBox: function() {
       var popBox = document.getElementById("popBox");
@@ -206,6 +171,11 @@ export default {
       var popLayer = document.getElementById("popLayer");
       popBox.style.display = "none";
       popLayer.style.display = "none";
+    },
+    toAllPosts(){
+      this.$router.push({
+        path: '/moments'
+      })
     }
   }
 };
@@ -363,5 +333,6 @@ export default {
   margin-top:30px;
   margin-bottom: 50px;
   outline: none;
+  cursor: pointer
 }
 </style>
