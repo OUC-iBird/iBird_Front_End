@@ -45,7 +45,7 @@
       </ul>
 <!--      <button v-if="loading" @click="more" class="load-button">查看更多 ∨</button>-->
       <p v-if="loading" style="color: #555555;font-size: 14px;margin-top:30px;margin-bottom: 50px;">加载中……</p>
-      <p v-if="noMore" style="color: #555555;font-size: 14px;margin-top:30px;margin-bottom: 50px;">没有更多数据啦(^_^)</p>
+      <p v-else-if="noMore" style="color: #555555;font-size: 14px;margin-top:30px;margin-bottom: 50px;">没有更多数据啦(^_^)</p>
     </div>
   </div>
 </template>
@@ -102,9 +102,11 @@ export default {
             //成功
             if (!this.hasnext) return
             this.moments = this.moments.concat(response.data.data.post);
-            this.cou += 4;
-            this.page++;
             if (!response.data.data.has_next) this.hasnext = false;
+            else {
+              this.cou += 4;
+              this.page++;
+            }
           }
           else {
             this.$message.error('加载失败：'+response.data.msg);
@@ -114,7 +116,9 @@ export default {
           this.$message.error('请求时出错！');
           console.log(error);
         })
-        this.loading = false
+        setTimeout(() => {
+          this.loading = false
+        }, 1000)
       }
     },
   },

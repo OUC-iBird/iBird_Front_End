@@ -55,7 +55,7 @@
           <!--            <li v-for="i in count" class="list-item" style="height: 20px">{{ i }}</li>-->
         </ul>
         <p v-if="loading">加载中...</p>
-        <p v-if="noMore">没有更多数据啦(^_^)</p>
+        <p v-else-if="noMore">没有更多数据啦(^_^)</p>
         </el-scrollbar>
       </div>
     </el-dialog>
@@ -79,18 +79,10 @@ export default {
       dialogVisible: false,
       default_img: '../static/img/4444.jpg',
       loading: false,
+      thumbnail_img:'',
+      preview_img:[],
+      moment:'',
     }
-  },
-  props: {
-    thumbnail_img: {
-      type: String,
-    },
-    preview_img: {
-      type: Array,
-    },
-    moment: {
-      type: String,
-    },
   },
   computed: {
     noMore() {
@@ -124,9 +116,11 @@ export default {
             for (let i=0;i<response.data.data.count;i++){
               this.banners.push('https://weparallelines.top'+response.data.data.photo[i]);
             }
-            this.gallary_cou += 12;
-            this.gallary_page++;
             if (!response.data.data.has_next) this.gallary_hasnext = false;
+            else {
+              this.gallary_cou += 12;
+              this.gallary_page++;
+            }
           }
           else {
             this.$message.error('加载失败：'+response.data.msg);
@@ -136,7 +130,9 @@ export default {
           this.$message.error('请求时出错！');
           console.log(error);
         })
-        this.loading = false;
+        setTimeout(() => {
+          this.loading = false
+        }, 1000)
       }
     },
     selectImage: function (thumb, preview) {

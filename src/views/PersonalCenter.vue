@@ -48,7 +48,7 @@
             </el-row>
           </ul>
           <p v-if="moments_loading" style="color: #555555;font-size: 14px;margin-top:30px;margin-bottom: 50px;">加载中……</p>
-          <p v-if="moments_noMore" style="color: #555555;font-size: 14px;margin-top:30px;margin-bottom: 50px;">没有更多数据啦(^_^)</p>
+          <p v-else-if="moments_noMore" style="color: #555555;font-size: 14px;margin-top:30px;margin-bottom: 50px;">没有更多数据啦(^_^)</p>
         </div>
       </el-tab-pane>
       <el-tab-pane class="card2">
@@ -77,7 +77,7 @@
               <!--            <li v-for="i in count" class="list-item" style="height: 20px">{{ i }}</li>-->
             </ul>
             <p v-if="loading" style="color: whitesmoke">加载中...</p>
-            <p v-if="noMore" style="color: whitesmoke">没有更多了</p>
+            <p v-else-if="noMore" style="color: whitesmoke">没有更多了</p>
           </el-scrollbar>
         </div>
       </el-tab-pane>
@@ -173,9 +173,11 @@ export default {
             for (let i=0;i<response.data.data.count;i++){
               this.banners.push('https://weparallelines.top'+response.data.data.photo[i]);
             }
-            this.gallary_cou += 12;
-            this.gallary_page++;
             if (!response.data.data.has_next) this.gallary_hasnext = false;
+            else {
+              this.gallary_cou += 12;
+              this.gallary_page++;
+            }
           }
           else {
             this.$message.error('加载失败：'+response.data.msg);
@@ -186,7 +188,9 @@ export default {
           console.log(error);
         })
       }
-      this.loading = false;
+      setTimeout(() => {
+        this.loading = false
+      }, 1000)
     },
     loadMoments () {
       if (!this.moments_noMore){
@@ -196,9 +200,11 @@ export default {
             //成功
             if (!this.moments_hasnext) return
             this.moments = this.moments.concat(response.data.data.post);
-            this.moments_cou += 4;
-            this.moments_page++;
             if (!response.data.data.has_next) this.moments_hasnext = false;
+            else {
+              this.moments_cou += 4;
+              this.moments_page++;
+            }
           }
           else {
             this.$message.error('加载失败：'+response.data.msg);
@@ -208,7 +214,9 @@ export default {
           this.$message.error('请求时出错！');
           console.log(error);
         })
-        this.moments_loading = false;
+        setTimeout(() => {
+          this.moments_loading = false;
+        }, 1000)
       }
     },
     getUserInfo(){

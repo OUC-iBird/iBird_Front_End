@@ -23,7 +23,7 @@ import 'vue-directive-image-previewer/dist/assets/style.css'
 import filters from "./utils/filters"
 import vueCropper from 'vue-cropper'
 import BaiduMap from 'vue-baidu-map'
-import {check_login, get_status} from "./api/account";
+import {get_status} from "./api/account";
 import moment from "moment";
 //全局方法 Vue.filter() 统一注册自定义过滤器
 Object.keys(filters).forEach(key => { //返回filters对象中属性名组成的数组

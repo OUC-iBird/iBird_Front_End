@@ -149,7 +149,6 @@ export default {
       if (response.data.code === 20000){
         //成功
         this.moments = this.moments.concat(response.data.data.post);
-        console.log(this.moments)
       }
       else {
         this.$message.error('加载失败：'+response.data.msg);
