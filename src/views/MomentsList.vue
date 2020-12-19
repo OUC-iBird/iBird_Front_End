@@ -18,6 +18,7 @@
                            class="moment-card"
                            v-bind:username=moments[index].username
                            v-bind:moment=moments[index].content
+                           v-bind:thumbnail_img=moments[index].path
                            v-bind:avatar=moments[index].avatar
                            v-bind:ptime=moments[index].create_time
                            v-bind:pid=moments[index].post_id
@@ -31,6 +32,7 @@
                            class="moment-card"
                            v-bind:username=moments[index+1].username
                            v-bind:moment=moments[index+1].content
+                           v-bind:thumbnail_img=moments[index+1].path
                            v-bind:avatar=moments[index+1].avatar
                            v-bind:ptime=moments[index+1].create_time
                            v-bind:pid=moments[index+1].post_id

@@ -104,9 +104,7 @@ export default {
               this.$message.success('登录成功！');
               let redirect = decodeURIComponent(this.$route.query.redirect || '/');
               this.$router.push({
-                // path: redirect
-                // 重定向问题需要解决
-                path: '/'
+                path: redirect
               })
             }
             else {

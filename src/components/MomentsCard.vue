@@ -2,7 +2,7 @@
 <el-container class="card-border">
 
   <el-header class="user-msg">
-    <el-avatar :size="44" :src="displayavatar"></el-avatar>
+    <el-avatar :size="44" :src="display_avatar"></el-avatar>
     <span class="span-name">{{username}}</span><br>
     <span class="span-time">{{display_time}}</span>
     <div v-if="location_visible" class="location">
@@ -15,7 +15,7 @@
     <el-image
       style="width: 165px; height: 165px"
       class="record-img"
-      :src="thumbnail_img"
+      :src="display_img"
       :preview-src-list="preview_img">
     </el-image>
     <div v-if="thumb.thumb_visible" class="thumb" v-bind:class="{'thumbup':icon_class['icon-like-fill']}">
@@ -44,8 +44,9 @@ export default {
         "icon-like": true,
       },
       display_time : '',
-      displayavatar: '',
+      display_avatar: '',
       num: this.thumb.thumb_num,
+      display_img: '',
     }
   },
   methods:{
@@ -98,12 +99,12 @@ export default {
     },
     thumbnail_img: {
       type: String,
-      default: "../static/img/gallery_3.jpg",
+      default: "",
     },
     preview_img: {
       type: Array,
       default: () => {
-        return ["../static/img/gallery_3.jpg"]
+        return []
       }
     },
     moment: {
@@ -125,13 +126,15 @@ export default {
       }
     }
   },
-  mounted () {
+  created () {
     if (this.thumb.thumb_status){
       this.icon_class['icon-like'] = false;
       this.icon_class['icon-like-fill'] = true;
     }
     this.display_time = moment(this.ptime).fromNow();
-    this.displayavatar = 'https://weparallelines.top/'+this.avatar
+    this.display_avatar = 'https://weparallelines.top/' + this.avatar
+    this.display_img = 'https://weparallelines.top' + this.thumbnail_img
+    this.preview_img.push(this.display_img)
   },
   computed: {
     location_visible(){

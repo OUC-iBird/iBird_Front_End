@@ -37,6 +37,7 @@
                   class="moment-card"
                   v-bind:username=moments[index].username
                   v-bind:moment=moments[index].content
+                  v-bind:thumbnail_img=moments[index].path
                   v-bind:avatar=moments[index].avatar
                   v-bind:ptime=moments[index].create_time
                   v-bind:pid=moments[index].post_id
@@ -75,8 +76,8 @@
               </div>
               <!--            <li v-for="i in count" class="list-item" style="height: 20px">{{ i }}</li>-->
             </ul>
-            <p v-if="loading">加载中...</p>
-            <p v-if="noMore">没有更多了</p>
+            <p v-if="loading" style="color: whitesmoke">加载中...</p>
+            <p v-if="noMore" style="color: whitesmoke">没有更多了</p>
           </el-scrollbar>
         </div>
       </el-tab-pane>
