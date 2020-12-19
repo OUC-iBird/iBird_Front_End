@@ -194,7 +194,8 @@ export default {
 }
 .front{
   z-index:1;
-  float:left;
+  width: 30%;
+  height: 100%;
   position:relative;
   left:50%;
   padding-top: 80px;
@@ -212,7 +213,7 @@ export default {
   0 .5em 1em rgba(0, 0, 0, 0.6);
   margin-top: 10px;
   margin-bottom: 10px;
-  width: 46%;
+  width: 40%;
   position: relative;
 }
 .reset{
