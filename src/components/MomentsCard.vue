@@ -43,7 +43,7 @@ export default {
         "icon-like-fill" : false,
         "icon-like": true,
       },
-      display_time : '1分钟前',
+      display_time : '',
       displayavatar: '',
       num: this.thumb.thumb_num,
     }
@@ -70,6 +70,7 @@ export default {
           console.log(error);
         })
       }
+      else this.$message.error('此动态已点赞!')
     },
     handleCancelThumbup(){
       this.thumb.thumb_status = false;
