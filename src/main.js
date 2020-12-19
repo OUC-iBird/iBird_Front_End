@@ -39,7 +39,7 @@ Vue.use(BaiduMap, {
 })
 
 moment.locale('zh-CN'); //设置日期计算库语言
-
+axios.defaults.withCredentials = true;
 router.beforeEach((to, from, next) => {
   /* 登录验证 */
   if (to.meta.requireAuth) { // 判断该路由是否需要登录权限

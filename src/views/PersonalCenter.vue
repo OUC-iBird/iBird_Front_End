@@ -6,7 +6,6 @@
         :src="src"
         fill="fill"
         class="banner-img">
-
       </el-image>
     </div>
     <div class="avatar-img">
@@ -21,14 +20,12 @@
       tab-position="right"
       class="card-selector"
     >
-
       <el-tab-pane>
-
-        <span slot="label"><el-image class="icon-img"
-                                     :src="src1"
-                                     fill="fill"
-        >
-        </el-image><p class="tip">个人动态</p></span>
+        <span slot="label">
+          <el-image class="icon-img"
+                    :src="src1"
+                    fill="fill"/>
+          <p class="tip">个人动态</p></span>
         <div class="infinite-list-wrapper" style="overflow:auto">
           <ul
             class="list"
@@ -54,12 +51,12 @@
         </div>
       </el-tab-pane>
       <el-tab-pane class="card2">
-        <span slot="label"><el-image class="icon-img"
-                                     :src="src2"
-                                     fill="fill"
-                                     style="height: 14px;width: 14px;"
-        >
-        </el-image><p class="tip">个人相册</p></span>
+        <span slot="label">
+          <el-image class="icon-img"
+                    :src="src2"
+                    fill="fill"
+                    style="height: 14px;width: 14px;"/>
+          <p class="tip">个人相册</p></span>
         <div class="title"><p class="title-text">PHOTO GALLERY</p></div>
         <div class="gallery" style="height: 450px;">
           <el-scrollbar style="height: 100%;" ref="gcScrollbar" class="table_device">
@@ -71,7 +68,7 @@
             >
               <div class="home">
                 <div class="bannerArr">
-                  <div class="img-item" v-for="(i,index) in moments_countData" :key="index" >
+                  <div class="img-item" v-for="(i,index) in gallary_countData" :key="index" >
                     <img v-image-preview class="img" :src="banners[index]"/>
                   </div>
                 </div>
@@ -85,7 +82,6 @@
       </el-tab-pane>
     </el-tabs>
   </div>
-
 </template>
 
 <script>
@@ -95,7 +91,7 @@ import {get_my_gallery} from "../api/gallary"
 // 引入插件
 import "@/assets/css/scrollbar.css"
 import {change_avatar, change_nickname, get_status} from "../api/account";
-import {get_all_post, get_my_post} from "../api/post";
+import {get_my_post} from "../api/post";
 export default {
   components: {
     'ibird-nav': NavBar,
@@ -109,6 +105,9 @@ export default {
       src2: "../static/img/camera.png",
       avatarUrl: "../static/img/profile.jpg",
       nickname:'Ctwo',
+      gallary_cou: 4,
+      gallary_page: 1,
+      gallary_hasnext: true,
       moments_cou: 4,
       moments: [],
       moments_page: 1,
@@ -119,12 +118,24 @@ export default {
   },
   computed: {
     noMore() {
-      return this.count >= 20
+      //return this.gallary_cou >= 20
+      return !this.gallary_hasnext;
     },
     disabled() {
       return this.noMore || this.loading
     },
-
+    gallary_countData() {  // 计算属性使用切片生成新数组
+      let data = [];
+      // 大于x条，使用切片，返回新数组
+      if (this.banners.length > 4) {
+        data = this.banners.slice(0, this.gallary_cou);
+        return data;
+      } else {
+        // 否则使用原来数组，不进行切片处理
+        data = this.banners
+        return data;
+      }
+    },
     moments_noMore () {
       //return this.moments_cou > this.moments.length
       return !this.moments_hasnext;
@@ -134,8 +145,6 @@ export default {
     },
     moments_countData() {  // 计算属性使用切片生成新数组
       let data = [];
-      console.log('countdata'+this.moments_cou)
-      console.log(this.moments.length)
       // 大于x条，使用切片，返回新数组
       if (this.moments.length > 4) {
         data = this.moments.slice(0, this.moments_cou);
@@ -197,11 +206,26 @@ export default {
   },
   methods: {
     load() {
-      this.loading = true
-      setTimeout(() => {
-        this.count += 2
-        this.loading = false
-      }, 2000)
+      if (!this.noMore){
+        this.loading = true;
+        get_my_post(this.gallary_page).then((response)=>{
+          if (response.data.code === 20000){
+            //成功
+            this.banners = this.moments.concat(response.data.data.post);
+            this.gallary_cou += 4;
+            this.gallary_page++;
+            if (!response.data.data.hasnext) this.gallary_hasnext = false;
+          }
+          else {
+            this.$message.error('加载失败：'+response.data.msg);
+            this.gallary_hasnext = false;
+          }
+        }).catch((error)=>{
+          this.$message.error('请求时出错！');
+          console.log(error);
+        })
+        this.loading = false;
+      }
     },
     loadMoments () {
       // this.moments_loading = true
@@ -210,13 +234,13 @@ export default {
       //   this.moments_cou += 4
       //   this.moments_loading = false
       // }, 2000)
-      if (!this.noMore){
-        this.moments_loading = true
+      if (!this.moments_noMore){
+        this.moments_loading = true;
         get_my_post(this.moments_page).then((response)=>{
           if (response.data.code === 20000){
             //成功
             this.moments = this.moments.concat(response.data.data.post);
-            this.cou += 4;
+            this.moments_cou += 4;
             this.moments_page++;
             if (!response.data.data.hasnext) this.moments_hasnext = false;
           }
@@ -228,7 +252,7 @@ export default {
           this.$message.error('请求时出错！');
           console.log(error);
         })
-        this.moments_loading = false
+        this.moments_loading = false;
       }
     },
     getUserInfo(){
