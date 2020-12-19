@@ -73,15 +73,12 @@ export default {
   data() {
     return {
       banners: [],
-      gallary_cou: 4,
+      gallary_cou: 12,
       gallary_page: 1,
       gallary_hasnext: true,
       dialogVisible: false,
       default_img: '../static/img/4444.jpg',
-      count: 10,
       loading: false,
-      hasnext: true,
-
     }
   },
   props: {
@@ -97,7 +94,6 @@ export default {
   },
   computed: {
     noMore() {
-      //return this.gallary_cou >= 20
       return !this.gallary_hasnext;
     },
     disabled() {
@@ -106,7 +102,7 @@ export default {
     gallary_countData() {  // 计算属性使用切片生成新数组
       let data = [];
       // 大于x条，使用切片，返回新数组
-      if (this.banners.length > 4) {
+      if (this.banners.length > 12) {
         data = this.banners.slice(0, this.gallary_cou);
         return data;
       } else {
@@ -121,11 +117,14 @@ export default {
     load() {
       if (!this.noMore){
         this.loading = true;
-        get_my_post(this.gallary_page).then((response)=>{
+        get_my_gallery(this.gallary_page).then((response)=>{
           if (response.data.code === 20000){
             //成功
-            this.banners = this.moments.concat(response.data.data.post);
-            this.gallary_cou += 4;
+            if (!this.gallary_hasnext) return
+            for (let i=0;i<response.data.data.count;i++){
+              this.banners.push('https://weparallelines.top'+response.data.data.photo[i]);
+            }
+            this.gallary_cou += 12;
             this.gallary_page++;
             if (!response.data.data.has_next) this.gallary_hasnext = false;
           }
@@ -150,8 +149,10 @@ export default {
       this.preview_img = [];
     },
     publishMoment: function () {
+      const url = 'https://weparallelines.top';
+      let path = this.thumbnail_img.substr(url.length);
       give_post({
-        path: this.thumbnail_img,
+        path: path,
         content: this.moment,
       }).then((response)=>{
         if (response.data.code === 20000){
