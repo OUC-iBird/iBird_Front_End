@@ -129,7 +129,7 @@ export default {
           if (response.data.data.login){
             this.username = response.data.data.username;
             this.nickname = response.data.data.nickname;
-            this.avatar = response.data.data.avatar;
+            this.avatar = 'https://weparallelines.top'+response.data.data.avatar;
           }
           else {
             this.username = '';

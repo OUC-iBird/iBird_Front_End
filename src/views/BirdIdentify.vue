@@ -200,6 +200,9 @@
           </el-popover>
 
         </el-col>
+        <el-col class="uploadtogallary">
+          <el-button type="primary" class="submit-button" v-on:click="uploadToGallary()">保存至相册</el-button>
+        </el-col>
       </el-row>
       </div>
       </div>
@@ -212,6 +215,7 @@
 import NavBar from '../components/navbar'
 import { MessageBox, Message } from 'element-ui'
 import { test, identify_result, img_upload } from '../api/identify-result'
+import {save_in_gallery} from "../api/gallary";
 
 export default {
   components: {
@@ -220,6 +224,7 @@ export default {
   data () {
     return {
       imageUrl: '',
+      remoteUrl: '',
       imgName: "",
       tips: "正在识别....",
       text_para_class : {
@@ -332,6 +337,7 @@ export default {
           this.tips = "识别中";
           this.text_para_class.idf_finish = true;
           this.text_para_class.idf_waiting = false;
+          this.remoteUrl = res.data.data.path;
           console.log(res);
           console.log(res.data.data.path);
           identify_result({
@@ -356,11 +362,30 @@ export default {
             message: "失败",
             type: 'error',
             duration: 1000
-          })
+          });
+          console.log(error);
         })
 
     })
     },
+    uploadToGallary(){
+      save_in_gallery({
+        path: this.remoteUrl,
+        longitude: 0.0,
+        latitude: 0.0
+      }).then((response)=>{
+        if (response.data.code === 20000){
+          //成功
+          this.$message.success('上传成功！');
+        }
+        else {
+          this.$message.error('上传失败：'+response.data.msg);
+        }
+      }).catch((error)=>{
+        this.$message.error('请求时出错！');
+        console.log(error);
+      })
+    }
   },
   mounted () {
     this.v1 = false;
@@ -459,6 +484,9 @@ export default {
   .cropper{
     width:450px;
     height:450px;
+  }
+  .submit-button{
+    margin-top: 20px;
   }
 </style>
 
