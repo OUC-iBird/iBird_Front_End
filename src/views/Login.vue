@@ -48,20 +48,20 @@
 
 <script>
 import {login} from '../api/account'
-import axios from 'axios'
+import storage from 'good-storage'
+
 export default {
   components: {
-
   },
   data() {
-    var validatePass = (rule, value, callback) => {
+    let validatePass = (rule, value, callback) => {
       if (!value) {
         callback(new Error('请输入密码'));
       } else {
         callback();
       }
     };
-    var validateName = (rule, value, callback) => {
+    let validateName = (rule, value, callback) => {
       if (!value) {
         callback(new Error("请输入用户名"));
       } else {
@@ -102,6 +102,8 @@ export default {
             if (response.data.code === 20000){
               //成功并保存登录状态
               this.$message.success('登录成功！');
+              // 设置本地 session 缓存
+              storage.set("login", this.loginForm.username);
               let redirect = decodeURIComponent(this.$route.query.redirect || '/');
               this.$router.push({
                 path: redirect
