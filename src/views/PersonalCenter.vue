@@ -26,11 +26,12 @@
                     :src="src1"
                     fill="fill"/>
           <span class="tip">个人动态</span></span>
-        <div class="infinite-list-wrapper" style="overflow:auto">
-          <ul
-            class="list"
-            v-infinite-scroll="loadMoments"
-            infinite-scroll-disabled="moments_disabled">
+        <el-scrollbar class="infinite-list-wrapper" style="overflow:auto; overflow-x: hidden;"
+                      v-bind:style="{height:getClientHeight}">
+          <div v-infinite-scroll="loadMoments"
+               infinite-scroll-delay="500"
+               infinite-scroll-distance="200"
+               infinite-scroll-disabled="moments_disabled">
             <el-row v-for="(i,index) in moments_countData" :key="index" class="card1-item">
               <el-col :span="20" :push="4">
                 <ibird-moments
@@ -46,10 +47,10 @@
                     {thumb_num:moments[index].like,thumb_visible:true,thumb_status:moments[index].is_liked|false,}
                 /></el-col>
             </el-row>
-          </ul>
-          <p v-if="moments_loading" style="color: #555555;font-size: 14px;margin-top:30px;margin-bottom: 50px;">加载中……</p>
-          <p v-else-if="moments_noMore" style="color: #555555;font-size: 14px;margin-top:30px;margin-bottom: 50px;">没有更多数据啦(^_^)</p>
-        </div>
+            <p v-if="!moments_noMore" style="color: #555555;font-size: 14px;margin-top:30px;margin-bottom: 50px;">加载中……</p>
+            <p v-else style="color: #555555;font-size: 14px;margin-top:30px;margin-bottom: 50px;">没有更多数据啦(^_^)</p>
+          </div>
+        </el-scrollbar>
       </el-tab-pane>
       <el-tab-pane class="card2">
         <span slot="label">
@@ -64,6 +65,7 @@
             <ul
               class="list"
               v-infinite-scroll="load"
+              infinite-scroll-delay="500"
               infinite-scroll-disabled="disabled"
               style="padding: 0"
             >
@@ -76,8 +78,8 @@
               </div>
               <!--            <li v-for="i in count" class="list-item" style="height: 20px">{{ i }}</li>-->
             </ul>
-            <p v-if="loading" style="color: whitesmoke">加载中...</p>
-            <p v-else-if="noMore" style="color: whitesmoke">没有更多了</p>
+            <p v-if="!noMore" style="color: whitesmoke">加载中……</p>
+            <p v-else style="color: whitesmoke">没有更多数据啦(^_^)</p>
           </el-scrollbar>
         </div>
       </el-tab-pane>
@@ -157,6 +159,20 @@ export default {
         return data;
       }
     },
+    getClientHeight(){
+      let Height = document.documentElement.clientHeight - 50;
+      let clientHeight = Height + "px"
+      console.log("clientHeight 1=="+clientHeight)
+      //窗口可视区域发生变化的时候执行
+      window.onresize = () => {
+        Height = document.documentElement.clientHeight - 50;
+        clientHeight = Height + "px"
+        console.log("clientHeight changed2=="+clientHeight)
+        return clientHeight
+      }
+      console.log("clientHeight 3=="+clientHeight)
+      return clientHeight
+    }
   },
   created() {
     this.getUserInfo();
@@ -164,8 +180,8 @@ export default {
   },
   methods: {
     load() {
-      this.loading = true;
       if (!this.noMore){
+        this.loading = true;
         get_my_gallery(this.gallary_page).then((response)=>{
           if (response.data.code === 20000){
             //成功
@@ -187,10 +203,8 @@ export default {
           this.$message.error('请求时出错！');
           console.log(error);
         })
-      }
-      setTimeout(() => {
         this.loading = false
-      }, 1000)
+      }
     },
     loadMoments () {
       if (!this.moments_noMore){
@@ -214,9 +228,7 @@ export default {
           this.$message.error('请求时出错！');
           console.log(error);
         })
-        setTimeout(() => {
-          this.moments_loading = false;
-        }, 1000)
+        this.moments_loading = false;
       }
     },
     getUserInfo(){

@@ -42,6 +42,7 @@
         <ul
           class="list"
           v-infinite-scroll="load"
+          infinite-scroll-delay="500"
           infinite-scroll-disabled="disabled"
           style="padding: 0"
         >
@@ -54,8 +55,8 @@
           </div>
           <!--            <li v-for="i in count" class="list-item" style="height: 20px">{{ i }}</li>-->
         </ul>
-        <p v-if="loading">加载中...</p>
-        <p v-else-if="noMore">没有更多数据啦(^_^)</p>
+        <p v-if="!noMore">加载中...</p>
+        <p v-else>没有更多数据啦(^_^)</p>
         </el-scrollbar>
       </div>
     </el-dialog>
@@ -64,7 +65,7 @@
 
 <script>
 import IbirdNav from "../components/navbar";
-import {get_my_post, give_post} from '../api/post'
+import {give_post} from '../api/post'
 import {get_my_gallery} from "../api/gallary"
 import "@/assets/css/scrollbar.css"
 export default {
@@ -130,9 +131,7 @@ export default {
           this.$message.error('请求时出错！');
           console.log(error);
         })
-        setTimeout(() => {
-          this.loading = false
-        }, 1000)
+        this.loading = false
       }
     },
     selectImage: function (thumb, preview) {

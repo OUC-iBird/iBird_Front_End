@@ -7,11 +7,10 @@
       <div class="xuxian2"></div>
     </div>
 
-    <div class="infinite-list-wrapper" style="overflow:auto">
-      <ul
-        class="list"
-        v-infinite-scroll="load"
-        infinite-scroll-disabled="disabled">
+    <div class="infinite-list-wrapper" style="overflow: auto;" v-bind:style="{height: getClientHeight}"
+         v-infinite-scroll="load"
+         infinite-scroll-delay="500"
+         infinite-scroll-disabled="disabled">
         <el-row v-for="(i, index) in countData" v-if="index % 2 === 0" :key="index">
           <el-col :span="10" :offset="0" :push="3">
             <ibird-moments style="box-shadow: none; border: 0.1px solid #e0e0e0;"
@@ -42,10 +41,9 @@
             />
           </el-col>
         </el-row>
-      </ul>
 <!--      <button v-if="loading" @click="more" class="load-button">查看更多 ∨</button>-->
-      <p v-if="loading" style="color: #555555;font-size: 14px;margin-top:30px;margin-bottom: 50px;">加载中……</p>
-      <p v-else-if="noMore" style="color: #555555;font-size: 14px;margin-top:30px;margin-bottom: 50px;">没有更多数据啦(^_^)</p>
+      <p v-if="!noMore" style="color: #555555;font-size: 14px;margin-top:30px;margin-bottom: 50px;">加载中……</p>
+      <p v-else style="color: #555555;font-size: 14px;margin-top:30px;margin-bottom: 50px;">没有更多数据啦(^_^)</p>
     </div>
   </div>
 </template>
@@ -91,6 +89,20 @@ export default {
         return data;
       }
     },
+    getClientHeight(){
+      let Height = document.documentElement.clientHeight - 137;
+      let clientHeight = Height + "px"
+      console.log("clientHeight 1=="+clientHeight)
+      //窗口可视区域发生变化的时候执行
+      window.onresize = () => {
+        Height = document.documentElement.clientHeight - 137;
+        clientHeight = Height + "px"
+        console.log("clientHeight changed2=="+clientHeight)
+        return clientHeight
+      }
+      console.log("clientHeight 3=="+clientHeight)
+      return clientHeight
+    }
   },
   methods: {
     load() {
@@ -116,9 +128,7 @@ export default {
           this.$message.error('请求时出错！');
           console.log(error);
         })
-        setTimeout(() => {
-          this.loading = false
-        }, 1000)
+        this.loading = false
       }
     },
   },
@@ -131,6 +141,7 @@ export default {
   align-items: center;
   justify-content: center;
   margin-top: 15px;
+  margin-bottom: 15px;
 }
 ul{
   padding-left: 0;

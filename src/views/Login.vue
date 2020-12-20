@@ -29,17 +29,13 @@
               show-password
             />
           </el-form-item>
-          <el-button
-            :loading="false"
-            type="primary"
-            @click="submitForm('loginForm')"
-          >
-            登录
-          </el-button>
-          <span class="tip">还没有注册？</span>
-          <el-link href="/register" style="color: #ffffff;">
-            点击此处
-          </el-link>
+          <el-button class="main-button" :loading="false" type="primary" @click="submitForm('loginForm')">登录</el-button><br/>
+          <el-button class="sub-button" @click="toBack()">取消</el-button>
+          <el-button class="sub-button" @click="toRegister()">注册新账号</el-button>
+<!--          <span class="tip">还没有注册？</span>-->
+<!--          <el-link :underline="false" @click="toRegister()" style="color: #ffffff;">-->
+<!--            点击此处-->
+<!--          </el-link>-->
         </el-form>
       </el-main>
     </el-container>
@@ -48,7 +44,6 @@
 
 <script>
 import {login} from '../api/account'
-import axios from 'axios'
 export default {
   components: {
 
@@ -121,6 +116,17 @@ export default {
         }
       });
     },
+    toRegister(){
+      this.$router.push({
+        path: '/register'
+      })
+    },
+    toBack(){
+      let redirect = decodeURIComponent(this.$route.query.redirect || '/');
+      this.$router.push({
+        path: redirect
+      })
+    },
   }
 }
 </script>
@@ -156,26 +162,20 @@ export default {
   border-radius: 20px;
   box-shadow: 0 0 0 1px hsla(240,0%,100%,.3) inset,
   0 .5em 1em rgba(0, 0, 0, 0.6);
-  background-color: rgba(51,153,0,.4);
-  margin-top: 20px;
-  margin-bottom: 20px;
-  width: 100%;
-  display: block;
-}
-.tip{
+  margin-top: 10px;
+  margin-bottom: 10px;
   position: relative;
-  margin-bottom: 20px;
-  font-size: 12px;
-  color: #d5d2d2;
-  margin-left: 110px;
 }
-.el-link{
-  margin-bottom: 20px;
-  float: right;
-  display: block;
-  font-size: 12px;
-  top: 1.2px;
-  margin-right: 110px;
+.main-button{
+  background-color: rgba(51,153,0,.4);
+  width: 83.5%;
+}
+.sub-button{
+  background-color: rgba(27, 37, 49, 0.4);
+  width: 40%;
+}
+.el-button+.el-button {
+  margin-left: 2.5%;
 }
 .logo-img{
   width: 80px;

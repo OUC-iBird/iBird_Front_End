@@ -55,9 +55,8 @@
               show-password
             />
           </el-form-item>
-            <el-button class="reset" @click="resetForm('registerForm')">重置</el-button>
-            <el-button class="submit" type="primary" @click="submitForm('registerForm')">提交</el-button>
-
+          <el-button class="reset" @click="toLogin()">返回</el-button>
+          <el-button class="submit" type="primary" @click="submitForm('registerForm')">注册</el-button>
         </el-form>
       </el-main>
     </el-container>
@@ -170,7 +169,12 @@ export default {
     },
     resetForm(formName) {
       this.$refs[formName].resetFields();
-    }
+    },
+    toLogin(){
+      this.$router.push({
+        path: '/login'
+      })
+    },
   }
 }
 </script>

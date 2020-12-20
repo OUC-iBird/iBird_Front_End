@@ -117,11 +117,12 @@ export default {
   },
   computed: {
     getClientHeight: function (){
-      let Height = document.documentElement.clientHeight - 90;
+      let Height = document.documentElement.clientHeight - 10 - 61;
       let clientHeight = Height + "px"
       console.log("clientHeight 1=="+clientHeight)
       //窗口可视区域发生变化的时候执行
       window.onresize = () => {
+        Height = document.documentElement.clientHeight - 10 - 61;
         clientHeight = Height + "px"
         console.log("clientHeight changed2=="+clientHeight)
         return clientHeight
