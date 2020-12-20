@@ -34,6 +34,10 @@ npm i --save vue-baidu-map
 # install a img cropper components
 npm install --save vue-cropper
 
+
+# install local cache components
+# npm install good-storage
+
 * 增加了轮播图组件：3.1.3版本的vue-awesome-swiper，5.4.5版本的swiper
 * 增加了点击图片预览大图组件vue-directive-image-previewer
 ```
@@ -198,6 +202,21 @@ proxyTable: {
         }
       }
 }
+```
+
+### 使用 Storage 避免反复请求接口
+
+```
+import storage from 'good-storage'
+storage.set(key, val)
+
+// 现已经有用户基本信息的本地缓存和登录状态的缓存
+user_data : {
+    "avatar": xxx,
+    "username": xxx,
+    "nickname": xxx
+}
+login: (username)
 ```
 
 

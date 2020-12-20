@@ -32,10 +32,6 @@
           <el-button class="main-button" :loading="false" type="primary" @click="submitForm('loginForm')">登录</el-button><br/>
           <el-button class="sub-button" @click="toBack()">取消</el-button>
           <el-button class="sub-button" @click="toRegister()">注册新账号</el-button>
-<!--          <span class="tip">还没有注册？</span>-->
-<!--          <el-link :underline="false" @click="toRegister()" style="color: #ffffff;">-->
-<!--            点击此处-->
-<!--          </el-link>-->
         </el-form>
       </el-main>
     </el-container>
@@ -44,19 +40,20 @@
 
 <script>
 import {login} from '../api/account'
+import storage from 'good-storage'
+
 export default {
   components: {
-
   },
   data() {
-    var validatePass = (rule, value, callback) => {
+    let validatePass = (rule, value, callback) => {
       if (!value) {
         callback(new Error('请输入密码'));
       } else {
         callback();
       }
     };
-    var validateName = (rule, value, callback) => {
+    let validateName = (rule, value, callback) => {
       if (!value) {
         callback(new Error("请输入用户名"));
       } else {
@@ -97,6 +94,8 @@ export default {
             if (response.data.code === 20000){
               //成功并保存登录状态
               this.$message.success('登录成功！');
+              // 设置本地 session 缓存
+              storage.set("login", this.loginForm.username);
               let redirect = decodeURIComponent(this.$route.query.redirect || '/');
               this.$router.push({
                 path: redirect

@@ -64,13 +64,15 @@
 </template>
 
 <script>
-import IbirdNav from "../components/navbar";
+import NavBar from "../components/navbar";
 import {give_post} from '../api/post'
 import {get_my_gallery} from "../api/gallary"
 import "@/assets/css/scrollbar.css"
 export default {
   name: "Publish",
-  components: {IbirdNav},
+  components: {
+    "ibird-nav": NavBar
+  },
   data() {
     return {
       banners: [],
@@ -78,7 +80,6 @@ export default {
       gallary_page: 1,
       gallary_hasnext: true,
       dialogVisible: false,
-      default_img: '../static/img/4444.jpg',
       loading: false,
       thumbnail_img:'',
       preview_img:[],

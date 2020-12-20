@@ -25,6 +25,7 @@ import vueCropper from 'vue-cropper'
 import BaiduMap from 'vue-baidu-map'
 import {get_status} from "./api/account";
 import moment from "moment";
+import storage from 'good-storage'
 //全局方法 Vue.filter() 统一注册自定义过滤器
 Object.keys(filters).forEach(key => { //返回filters对象中属性名组成的数组
   Vue.filter(key, filters[key])
@@ -47,32 +48,44 @@ moment.locale('zh-CN'); //设置日期计算库语言
 // 设置跨域问题
 axios.defaults.withCredentials = true;
 axios.defaults.crossDomain = true;
-axios.defaults.timeout = 5000
+axios.defaults.timeout = 10000;
 
 // Vue.prototype.$axios = axios;
 
 router.beforeEach((to, from, next) => {
   /* 登录验证 */
+  // 宽松登录验证,提升性能
   if (to.meta.requireAuth) { // 判断该路由是否需要登录权限
-    get_status().then((response)=>{
-      if (response.data.code === 20000){
-        if (response.data.data.login) next();
-        else {
-          console.log('该页面需要登录')
-          next({
-            path: '/login',
-            query: {redirect: to.fullPath} // 将跳转的路由path作为参数，登录成功后跳转到该路由
-          })
-        }
-      }
-      else {
-        console.log('请求失败：'+response.data.msg);
-        return false;
-      }
-    }).catch((error)=>{
-      console.log(error);
-      return false;
-    })
+    if(storage.has("login")){
+      next();
+    }
+    else{
+      next({
+        path: '/login',
+        // query: {redirect: to.fullPath} // 将跳转的路由path作为参数，登录成功后跳转到该路由
+      })
+
+    }
+    // 严格的登录验证
+    // get_status().then((response)=>{
+    //   if (response.data.code === 20000){
+    //     if (response.data.data.login) next();
+    //     else {
+    //
+    //       next({
+    //         path: '/login',
+    //         query: {redirect: to.fullPath} // 将跳转的路由path作为参数，登录成功后跳转到该路由
+    //       })
+    //     }
+    //   }
+    //   else {
+    //
+    //     return false;
+    //   }
+    // }).catch((error)=>{
+    //
+    //   return false;
+    // })
   } else {
     next()
   }

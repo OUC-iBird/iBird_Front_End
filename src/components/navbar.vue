@@ -5,8 +5,9 @@
   @select="handleSelect"
   text-color="#000"
   router
+  :default-active="this.$router.path"
   active-text-color="#ffd04b">
-  <el-menu-item index="1" route="home">
+  <el-menu-item index="/home" route="home">
       <el-image :src="logo"
       style="width: 120px; height: 50px"></el-image>
   </el-menu-item>
@@ -17,14 +18,14 @@
       </template>
     <div v-if="login"  class="login-style" >
       <div style="display: block">
-        <el-menu-item id="tid" index="2-1" class="submenu" route="center">
+        <el-menu-item id="tid" index="/center" class="submenu" route="center">
           <el-image class="icon"
                     :src="icon1"
                     fill="fill"
                     style="height: 15px;width: 15px;">
           </el-image>个人中心</el-menu-item></div>
       <div style="display: block">
-        <el-menu-item index="2-2" class="submenu" route="publish">
+        <el-menu-item index="/publish" class="submenu" route="publish">
           <el-image class="icon"
                     :src="icon2"
                     fill="fill"
@@ -41,14 +42,14 @@
     </div>
     <div v-else class="login-style">
       <div style="display: block">
-        <el-menu-item index="2-3" class="submenu" route="login">
+        <el-menu-item index="/login" class="submenu" route="login">
           <el-image class="icon"
                     :src="icon4"
                     fill="fill"
                     style="height: 14px;width: 14px;">
           </el-image>登录</el-menu-item></div>
       <div style="display: block">
-        <el-menu-item index="2-4" class="submenu" route="register">
+        <el-menu-item index="/register" class="submenu" route="register">
           <el-image class="icon"
                     :src="icon5"
                     fill="fill"
@@ -59,9 +60,10 @@
   <el-menu-item index="3" style="float:right; border-bottom: 0" route="publish">
       <span class="RedTextColor">+   发布</span>
   </el-menu-item>
-  <el-menu-item index="4" style="float:right" route="map">MAP</el-menu-item>
-  <el-menu-item index="5" style="float:right" route="moments">动态</el-menu-item>
-  <el-menu-item index="6" style="float:right" route="identify">识别</el-menu-item>
+  <el-menu-item index="/map" style="float:right" route="map">MAP</el-menu-item>
+  <el-menu-item index="/moments" style="float:right" route="moments">动态</el-menu-item>
+  <el-menu-item index="/identify" style="float:right" route="identify">识别</el-menu-item>
+  <el-menu-item index="/home" style="float: right" route="home">主页</el-menu-item>
 
 </el-menu>
 </template>
@@ -71,22 +73,20 @@
 // 修改导航栏弹出框样式
 import "@/assets/css/el-menu.css"
 import {get_status, logout} from "../api/account";
+import storage from 'good-storage'
 
 export default {
   name: "ibird-nav",
-  // props: {
-  //     activeIndex2: '1',
-  //     logo: "../static/img/logo.png"
-  // },
+
   data() {
     return {
-      activeIndex2: '1',
+      activeIndex: "/home",
       logo: "../static/img/logo.png",
       username: '',
       nickname: '',
       avatar: '',
       defaultAvatar: '../static/img/avatar_default.png',
-      login: false,
+      login: storage.has("login"),
       icon1: "../static/img/person.png",
       icon2: "../static/img/sent.png",
       icon3: "../static/img/login-out.png",
@@ -95,13 +95,30 @@ export default {
     };
   },
   mounted() {
-    this.getStatus();
+    // ????这里的跳转检查被 foreach 取代
+    // console.log("Checked by the navbar");
+    if(this.$route.meta.requireAuth){
+      // 检查本地的 session 缓存
+      if(storage.has("login")){
+        this.login = true;
+
+        if(storage.has("user_data")){
+          this.nickname = storage.get("user_data").nickname;
+          this.username = storage.get("user_data").username;
+          this.avatar = storage.get("user_data").avatar;
+        }
+        else {
+          this.getStatus();
+        }
+      }
+      else{
+        this.$router.push({path: "/login"})
+      }
+    }
   },
+
   methods: {
     handleSelect(key, keyPath) {
-      if(key === 3){
-      }
-      console.log(key, keyPath);
     },
     errorHandler() {
       return true;
@@ -111,7 +128,10 @@ export default {
         if (response.data.code === 20000){
           //成功
           this.login = false;
+          // 清空本地缓存
+          storage.clear();
           this.$message.success('注销成功！');
+          this.$router.push({path: "/login"})
         }
         else {
           this.$message.error('注销失败：'+response.data.msg);
@@ -130,6 +150,12 @@ export default {
             this.username = response.data.data.username;
             this.nickname = response.data.data.nickname;
             this.avatar = 'https://weparallelines.top'+response.data.data.avatar;
+            storage.set("user_data", {
+              "avatar": this.avatar,
+              "username": this.username,
+              "nickname": this.nickname,
+            })
+            console.log(storage.has("user_data"));
           }
           else {
             this.username = '';
@@ -164,4 +190,5 @@ export default {
 .login-style{
   text-align: center;
 }
+
 </style>
