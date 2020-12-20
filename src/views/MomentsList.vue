@@ -51,14 +51,13 @@
 </template>
 
 <script>
-import IbirdNav from "../components/navbar";
 import MomentsCard from "../components/MomentsCard";
 import {get_all_post} from "../api/post";
-
+import NavBar from "../components/navbar"
 export default {
   name: "MonentList",
   components: {
-    IbirdNav,
+    'ibird-nav': NavBar,
     'ibird-moments': MomentsCard,
   },
   data() {
