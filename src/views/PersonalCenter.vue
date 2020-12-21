@@ -13,7 +13,7 @@
       </el-avatar>
     </div>
     <div class="user-name" v-if="infoloaded">
-      <span>{{nickname}}</span>
+      <span>{{displayName}}</span>
     </div>
 
     <el-tabs
@@ -95,6 +95,7 @@ import {get_my_gallery} from "../api/gallary"
 import "@/assets/css/scrollbar.css"
 import {change_avatar, change_nickname, get_status} from "../api/account";
 import {get_my_post} from "../api/post";
+import storage from "good-storage";
 export default {
   components: {
     'ibird-nav': NavBar,
@@ -108,7 +109,8 @@ export default {
       src2: "../static/img/camera.png",
       infoloaded: false,
       avatarUrl: "",
-      nickname:'Ctwo',
+      nickname: "",
+      username: "",
       gallary_cou: 12,
       gallary_page: 1,
       gallary_hasnext: true,
@@ -121,6 +123,10 @@ export default {
     }
   },
   computed: {
+    displayName(){
+      if (this.nickname === '') return this.username
+      else return this.nickname
+    },
     noMore() {
       //return this.gallary_cou >= 20
       return !this.gallary_hasnext;
@@ -232,24 +238,30 @@ export default {
       }
     },
     getUserInfo(){
-      get_status().then((response)=>{
-        if (response.data.code === 20000){
-          //成功
-          if (response.data.data.login){
-            if (response.data.data.nickname === '')
-              this.nickname = response.data.data.username;
-            else
+      if(storage.has("user_data")){
+        this.nickname = storage.get("user_data").nickname;
+        this.username = storage.get("user_data").username;
+        this.avatarUrl = storage.get("user_data").avatar;
+        this.infoloaded = true;
+      }
+      else {
+        get_status().then((response)=>{
+          if (response.data.code === 20000){
+            //成功
+            if (response.data.data.login){
+              this.username = response.data.data.username;
               this.nickname = response.data.data.nickname;
-            this.avatarUrl = 'https://weparallelines.top' + response.data.data.avatar;
-            this.infoloaded = true;
+              this.avatarUrl = 'https://weparallelines.top' + response.data.data.avatar;
+              this.infoloaded = true;
+            }
           }
-        }
-        else {
-          console.log('信息获取失败：'+response.data.msg);
-        }
-      }).catch((error)=>{
-        console.log(error);
-      })
+          else {
+            console.log('信息获取失败：'+response.data.msg);
+          }
+        }).catch((error)=>{
+          console.log(error);
+        })
+      }
     },
     changeAvatar(url){
       change_avatar({
@@ -258,7 +270,14 @@ export default {
         if (response.data.code === 20000){
           //成功
           this.$message.success('头像修改成功！');
-          this.getUserInfo();
+          storage.set("user_data", {
+            "avatar": 'https://weparallelines.top' + url,
+            "username": this.username,
+            "nickname": this.nickname,
+          })
+          setTimeout(() => {
+            this.$router.go(0);
+          }, 1000)
         }
         else {
           this.$message.error('头像修改失败：'+response.data.msg);
@@ -275,7 +294,14 @@ export default {
         if (response.data.code === 20000){
           //成功
           this.$message.success('昵称修改成功！');
-          this.getUserInfo();
+          storage.set("user_data", {
+            "avatar": this.avatarUrl,
+            "username": this.username,
+            "nickname": name,
+          })
+          setTimeout(() => {
+            this.$router.go(0);
+          }, 1000)
         }
         else {
           this.$message.error('昵称修改失败：'+response.data.msg);

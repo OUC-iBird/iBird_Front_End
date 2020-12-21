@@ -179,7 +179,7 @@ ul{
   position: relative;
   font-size: 16px;
   margin-left: 10px;
-  font-family: '宋体';
+  font-family: '宋体', serif;
   color: #444444;
   font-weight: bold;
   top: 3px;
@@ -193,9 +193,11 @@ ul{
 }
 .record-text {
   margin-left: 25px;
+  margin-right: 25px;
   font-size: 12px;
   color: #444444;
   margin-bottom: 10px;
+  word-wrap: break-word;
 }
 .el-footer{
   margin-bottom: 18px;

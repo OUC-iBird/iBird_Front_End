@@ -30,7 +30,7 @@
             />
           </el-form-item>
           <el-button class="main-button" :loading="false" type="primary" @click="submitForm('loginForm')">登录</el-button><br/>
-          <el-button class="sub-button" @click="toBack()">取消</el-button>
+          <el-button class="sub-button" @click="toBack()">返回</el-button>
           <el-button class="sub-button" @click="toRegister()">注册新账号</el-button>
         </el-form>
       </el-main>
@@ -121,10 +121,10 @@ export default {
       })
     },
     toBack(){
-      let redirect = decodeURIComponent(this.$route.query.redirect || '/');
-      this.$router.push({
-        path: redirect
-      })
+      // this.$router.push({
+      //   path: '/'
+      // })
+      this.$router.go(-1);
     },
   }
 }
