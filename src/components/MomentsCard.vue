@@ -162,7 +162,7 @@ ul{
 .card-border {
   box-shadow: none;
   border: 0.1px solid #e0e0e0;
-  width: 82%;
+  width: 100%;
   text-align: left;
 }
 .card-border .user-msg{

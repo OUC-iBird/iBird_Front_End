@@ -34,9 +34,9 @@
     </div>
 
 
-    <div class="infinite-list-wrapper" style="overflow:auto">
-      <el-row v-for="(i, index) in moments" v-if="index % 2 === 0" :key="index">
-        <el-col :span="10" :offset="0" :push="3">
+    <div class="infinite-list-wrapper">
+      <el-row :span="24" v-for="(i, index) in moments" v-if="index % 2 === 0" :key="index">
+        <el-col :span="9" :offset="2">
           <ibird-moments style="box-shadow: none; border: 0.1px solid #e0e0e0;"
                          class="moment-card"
                          v-bind:username=moments[index].username
@@ -50,7 +50,7 @@
                            {thumb_num:moments[index].like,thumb_visible:true,thumb_status:moments[index].is_liked|false,}
           />
         </el-col>
-        <el-col :span="10" :offset="0" v-if="index+1<moments.length" :push="2">
+        <el-col :span="9" :offset="0" :push="2" v-if="index+1<moments.length">
           <ibird-moments style="box-shadow: none; border: 0.1px solid #e0e0e0;"
                          class="moment-card"
                          v-bind:username=moments[index+1].username
@@ -182,6 +182,13 @@ export default {
 };
 </script>
 <style scoped >
+.infinite-list-wrapper{
+  margin-top: 20px;
+  width: 100%;
+}
+.moment-card {
+  margin-bottom: 15px;
+}
 .top{
   width: 100%;
   margin-top: 25px;
@@ -277,6 +284,7 @@ export default {
   border-top: 1px dashed #aaa8a8;
 }
 
+
 /*弹出框*/
 /*背景层*/
 #popLayer {
@@ -321,9 +329,7 @@ export default {
   width: 200px;
 }
 
-.moment-card {
-  margin-top: 15px;
-}
+
 .load-button{
   color: #ff99b6;
   background-color: transparent;
