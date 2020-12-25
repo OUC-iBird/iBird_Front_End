@@ -31,7 +31,6 @@
                     fill="fill"
                     style="height: 15px;width: 15px;">
           </el-image>发布动态</el-menu-item></div>
-      <!--      待补充逻辑-->
       <div style="display: block" >
         <el-menu-item class="submenu" @click="logout()">
           <el-image class="icon"
@@ -101,7 +100,6 @@ export default {
       // 检查本地的 session 缓存
       if(storage.has("login")){
         this.login = true;
-
         if(storage.has("user_data")){
           this.nickname = storage.get("user_data").nickname;
           this.username = storage.get("user_data").username;
@@ -112,6 +110,7 @@ export default {
         }
       }
       else{
+        this.login = false;
         this.$router.push({path: "/login"})
       }
     }
@@ -155,12 +154,12 @@ export default {
               "username": this.username,
               "nickname": this.nickname,
             })
-            console.log(storage.has("user_data"));
           }
           else {
             this.username = '';
             this.nickname = '';
             this.avatar = this.defaultAvatar;
+            storage.clear();
           }
         }
         else {

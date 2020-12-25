@@ -121,10 +121,9 @@ export default {
       })
     },
     toBack(){
-      // this.$router.push({
-      //   path: '/'
-      // })
-      this.$router.go(-1);
+      this.$router.push({
+        path: '/'
+      })
     },
   }
 }
