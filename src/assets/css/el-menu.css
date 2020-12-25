@@ -11,3 +11,11 @@
   font-size: 12px;
   color: #444444;
 }
+
+/*这里是隐藏滚动条的方法*/
+::-webkit-scrollbar {
+  width: 0 !important;
+}
+::-webkit-scrollbar {
+  width: 0 !important;height: 0;
+}
