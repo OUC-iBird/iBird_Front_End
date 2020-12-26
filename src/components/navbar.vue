@@ -109,6 +109,7 @@ export default {
     }
     else{
       this.login = false;
+      this.avatar = this.defaultAvatar;
       if(this.$route.meta.requireAuth){
         // 检查本地的 session 缓存
         this.$router.push({path: "/login"})

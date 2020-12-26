@@ -24,4 +24,9 @@ body{
   /*margin-top: 20px;*/
   height: 100%;
 }
+html, div {
+  -ms-overflow-style: none;
+  overflow: -moz-scrollbars-none;
+  scrollbar-width: none;
+}
 </style>
