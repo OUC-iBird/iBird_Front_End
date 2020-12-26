@@ -56,7 +56,7 @@
           <el-popover
             placement="right"
             :title=birds_name[0]
-            width="400px"
+            width="250"
             trigger="manual"
             :content=this.birds_description[0]
             v-model="v1">
@@ -86,7 +86,7 @@
           <el-popover
             placement="right"
             :title=birds_name[1]
-            width="400px"
+            width="250"
             trigger="manual"
             :content=this.birds_description[1]
             v-model="v2">
@@ -116,7 +116,7 @@
           <el-popover
             placement="right"
             :title=birds_name[2]
-            width="400px"
+            width="250"
             trigger="manual"
             :content=this.birds_description[2]
             v-model="v3">
@@ -146,7 +146,7 @@
           <el-popover
             placement="right"
             :title=birds_name[3]
-            width="400px"
+            width="250"
             trigger="manual"
             :content=this.birds_description[3]
             v-model="v4">
@@ -176,7 +176,7 @@
           <el-popover
             placement="right"
             :title=birds_name[4]
-            width="400px"
+            width="250"
             style="height: 300px"
             trigger="manual"
             :content=this.birds_description[4]
@@ -491,9 +491,9 @@ export default {
 </style>
 
 <style>
-.el-popover{
-  height: 300px;
-  min-height: 300px;
-  width: 400px;
-}
+/*.el-popover{*/
+/*  height: 300px;*/
+/*  min-height: 300px;*/
+/*  width: 400px;*/
+/*}*/
 </style>
