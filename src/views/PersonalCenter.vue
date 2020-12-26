@@ -20,6 +20,7 @@
            placement="right"
            width="200"
            trigger="manual"
+           class="change_name"
            v-model="changenameVisible">
            <el-input
              placeholder="请输入要更改的昵称"
@@ -630,5 +631,9 @@ ul{
   top: 30%;
   left: 105%;
   color: #909399;
+}
+.change_name{
+  min-height: auto;
+  height: auto;
 }
 </style>
