@@ -8,7 +8,7 @@
         class="banner-img">
       </el-image>
     </div>
-    <div class="avatar-img" v-if="infoloaded">
+    <div class="avatar-img" v-if="infoloaded" @click="dialogVisible = true">
       <el-avatar :size="130" :src="avatarUrl" style="border: 2px solid #ffffff;">
       </el-avatar>
     </div>
@@ -84,6 +84,56 @@
         </div>
       </el-tab-pane>
     </el-tabs>
+
+
+
+    <el-dialog
+      title="修改头像"
+      :visible.sync="dialogVisible"
+      :destroy-on-close="true"
+      width="30%"
+    >
+        <div v-if="imageUrl">
+          <div class="save-left">
+          <el-image fit="cover"
+                    :src="imageUrl"
+                    :preview-src-list="preview_img"
+                    class="upload-image"/>
+          <el-button icon="el-icon-close"
+                     class="delete-button"
+                     v-on:click="deleteImage()"
+                     type="info" circle
+                     size="mini"/>
+          </div>
+          <div class="save-right">
+            <span class="save-text">这是您的新头像(^-^*)/</span>
+          <el-button class="save-btn" type="danger" v-on:click="changeAvatar()">保存修改</el-button>
+          </div>
+        </div>
+
+
+        <div v-else class="box-tip">
+        <div class="up-img" >
+          <el-upload
+            class="avatar-uploader"
+            action="https://weparallelines.top/api/upload"
+            :on-preview="handlePreview"
+            :show-file-list="false"
+            :on-success="handleAvatarSuccess"
+            :before-upload="beforeAvatarUpload"
+            :http-request="uploadImg">
+            <el-image class="icon-img1"
+                      :src="src3"
+                      fill="fill"/>
+            <span class="tip1">上传图片</span>
+          </el-upload>
+        </div>
+        </div>
+    </el-dialog>
+
+
+
+
   </div>
 </template>
 
@@ -91,11 +141,14 @@
 import NavBar from '../components/navbar'
 import MomentsCard from '../components/MomentsCard'
 import {get_my_gallery} from "../api/gallary"
+import {identify_result, img_upload} from '../api/identify-result'
 // 引入插件
 import "@/assets/css/scrollbar.css"
+import "@/assets/css/dialog.css"
 import {change_avatar, change_nickname, get_status} from "../api/account";
 import {get_my_post} from "../api/post";
 import storage from "good-storage";
+import {Message} from 'element-ui'
 export default {
   components: {
     'ibird-nav': NavBar,
@@ -103,10 +156,10 @@ export default {
   },
   data() {
     return {
-      banners: [],
       src : "../static/img/banner.png",
       src1: "../static/img/bell.png",
       src2: "../static/img/camera.png",
+      src3: "../static/img/arrow.png",
       infoloaded: false,
       avatarUrl: "",
       nickname: "",
@@ -120,6 +173,10 @@ export default {
       moments_loading: false,
       moments_hasnext: true,
       loading: false,
+      dialogVisible: false,
+      banners: [],
+      imageUrl:'',
+      preview_img:[],
     }
   },
   computed: {
@@ -263,6 +320,50 @@ export default {
         })
       }
     },
+
+    uploadImg (f) {
+      console.log(f)
+      let form = new FormData();
+      let file = new window.File(
+        [data],
+        "uploader.png",
+        {type: "image/png"}
+      );
+      console.log(file);
+      form.append('img', file);
+      form.append('usage', 'a');
+      img_upload(form).then(res => {
+        this.imageUrl = res.data.data
+      }).then(error => {
+        console.log(error)
+      })
+    },
+
+    handleAvatarSuccess(res, file) {
+
+    },
+    beforeAvatarUpload(file) {
+      const isJPG = (file.type === 'image/jpeg' || file.type === 'image/png' || file.type === 'image/jpg')
+      const isLt5M = file.size / 1024 / 1024 < 5
+
+      if (!isJPG) {
+        this.$message.error('上传图片只能是 JPG/PNG/JPEG 格式!');
+      }
+      if (!isLt5M) {
+        this.$message.error('上传图片大小不能超过 5MB!');
+      }
+      return isJPG && isLt5M
+    },
+    handlePreview (file) {
+
+    },
+
+
+    deleteImage: function () {
+      this.imageUrl = '';
+      this.preview_img = [];
+    },
+
     changeAvatar(url){
       change_avatar({
         avatar: url,
@@ -316,11 +417,40 @@ export default {
 </script>
 
 <style scoped>
+.box-tip{
+  margin-top: 20px;
+  border: dashed 3px #e1e1e1;
+  height: 160px;
+  width: 98%;
+  background-color: #fafafa;
+}
+.up-img{
+  height: 35px;
+  width: 110px;
+  background-color: #ff7e7e;
+  border-radius: 3px;
+  margin: 0 auto;
+  cursor: pointer;
+}
+.up-img{
+  margin-top: 60px;
+}
+.tip1{
+  color: #f7f7f7;
+  display: inline-block;
+  line-height: 35px;
+  vertical-align: middle;
+  font-size: 15px;
+}
+.icon-img1{
+  line-height: 35px;
+  vertical-align: middle;
+  height: 16px;
+  width: 16px;
+  margin-right: 1px;
+}
 ul{
   padding-left: 0;
-}
-.card-selector{
-
 }
 .card1-item{
   position: relative;
@@ -400,9 +530,14 @@ ul{
   width: 76%;
   margin-top: 20px;
 }
-
 .avatar-img {
+  width:10%;
   position: relative;
+  margin: 0 auto;
+  border-radius: 50%;
+  cursor: pointer;
+}
+.avatar-img{
   margin-top: -100px;
 }
 .user-name > span {
@@ -424,5 +559,42 @@ ul{
 }
 .user-name{
   margin-bottom: 20px;
+}
+.save-left{
+  margin-left: 15px;
+  margin-top: 20px;
+  float: left;
+  position: relative;
+  background-color: #5daf34;
+  width: 160px;
+  height: 160px;
+  border-radius: 3px;
+}
+.upload-image {
+  width: 160px;
+  height: 160px;
+  border-radius: 3px;
+}
+.delete-button {
+  position: absolute;
+  right:0;
+  top: 0;
+  opacity: 0.7;
+}
+.save-right{
+  margin-top: 50px;
+  float: left;
+  width: 200px;
+  position: relative;
+  text-align: center;
+  justify-content: center;
+}
+.save-text{
+  font-size: 15px;
+  color: #aaa8a8;
+  display: block;
+}
+.save-btn{
+ margin-top: 40px;
 }
 </style>
