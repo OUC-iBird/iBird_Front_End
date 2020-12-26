@@ -9,12 +9,31 @@
       </el-image>
     </div>
     <div class="avatar-img" v-if="infoloaded" @click="dialogVisible = true">
-      <el-tooltip effect="dark" content="点击可修改头像" placement="top" open-delay="500">
+      <el-tooltip effect="dark" content="点击可修改头像" placement="top" :open-delay="500">
         <el-avatar :size="130" :src="avatarUrl" style="border: 2px solid #ffffff;"/>
       </el-tooltip>
     </div>
     <div class="user-name" v-if="infoloaded">
-      <span>{{displayName}}</span>
+      <span style="position: relative">
+        {{displayName}}
+         <el-popover
+           placement="right"
+           width="200"
+           trigger="manual"
+           v-model="changenameVisible">
+           <el-input
+             placeholder="请输入要更改的昵称"
+             v-model="nametoChange"
+             maxlength="10"
+           />
+           <div style="text-align: right; margin: 10px 0 0;">
+             <el-button size="mini" type="text" @click="changenameVisible = false">取消</el-button>
+             <el-button type="primary" size="mini" @click="changeNickname()">确定</el-button>
+           </div>
+           <el-button slot="reference" type="text" icon="el-icon-edit" class="name-btn"
+                      @click="changenameVisible = !changenameVisible"/>
+         </el-popover>
+      </span>
     </div>
 
     <el-tabs
@@ -178,6 +197,8 @@ export default {
       banners: [],
       imageUrl:'',
       preview_img:[],
+      changenameVisible: false,
+      nametoChange: '',
     }
   },
   computed: {
@@ -324,11 +345,6 @@ export default {
 
     uploadImg (file) {
       let form = new FormData();
-      // let file = new window.File(
-      //   [data],
-      //   "uploader.png",
-      //   {type: "image/png"}
-      // );
       console.log(file.file)
       form.append('img', file.file);
       form.append('usage', 'a');
@@ -394,9 +410,13 @@ export default {
         console.log(error);
       })
     },
-    changeNickname(name){
+    changeNickname(){
+      if(typeof this.nametoChange == "undefined" || this.nametoChange.match(/^\s*$/)){
+        this.$message.error('无效的昵称！');
+        return;
+      }
       change_nickname({
-        nickname: name,
+        nickname: this.nametoChange
       }).then((response)=>{
         if (response.data.code === 20000){
           //成功
@@ -404,8 +424,9 @@ export default {
           storage.set("user_data", {
             "avatar": this.avatarUrl,
             "username": this.username,
-            "nickname": name,
+            "nickname": this.nametoChange,
           })
+          this.changenameVisible = false;
           this.getUserInfo();
         }
         else {
@@ -601,5 +622,13 @@ ul{
 }
 .save-btn{
  margin-top: 20px;
+}
+.name-btn{
+  position: absolute;
+  display: inline;
+  padding: 0;
+  top: 30%;
+  left: 105%;
+  color: #909399;
 }
 </style>
