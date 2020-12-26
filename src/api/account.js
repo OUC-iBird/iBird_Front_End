@@ -41,7 +41,7 @@ export function get_status(){
 }
 
 //修改昵称（要求登录）
-export function change_nickname(){
+export function change_nickname(data){
   return axios({
     url: '/api/account/change_nickname',
     method: 'post',
@@ -51,7 +51,7 @@ export function change_nickname(){
 }
 
 //修改头像（要求登录）
-export function change_avatar(){
+export function change_avatar(data){
   return axios({
     url: '/api/account/change_avatar',
     method: 'post',

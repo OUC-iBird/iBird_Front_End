@@ -13,7 +13,7 @@
   </el-menu-item>
   <el-submenu index="2" style="float:right" >
       <template slot="title">
-        <el-avatar :size="40" :src=defaultAvatar fit="contain" @error="errorHandler">
+        <el-avatar :size="40" :src="avatar" fit="contain" @error="errorHandler">
         </el-avatar>
       </template>
     <div v-if="login"  class="login-style" >
@@ -96,21 +96,21 @@ export default {
   mounted() {
     // ????这里的跳转检查被 foreach 取代
     // console.log("Checked by the navbar");
-    if(this.$route.meta.requireAuth){
-      // 检查本地的 session 缓存
-      if(storage.has("login")){
-        this.login = true;
-        if(storage.has("user_data")){
-          this.nickname = storage.get("user_data").nickname;
-          this.username = storage.get("user_data").username;
-          this.avatar = storage.get("user_data").avatar;
-        }
-        else {
-          this.getStatus();
-        }
+    if(storage.has("login")){
+      this.login = true;
+      if(storage.has("user_data")){
+        this.nickname = storage.get("user_data").nickname;
+        this.username = storage.get("user_data").username;
+        this.avatar = storage.get("user_data").avatar;
       }
-      else{
-        this.login = false;
+      else {
+        this.getStatus();
+      }
+    }
+    else{
+      this.login = false;
+      if(this.$route.meta.requireAuth){
+        // 检查本地的 session 缓存
         this.$router.push({path: "/login"})
       }
     }
@@ -120,6 +120,7 @@ export default {
     handleSelect(key, keyPath) {
     },
     errorHandler() {
+      this.avatar = this.defaultAvatar;
       return true;
     },
     logout(){

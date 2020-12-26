@@ -9,8 +9,9 @@
       </el-image>
     </div>
     <div class="avatar-img" v-if="infoloaded" @click="dialogVisible = true">
-      <el-avatar :size="130" :src="avatarUrl" style="border: 2px solid #ffffff;">
-      </el-avatar>
+      <el-tooltip effect="dark" content="点击可修改头像" placement="top" open-delay="500">
+        <el-avatar :size="130" :src="avatarUrl" style="border: 2px solid #ffffff;"/>
+      </el-tooltip>
     </div>
     <div class="user-name" v-if="infoloaded">
       <span>{{displayName}}</span>
@@ -96,7 +97,7 @@
         <div v-if="imageUrl">
           <div class="save-left">
           <el-image fit="cover"
-                    :src="imageUrl"
+                    :src="'https://weparallelines.top'+imageUrl"
                     :preview-src-list="preview_img"
                     class="upload-image"/>
           <el-button icon="el-icon-close"
@@ -321,20 +322,26 @@ export default {
       }
     },
 
-    uploadImg (f) {
-      console.log(f)
+    uploadImg (file) {
       let form = new FormData();
-      let file = new window.File(
-        [data],
-        "uploader.png",
-        {type: "image/png"}
-      );
-      console.log(file);
-      form.append('img', file);
+      // let file = new window.File(
+      //   [data],
+      //   "uploader.png",
+      //   {type: "image/png"}
+      // );
+      console.log(file.file)
+      form.append('img', file.file);
       form.append('usage', 'a');
-      img_upload(form).then(res => {
-        this.imageUrl = res.data.data
-      }).then(error => {
+      img_upload(form).then((res) => {
+        console.log(res)
+        if (res.data.code === 20000){
+          this.imageUrl = res.data.data.path;
+          console.log(this.imageUrl)
+        }
+        else{
+          console.log('上传失败：'+res.data.msg);
+        }
+      }).catch((error) => {
         console.log(error)
       })
     },
@@ -364,21 +371,20 @@ export default {
       this.preview_img = [];
     },
 
-    changeAvatar(url){
+    changeAvatar(){
       change_avatar({
-        avatar: url,
+        avatar: this.imageUrl,
       }).then((response)=>{
         if (response.data.code === 20000){
           //成功
           this.$message.success('头像修改成功！');
           storage.set("user_data", {
-            "avatar": 'https://weparallelines.top' + url,
+            "avatar": 'https://weparallelines.top' + this.imageUrl,
             "username": this.username,
             "nickname": this.nickname,
           })
-          setTimeout(() => {
-            this.$router.go(0);
-          }, 1000)
+          this.dialogVisible = false;
+          this.getUserInfo();
         }
         else {
           this.$message.error('头像修改失败：'+response.data.msg);
@@ -400,9 +406,7 @@ export default {
             "username": this.username,
             "nickname": name,
           })
-          setTimeout(() => {
-            this.$router.go(0);
-          }, 1000)
+          this.getUserInfo();
         }
         else {
           this.$message.error('昵称修改失败：'+response.data.msg);
@@ -418,7 +422,7 @@ export default {
 
 <style scoped>
 .box-tip{
-  margin-top: 20px;
+  /*margin-top: 20px;*/
   border: dashed 3px #e1e1e1;
   height: 160px;
   width: 98%;
@@ -561,9 +565,10 @@ ul{
   margin-bottom: 20px;
 }
 .save-left{
-  margin-left: 15px;
-  margin-top: 20px;
-  float: left;
+  /*margin-left: 15px;*/
+  /*margin-top: 20px;*/
+  margin: 0 auto;
+  /*float: left;*/
   position: relative;
   background-color: #5daf34;
   width: 160px;
@@ -582,8 +587,8 @@ ul{
   opacity: 0.7;
 }
 .save-right{
-  margin-top: 50px;
-  float: left;
+  margin: 10px auto 0;
+  /*float: left;*/
   width: 200px;
   position: relative;
   text-align: center;
@@ -595,6 +600,6 @@ ul{
   display: block;
 }
 .save-btn{
- margin-top: 40px;
+ margin-top: 20px;
 }
 </style>

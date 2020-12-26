@@ -107,7 +107,6 @@ export default {
     },
   },
   methods: {
-    //之后联网
     load() {
       if (!this.noMore){
         this.loading = true;
@@ -202,7 +201,7 @@ export default {
   overflow: auto;
 }
 .home {
-  margin-left: 42px;
+  margin: 0 auto;
   width: 500px;
   height: 100%;
   position: relative;
