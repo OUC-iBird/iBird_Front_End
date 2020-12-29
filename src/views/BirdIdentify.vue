@@ -216,6 +216,7 @@ import NavBar from '../components/navbar'
 import { MessageBox, Message } from 'element-ui'
 import { test, identify_result, img_upload } from '../api/identify-result'
 import {save_in_gallery} from "../api/gallary";
+import {getPosition} from '../api/map'
 
 export default {
   components: {
@@ -369,21 +370,50 @@ export default {
     })
     },
     uploadToGallary(){
-      save_in_gallery({
-        path: this.remoteUrl,
-        longitude: 0.0,
-        latitude: 0.0
-      }).then((response)=>{
-        if (response.data.code === 20000){
-          //成功
-          this.$message.success('上传成功！');
-        }
-        else {
-          this.$message.error('上传失败：'+response.data.msg);
-        }
-      }).catch((error)=>{
-        this.$message.error('请求时出错！');
-        console.log(error);
+      // 获取当前经纬度坐标
+      let longitude = 0.0;
+      let latitude = 0.0;
+      getPosition().then(result => {
+        // 返回结果示例：
+        // {latitude: 30.318030999999998, longitude: 120.05561639999999}
+        longitude = result.longitude;
+        latitude = result.latitude;
+        console.log(longitude)
+        save_in_gallery({
+          path: this.remoteUrl,
+          longitude: longitude,
+          latitude: latitude,
+        }).then((response)=>{
+          if (response.data.code === 20000){
+            //成功
+            this.$message.success('上传成功！');
+          }
+          else {
+            this.$message.error('上传失败：'+response.data.msg);
+          }
+        }).catch((error)=>{
+          this.$message.error('请求时出错！');
+          console.log(error);
+        })
+
+      }).catch(err => {
+        // 此时不允许获取定位，仍上传
+        save_in_gallery({
+          path: this.remoteUrl,
+          longitude: longitude,
+          latitude: latitude,
+        }).then((response)=>{
+          if (response.data.code === 20000){
+            //成功
+            this.$message.success('上传成功！');
+          }
+          else {
+            this.$message.error('上传失败：'+response.data.msg);
+          }
+        }).catch((error)=>{
+          this.$message.error('请求时出错！');
+          console.log(error);
+        })
       })
     }
   },
