@@ -27,7 +27,7 @@
                   maxlength="400"
                   v-model="moment"
                   class="moment-text"/>
-        <el-button type="danger" class="submit-button" v-on:click="publishMoment()">发表</el-button>
+        <el-button type="danger" class="submit-button" @click="publishMoment()" :loading="btn_loading">发表</el-button>
       </el-main>
     </el-container>
 
@@ -84,6 +84,7 @@ export default {
       thumbnail_img:'',
       preview_img:[],
       moment:'',
+      btn_loading: false,
     }
   },
   computed: {
@@ -146,6 +147,7 @@ export default {
     publishMoment: function () {
       const url = 'https://weparallelines.top';
       let path = this.thumbnail_img.substr(url.length);
+      this.btn_loading = true;
       give_post({
         path: path,
         content: this.moment,
@@ -159,9 +161,11 @@ export default {
         else {
           this.$message.error('发布失败：'+response.data.msg);
         }
+        this.btn_loading = false
       }).catch((error)=>{
         this.$message.error('请求时出错！');
         console.log(error);
+        this.btn_loading = false;
       })
     }
   }

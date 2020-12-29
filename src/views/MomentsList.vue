@@ -9,6 +9,7 @@
 
     <div class="infinite-list-wrapper" style="overflow: auto;" v-bind:style="{height: getClientHeight}"
          v-infinite-scroll="load"
+         infinite-scroll-distance="200"
          infinite-scroll-delay="500"
          infinite-scroll-disabled="disabled">
         <el-row :span="24" v-for="(i, index) in countData" v-if="index % 2 === 0" :key="index">
@@ -91,15 +92,12 @@ export default {
     getClientHeight(){
       let Height = document.documentElement.clientHeight - 137;
       let clientHeight = Height + "px"
-      console.log("clientHeight 1=="+clientHeight)
       //窗口可视区域发生变化的时候执行
       window.onresize = () => {
         Height = document.documentElement.clientHeight - 137;
         clientHeight = Height + "px"
-        console.log("clientHeight changed2=="+clientHeight)
         return clientHeight
       }
-      console.log("clientHeight 3=="+clientHeight)
       return clientHeight
     }
   },

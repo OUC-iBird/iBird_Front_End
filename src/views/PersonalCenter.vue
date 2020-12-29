@@ -29,7 +29,7 @@
            />
            <div style="text-align: right; margin: 10px 0 0;">
              <el-button size="mini" type="text" @click="changenameVisible = false">取消</el-button>
-             <el-button type="primary" size="mini" @click="changeNickname()">确定</el-button>
+             <el-button type="primary" size="mini" @click="changeNickname()" :loading="btn_loading">确定</el-button>
            </div>
            <el-button slot="reference" type="text" icon="el-icon-edit" class="name-btn"
                       @click="changenameVisible = !changenameVisible"/>
@@ -54,7 +54,7 @@
                infinite-scroll-distance="200"
                infinite-scroll-disabled="moments_disabled">
             <el-row v-for="(i,index) in moments_countData" :key="index" class="card1-item">
-              <el-col :span="20" :push="4">
+              <el-col :span="18" :offset="4">
                 <ibird-moments
                   class="moment-card"
                   v-bind:username=moments[index].username
@@ -68,8 +68,12 @@
                     {thumb_num:moments[index].like,thumb_visible:true,thumb_status:moments[index].is_liked|false,}
                 /></el-col>
             </el-row>
-            <p v-if="!moments_noMore" style="color: #555555;font-size: 14px;margin-top:30px;margin-bottom: 50px;">加载中……</p>
-            <p v-else style="color: #555555;font-size: 14px;margin-top:30px;margin-bottom: 50px;">没有更多数据啦(^_^)</p>
+            <el-row>
+              <el-col :span="18" :offset="4">
+                <p v-if="!moments_noMore" style="color: #555555;font-size: 14px;margin-top:30px;margin-bottom: 50px;">加载中……</p>
+                <p v-else style="color: #555555;font-size: 14px;margin-top:30px;margin-bottom: 50px;">没有更多数据啦(^_^)</p>
+              </el-col>
+            </el-row>
           </div>
         </el-scrollbar>
       </el-tab-pane>
@@ -128,7 +132,7 @@
           </div>
           <div class="save-right">
             <span class="save-text">这是您的新头像(^-^*)/</span>
-          <el-button class="save-btn" type="danger" v-on:click="changeAvatar()">保存修改</el-button>
+          <el-button class="save-btn" type="danger" @click="changeAvatar()" :loading="btn_loading">保存修改</el-button>
           </div>
         </div>
 
@@ -200,6 +204,7 @@ export default {
       preview_img:[],
       changenameVisible: false,
       nametoChange: '',
+      btn_loading: false,
     }
   },
   computed: {
@@ -248,15 +253,12 @@ export default {
     getClientHeight(){
       let Height = document.documentElement.clientHeight - 50;
       let clientHeight = Height + "px"
-      console.log("clientHeight 1=="+clientHeight)
       //窗口可视区域发生变化的时候执行
       window.onresize = () => {
         Height = document.documentElement.clientHeight - 50;
         clientHeight = Height + "px"
-        console.log("clientHeight changed2=="+clientHeight)
         return clientHeight
       }
-      console.log("clientHeight 3=="+clientHeight)
       return clientHeight
     }
   },
@@ -389,6 +391,7 @@ export default {
     },
 
     changeAvatar(){
+      this.btn_loading = true;
       change_avatar({
         avatar: this.imageUrl,
       }).then((response)=>{
@@ -401,19 +404,24 @@ export default {
             "nickname": this.nickname,
           })
           this.dialogVisible = false;
-          this.getUserInfo();
+          this.btn_loading = false;
+          this.$router.go(0);
         }
         else {
           this.$message.error('头像修改失败：'+response.data.msg);
+          this.btn_loading = false;
         }
       }).catch((error)=>{
         this.$message.error('请求时出错！');
         console.log(error);
+        this.btn_loading = false;
       })
     },
     changeNickname(){
+      this.btn_loading = true;
       if(typeof this.nametoChange == "undefined" || this.nametoChange.match(/^\s*$/)){
         this.$message.error('无效的昵称！');
+        this.btn_loading = false;
         return;
       }
       change_nickname({
@@ -428,14 +436,17 @@ export default {
             "nickname": this.nametoChange,
           })
           this.changenameVisible = false;
-          this.getUserInfo();
+          this.btn_loading = false;
+          this.$router.go(0);
         }
         else {
           this.$message.error('昵称修改失败：'+response.data.msg);
+          this.btn_loading = false;
         }
       }).catch((error)=>{
         this.$message.error('请求时出错！');
         console.log(error);
+        this.btn_loading = false;
       })
     },
   }
