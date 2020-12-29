@@ -201,7 +201,7 @@
 
         </el-col>
         <el-col class="uploadtogallary">
-          <el-button type="primary" class="submit-button" v-on:click="uploadToGallary()">保存至相册</el-button>
+          <el-button type="primary" class="submit-button" v-on:click="uploadToGallary()" :loading="upload_loading">保存至相册</el-button>
         </el-col>
       </el-row>
       </div>
@@ -272,7 +272,8 @@ export default {
         canMove:true,
         enlarge: 2,
       },
-      loading: false
+      loading: false,
+      upload_loading: false,
     }
   },
   methods: {
@@ -371,6 +372,7 @@ export default {
     },
     uploadToGallary(){
       // 获取当前经纬度坐标
+      this.upload_loading = true;
       let longitude = 0.0;
       let latitude = 0.0;
       getPosition().then(result => {
@@ -378,12 +380,12 @@ export default {
         // {latitude: 30.318030999999998, longitude: 120.05561639999999}
         longitude = result.longitude;
         latitude = result.latitude;
-        console.log(longitude)
         save_in_gallery({
           path: this.remoteUrl,
           longitude: longitude,
           latitude: latitude,
         }).then((response)=>{
+          this.upload_loading = false;
           if (response.data.code === 20000){
             //成功
             this.$message.success('上传成功！');
@@ -392,6 +394,7 @@ export default {
             this.$message.error('上传失败：'+response.data.msg);
           }
         }).catch((error)=>{
+          this.upload_loading = false;
           this.$message.error('请求时出错！');
           console.log(error);
         })
@@ -403,6 +406,7 @@ export default {
           longitude: longitude,
           latitude: latitude,
         }).then((response)=>{
+          this.upload_loading = false;
           if (response.data.code === 20000){
             //成功
             this.$message.success('上传成功！');
@@ -413,6 +417,7 @@ export default {
         }).catch((error)=>{
           this.$message.error('请求时出错！');
           console.log(error);
+          this.upload_loading = false;
         })
       })
     }
