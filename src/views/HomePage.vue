@@ -1,13 +1,13 @@
-<template xmlns:el-col="http://www.w3.org/1999/html">
+<template>
   <div class="content">
     <ibird-nav />
     <div class="top">
       <div class="left">
         <div class="swiper-container">
         <swiper :options="swiperOption" ref="mySwiper">
-          <swiper-slide><img :src="img1"  style="width: 100%; height: auto;" /></swiper-slide>
-          <swiper-slide><img :src="img2"  style="width: 100%; height: auto;" /></swiper-slide>
-          <swiper-slide><img :src="img3"  style="width: 100%; height: auto;"  /></swiper-slide>
+          <swiper-slide><el-image :src="img1"  style="width: 100%; height: auto;" /></swiper-slide>
+          <swiper-slide><el-image :src="img2"  style="width: 100%; height: auto;" /></swiper-slide>
+          <swiper-slide><el-image :src="img3"  style="width: 100%; height: auto;"  /></swiper-slide>
           <div class="swiper-pagination" slot="pagination"></div>
           <div class="swiper-button-prev" slot="button-prev"></div>
           <div class="swiper-button-next" slot="button-next"></div>
@@ -306,7 +306,7 @@ export default {
   background-color: #FFFFFF;
   z-index: 11;
   width: 300px;
-  height: 300px;
+  height: 330px;
   position:fixed;
   top:0;
   right:0;
