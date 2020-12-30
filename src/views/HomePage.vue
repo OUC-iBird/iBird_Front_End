@@ -5,9 +5,9 @@
       <div class="left">
         <div class="swiper-container">
         <swiper :options="swiperOption" ref="mySwiper">
-          <swiper-slide><el-image :src="img1"  style="width: 100%; height: auto;" /></swiper-slide>
-          <swiper-slide><el-image :src="img2"  style="width: 100%; height: auto;" /></swiper-slide>
-          <swiper-slide><el-image :src="img3"  style="width: 100%; height: auto;"  /></swiper-slide>
+          <swiper-slide><img :src="img1"  style="width: 100%; height: auto;" /></swiper-slide>
+          <swiper-slide><img :src="img2"  style="width: 100%; height: auto;" /></swiper-slide>
+          <swiper-slide><img :src="img3"  style="width: 100%; height: auto;"  /></swiper-slide>
           <div class="swiper-pagination" slot="pagination"></div>
           <div class="swiper-button-prev" slot="button-prev"></div>
           <div class="swiper-button-next" slot="button-next"></div>
